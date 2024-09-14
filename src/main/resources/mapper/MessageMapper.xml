@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bili.mapper.MessageMapper">
+    <insert id="sendMessage">
+        insert into `whisper`
+        (uid1, uid2, content, type) values (#{uid1}, #{uid2}, #{content}, #{type})
+    </insert>
+
+    <select id="getWhiseperList" resultType="com.bili.entity.Message.Whisper">
+        select * from `whisper`
+        where
+        uid1 = #{uid} or uid2 = #{uid}
+    </select>
+
+    <select id="getCoverWhisperList" resultType="com.bili.entity.Message.Whisper">
+        select * from `whisper`
+        where
+        uid1 = #{uid} or uid2 = #{uid}
+        GROUP BY uid1, uid2
+        ORDER BY time DESC
+    </select>
+
+    <select id="getByTwoUid" resultType="com.bili.entity.Message.Whisper">
+        select * from `whisper`
+        where
+        (uid1 = #{uid1} and uid2 = #{uid2})
+        or
+        (uid1 = #{uid2} and uid2 = #{uid1})
+    </select>
+
+    <select id="getSysinfo" resultType="com.bili.entity.SysInfo">
+        select * from `sysinfo`
+        where
+        uid = #{hisuid}
+    </select>
+
+    <select id="getLikeinfo" resultType="com.bili.entity.LikeInfo">
+        select * from `like_info`
+        where
+        uid = #{uid}
+    </select>
+
+</mapper>

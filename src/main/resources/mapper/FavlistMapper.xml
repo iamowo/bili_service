@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bili.mapper.FavlistMapper">
+    <insert id="addFavlist">
+        insert into `favlist` (title, uid, pub)
+        values (#{title}, #{uid}, #{pub})
+    </insert>
+    
+    <insert id="addOneFAV">
+        insert into `fav_info` (fid, uid, vid)
+        values (#{fid}, #{uid}, #{vid})
+    </insert>
+
+    <insert id="addDefaultFavlist" useGeneratedKeys="true" keyProperty="fid">
+        insert into `favlist` (title, uid, pub)
+        values (#{title}, #{uid}, #{pub})
+    </insert>
+
+    <update id="addVideoFav">
+        update `video` set
+        favorites = favorites + #{num}
+        where vid = #{vid}
+    </update>
+
+    <update id="addNuminlist">
+        update `favlist` set
+        nums = nums + #{num}
+        where fid = #{fid}
+    </update>
+    <update id="updateFav">
+        update `favlist`
+        set title = #{title}, pub = #{pub}
+        where fid = #{fid}
+    </update>
+
+    <delete id="deleteOneFAV">
+        delete FROM `fav_info`
+        where fid = #{fid} and vid = #{vid}
+    </delete>
+    <delete id="deleteFav">
+        delete from `favlist`
+        where fid = #{fid}
+    </delete>
+
+    <select id="getFavlist" resultType="com.bili.entity.FavoristList">
+        select * from `favlist`
+        where uid = #{uid}
+    </select>
+
+    <select id="getAllVideoVid" resultType="java.lang.Integer">
+        select vid from `fav_info`
+        where fid = #{fid}
+    </select>
+
+    <select id="getOneVideo" resultType="com.bili.entity.Video">
+        select * from `video`
+        where vid = #{vid} and pass = 1
+    </select>
+
+    <select id="hadFavedThisVideo" resultType="java.lang.Integer">
+        select count(*) from `fav_info`
+        where
+        fid = #{fid} and vid = #{vid}
+    </select>
+</mapper>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bili.mapper.CommentMapper">
+    <insert id="addComment">
+        insert into `comment` (uid, vid, content, topid, fid, hisuid)
+        values (#{uid}, #{vid}, #{content}, #{topid}, #{fid}, #{hisuid})
+    </insert>
+
+    <update id="deleteComment">
+        update `comment`
+        <set>
+            <if test="deleted != null">
+                deleted = 1
+            </if>
+            <where>
+                id = #{id}
+            </where>
+        </set>
+    </update>
+
+    <select id="getAllComment" resultType="com.bili.entity.Comment">
+        select * from `comment`
+        where
+        vid = #{vid} and topid = 0 and deleted = 0
+    </select>
+    <select id="findSecond" resultType="com.bili.entity.Comment">
+        select * from `comment`
+        where
+        topid = #{id} and deleted = 0
+    </select>
+</mapper>

@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bili.mapper.UserMapper">
+    <insert id="addUser" useGeneratedKeys="true" keyProperty="uid">
+        insert into `user` (account, password)
+        values (#{account}, #{password})
+    </insert>
+
+    <insert id="addFollow">
+        insert into `follow`
+        (uid1, uid2) values (#{uid1}, #{uid2})
+    </insert>
+    <insert id="giveInfo">
+        update `user`
+        <set>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="avatar != null">
+                avatar = #{avatar},
+            </if>
+            <if test="birthday != null">
+                birthday = #{birthday},
+            </if>
+            <if test="gonggao != null">
+                gonggao = #{gonggao},
+            </if>
+            <if test="intro != null">
+                intro = #{intro},
+            </if>
+            <if test="defaultfid != null">
+                defaultfid = #{defaultfid}
+            </if>
+        </set>
+        <where>
+            uid = #{uid}
+        </where>
+    </insert>
+    <insert id="addVideoToList">
+        insert into `videolist_info`
+        (listid, uid, vid) values (#{listid}, #{uid}, #{vid})
+    </insert>
+
+    <update id="addFollowNum1">
+        update `user`
+        set
+        fans = fans + #{num}
+        where uid = #{uid1}
+    </update>
+
+    <update id="addFollowNum2">
+        update `user`
+        set
+        follows = follows + #{num}
+        where uid = #{uid2}
+    </update>
+
+    <update id="updateinfo">
+        update `user`
+        <set>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="avatar != null">
+                avatar = #{avatar},
+            </if>
+            <if test="birthday != null">
+                birthday = #{birthday},
+            </if>
+            <if test="password != null">
+                password = #{password},
+            </if>
+            <if test="gonggao != null">
+                gonggao = #{gonggao},
+            </if>
+            <if test="intro != null">
+                intro = #{intro}
+            </if>
+        </set>
+        <where>
+            uid = #{uid}
+        </where>
+    </update>
+
+    <update id="updateUser1">
+        update `user`
+        <set>
+            <if test="icons != null">
+                icons = icons + #{icons},
+            </if>
+            <if test="lv != null">
+                lv = lv + #{lv},
+            </if>
+            <if test="likes != null">
+                likes = likes + #{likes},
+            </if>
+            <if test="plays != null">
+                plays = plays + #{plays},
+            </if>
+            <if test="videos != null">
+                videos = videos + #{videos},
+            </if>
+            <if test="dynamic != null">
+                dynamic = dynamic + #{dynamic},
+            </if>
+            <if test="animas != null">
+                animas = animas + #{animas}
+            </if>
+        </set>
+        <where>
+            uid = #{uid}
+        </where>
+    </update>
+
+    <update id="touseIocn">
+        update `user`
+        set icons = icons - #{icons}
+        where uid = #{uid}
+    </update>
+
+    <update id="changeFollow">
+        update `follow`
+        set deleted = #{num}
+        where
+        uid1 = #{uid1} and uid2 = #{uid2}
+    </update>
+    <update id="updateFamous">
+        update `video` set
+        famous = #{num}
+        where vid = #{vid}
+    </update>
+    <update id="userdeletevideo">
+        update `video`
+        set pass = 3
+        where vid = #{vid}
+    </update>
+    <update id="userChnageInfo">
+        update `video`
+        <set>
+            <if test="title != null">
+                title = #{title},
+            </if>
+            <if test="intro != null">
+                intro = #{intro},
+            </if>
+            <if test="cover != null">
+                cover = #{cover}
+            </if>
+        </set>
+        <where>
+            vid = #{vid}
+        </where>
+    </update>
+
+
+    <!--    <insert id="addfan">-->
+<!--        update `user` set fan_num = fan_num + 1 where uid = #{hisid}-->
+<!--    </insert>-->
+<!--    <update id="addsub">-->
+<!--        update `user` set sub_num = sub_num + 1 where uid = #{yourid}-->
+<!--    </update>-->
+
+<!--    <update id="updateUser">-->
+<!--        &lt;!&ndash;        update `user` set user_name = #{userName}, introduction = #{introduction} where uid = #{uid}&ndash;&gt;-->
+<!--        update `user`-->
+<!--        <set>-->
+<!--            <if test="userName != null">-->
+<!--                user_name = #{userName},-->
+<!--            </if>-->
+<!--            <if test="fanNum != null">-->
+<!--                fan_num = #{fanNum},-->
+<!--            </if>-->
+<!--            <if test="introduction != null">-->
+<!--                introduction = #{introduction},-->
+<!--            </if>-->
+<!--            <if test="avatar != null">-->
+<!--                avatar = #{avatar},-->
+<!--            </if>-->
+<!--            <if test="uuid != null">-->
+<!--                uuid = #{uuid},-->
+<!--            </if>-->
+<!--            <if test="account != null">-->
+<!--                account = #{account},-->
+<!--            </if>-->
+<!--            <if test="password != null">-->
+<!--                password = #{password},-->
+<!--            </if>-->
+<!--            <if test="subNum != null">-->
+<!--                sub_num = #{subNum},-->
+<!--            </if>-->
+<!--            <if test="createTime != null">-->
+<!--                create_time = #{createTime},-->
+<!--            </if>-->
+<!--            <if test="trendsNum != null">-->
+<!--                trends_num = #{trendsNum},-->
+<!--            </if>-->
+<!--            <if test="vidNum != null">-->
+<!--                vid_num = #{vidNum},-->
+<!--            </if>-->
+<!--            <if test="birthday != null">-->
+<!--                birthday = #{birthday},-->
+<!--            </if>-->
+<!--            <if test="qianming != null">-->
+<!--                qianming = #{qianming},-->
+<!--            </if>-->
+<!--            <if test="gonggao != null">-->
+<!--                gonggao = #{gonggao}-->
+<!--            </if>-->
+<!--        </set>-->
+<!--        <where>-->
+<!--            uid = #{uid}-->
+<!--        </where>-->
+<!--    </update>-->
+<!--    <update id="changeState">-->
+<!--        update `user`-->
+<!--        <set>-->
+<!--            <if test="his_flag != null">-->
+<!--                his_flag = !his_flag-->
+<!--            </if>-->
+<!--        </set>-->
+<!--        <where>-->
+<!--            uid = #{uid}-->
+<!--        </where>-->
+<!--    </update>-->
+<!--    &lt;!&ndash;  减去个关注  &ndash;&gt;-->
+<!--    <update id="subtractsub">-->
+<!--        update `user` set sub_num = sub_num - 1 where uid = #{yourid}-->
+<!--    </update>-->
+<!--    &lt;!&ndash;  减去一个粉丝  &ndash;&gt;-->
+<!--    <update id="subtractfan">-->
+<!--        update `user` set fan_num = fan_num - 1 where uid = #{hisid}-->
+<!--    </update>-->
+
+<!--    <delete id="deleteUser">-->
+<!--        delete from `user` where uid = #{uid}-->
+<!--    </delete>-->
+
+<!--    <select id="getById" resultType="pilipili.entity.User">-->
+<!--        select * from `user` where uid = #{uid}-->
+<!--    </select>-->
+
+<!--    <select id="getAll" resultType="pilipili.entity.User">-->
+<!--        select * from `user`-->
+<!--    </select>-->
+
+<!--    <select id="findPage" resultType="pilipili.entity.User">-->
+<!--        select * from `user` limit #{pageNum}, #{pageSize}-->
+<!--    </select>-->
+
+<!--    <select id="total" resultType="java.lang.Integer">-->
+<!--        select count(*) from `user`-->
+<!--    </select>-->
+
+<!--    <select id="getByAccount" resultType="pilipili.entity.User">-->
+<!--        select * from `user` where account = #{account}-->
+<!--    </select>-->
+<!--    <select id="getByWord" resultType="pilipili.entity.User">-->
+<!--        select * from `user` where user_name like CONCAT('%',#{keyword},'%')-->
+<!--    </select>-->
+
+    <select id="findAccount" resultType="com.bili.entity.User">
+        select * from `user`
+        where account = #{account}
+    </select>
+
+    <select id="findUid" resultType="com.bili.entity.User">
+        select * from `user`
+        where uid = #{uid}
+    </select>
+
+    <select id="getByUid" resultType="com.bili.entity.User">
+        select * from `user`
+        where uid = #{uid}
+    </select>
+
+    <select id="getUidByKeyword" resultType="java.lang.Integer">
+        select uid from `user`
+        where
+        name like concat('%', #{keyword}, '%')
+    </select>
+
+    <select id="getUserByKeyword" resultType="com.bili.entity.User">
+        select * from `user`
+        where
+        name like concat('%', #{keyword}, '%')
+    </select>
+
+    <!--  uid1 时被关注者  -->
+    <select id="judgeFollow" resultType="java.lang.Integer">
+        select count(*) from `follow`
+        where
+        uid1 = #{uid1} and uid2 = #{uid2}
+        and deleted = 0
+    </select>
+
+    <select id="findINFollow" resultType="java.lang.Integer">
+        select count(*) from `follow`
+        where uid1 = #{uid1} and uid2 = #{uid2} and deleted = 1
+    </select>
+
+    <select id="finfAllFollows" resultType="java.lang.Integer">
+        select uid1 from `follow`
+        where
+        uid2 = #{uid}
+    </select>
+    <select id="getFans" resultType="java.lang.Integer">
+        select uid2 from `follow`
+        where
+        uid1 = #{uid}
+    </select>
+    <select id="findAccount2" resultType="java.lang.Integer">
+        select count(*)
+        from `user`
+        where account = #{account}
+    </select>
+
+</mapper>

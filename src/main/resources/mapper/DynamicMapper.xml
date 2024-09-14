@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bili.mapper.DynamicMapper">
+    <insert id="sendDynamic" useGeneratedKeys="true" keyProperty="id">
+        insert into `dynamic`
+        (uid, content, type, vordid) values (#{uid}, #{content}, #{type}, #{vordid})
+    </insert>
+
+    <insert id="addDyimgs">
+        insert into `dyimgs`
+        (did, img, uid) values (#{did}, #{img}, #{uid})
+    </insert>
+
+    <select id="getDyanmciList" resultType="com.bili.entity.Dynamic">
+        select * from `dynamic`
+        where
+        uid = #{uid}
+        ORDER BY id DESC
+    </select>
+
+    <select id="getImgs" resultType="com.bili.entity.Dyimgs">
+        select * from `dyimgs`
+        where did  = #{id}
+    </select>
+
+    <select id="getFollowlist" resultType="java.lang.Integer">
+        select uid1 from `follow`
+        where uid2 = #{uid}
+    </select>
+
+    <select id="getOneDynamic" resultType="com.bili.entity.Dynamic">
+        select * from `dynamic`
+        where
+        id = #{did}
+    </select>
+
+    <select id="getImgssDid" resultType="java.lang.Integer">
+        select did from `dyimgs`
+        where uid = #{uid}
+        group by did
+    </select>
+
+    <select id="getDynamic" resultType="com.bili.entity.Dynamic">
+        select * from `dynamic`
+        where
+        id = #{did}
+    </select>
+
+
+</mapper>

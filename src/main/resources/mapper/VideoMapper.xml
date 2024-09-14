@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bili.mapper.VideoMapper">
+    <!--  这个配置可一获取生成的vid  -->
+    <insert id="addInfos" useGeneratedKeys="true" keyProperty="vid">
+        insert into `video` (title, intro, cover, uid, duration, vidlong, maintag, othertags)
+        values (#{title}, #{intro}, #{cover}, #{uid}, #{duration}, #{vidlong}, #{maintag}, #{othertags})
+    </insert>
+
+    <insert id="addWatch">
+        insert into `watch_info` (vid, uid, lastwatched, done)
+        values (#{vid}, #{uid}, #{lastwatched}, #{done})
+    </insert>
+
+    <insert id="addLike">
+        insert into `like_info` (vid, uid, type, hisuid)
+        values (#{vid}, #{uid}, #{type}, #{hisuid})
+    </insert>
+
+    <insert id="addIcon">
+        insert into `icon_info` (vid, uid)
+        values (#{vid}, #{uid})
+    </insert>
+
+    <insert id="addFav">
+        insert into `fav_info` (vid, uid， fid)
+        values (#{vid}, #{uid}, #{fid})
+    </insert>
+
+    <insert id="addShare">
+        insert into `share_info` (vid, uid)
+        values (#{vid}, #{uid})
+    </insert>
+    <insert id="sendDm">
+        insert into `dm` (uid, vid, text, color, sendtime, type)
+        values (#{uid}, #{vid}, #{text}, #{color}, #{sendtime}, #{type})
+    </insert>
+
+    <insert id="addVideoList" useGeneratedKeys="true" keyProperty="listid">
+        insert into `videolist`
+        (title, intro, uid) values (#{title}, #{intro}, #{uid})
+    </insert>
+
+    <!--  基本信息  -->
+    <update id="updateinfo">
+        update `video`
+        <set>
+            <if test="cover != null">
+                cover = #{cover},
+            </if>
+            <if test="intro != null">
+                intro = #{intro},
+            </if>
+            <if test="path != null">
+                path = #{path},
+            </if>
+            <if test="title != null">
+                title = #{title},
+            </if>
+            <if test="pass != null">
+                pass = #{pass}
+            </if>
+        </set>
+        <where>
+            vid = #{vid}
+        </where>
+    </update>
+
+    <!--  数据信息  -->
+    <update id="infos">
+        update `video`
+        <set>
+            <if test="plays != null">
+                plays = plays + #{plays},
+            </if>
+            <if test="danmus != null">
+                danmus = danmus + #{danmus},
+            </if>
+            <if test="likes != null">
+                likes = likes + #{likes},
+            </if>
+            <if test="icons != null">
+                icons = icons + #{icons},
+            </if>
+            <if test="favorites != null">
+                favorites = favorite + #{favorites},
+            </if>
+            <if test="shares != null">
+                shares = shares + #{shares}
+            </if>
+        </set>
+        <where>
+            vid = #{vid}
+        </where>
+    </update>
+
+    <update id="chnageCommentNum">
+        update `video` set
+        comments = comments + #{num}
+        where vid = #{vid}
+    </update>
+
+    <update id="updateWatchinfo">
+        update `watch_info`
+        <set>
+            <if test="lastwatched != null">
+                lastwatched = #{lastwatched},
+            </if>
+            <if test="done != null">
+                done = #{done},
+            </if>
+            <if test="time != null">
+                time = #{time},
+            </if>
+            <if test="deleted != null">
+                deleted = #{deleted}
+            </if>
+        </set>
+        <where>
+            id = #{id}
+        </where>
+    </update>
+
+    <select id="getAll" resultType="com.bili.entity.Video">
+        select * from `video`
+        where
+        pass = 1
+    </select>
+
+    <select id="getRecommend" resultType="com.bili.entity.Video">
+        select * from `video` as res
+        where
+        pass = 1 and res.vid>=(RAND()*(SELECT MAX(vid) FROM `video`))LIMIT 6
+    </select>
+
+    <select id="getRandom" resultType="com.bili.entity.Video">
+        select * from `video` as res
+        where
+        pass = 1 and res.vid>=(RAND()*(SELECT MAX(vid) FROM `video`))LIMIT 6
+    </select>
+
+    <select id="getByVid" resultType="com.bili.entity.Video">
+        select * from `video`
+        where
+        vid = #{vid}
+    </select>
+    <!--  播放次数  -->
+    <select id="getPalys" resultType="java.lang.Integer">
+        select count(*) from `watch_info`
+        where vid = #{vid}
+    </select>
+
+    <select id="getComments" resultType="java.lang.Integer">
+        select count(*) from `comment`
+        where vid = #{vid} and deleted = 0
+    </select>
+
+    <select id="getDanmus" resultType="java.lang.Integer">
+        select count(*) from `danmu`
+        where vid = #{vid}
+    </select>
+
+    <select id="getLikes" resultType="java.lang.Integer">
+        select count(*) from `like_info`
+        where vid = #{vid}
+    </select>
+
+    <select id="getIcons" resultType="java.lang.Integer">
+        select count(*) from `icon_info`
+        where vid = #{vid}
+    </select>
+
+    <select id="getFavorites" resultType="java.lang.Integer">
+        select count(*) from `fav_info`
+        where vid = #{vid}
+    </select>
+
+    <select id="getShares" resultType="java.lang.Integer">
+        select count(*) from `share_info`
+        where vid = #{vid}
+    </select>
+
+    <select id="exist" resultType="java.lang.Integer">
+        select count(*) from `like_info`
+        where vid = #{vid} and uid = #{uid}
+    </select>
+
+    <select id="getUserLikes" resultType="java.lang.Integer">
+        select count(*) from `like_info`
+        where uid = #{uid} and vid = #{vid}
+    </select>
+
+    <select id="getUserIcon" resultType="java.lang.Integer">
+        select count(*) from `icon_info`
+        where uid = #{uid} and vid = #{vid}
+    </select>
+
+    <select id="getUserFav" resultType="java.lang.Integer">
+        select count(*) from `fav_info`
+        where uid = #{uid} and vid = #{vid}
+    </select>
+
+    <select id="getLastWatch" resultType="com.bili.entity.Watchinfo">
+        select * from `watch_info`
+        where uid = #{uid} and vid = #{vid}
+    </select>
+
+    <select id="existedIcon" resultType="java.lang.Integer">
+        select count(*) from `icon_info`
+        where uid = #{uid} and vid = #{vid}
+    </select>
+
+    <select id="getHistory" resultType="com.bili.entity.Watchinfo">
+        select * from `watch_info`
+        where uid = #{uid} and deleted = 0
+        order by time desc
+    </select>
+
+    <select id="getVideoByUid" resultType="com.bili.entity.Video">
+        select * from `video`
+        where uid = #{uid} and pass = 1
+        ORDER BY vid desc
+    </select>
+
+    <select id="getVideoByUidNums" resultType="com.bili.entity.Video">
+        select * from `video`
+        where uid = #{uid} and pass = 1
+        ORDER BY vid desc
+        limit #{nums}
+    </select>
+
+    <select id="getRank1" resultType="com.bili.entity.Video">
+        SELECT * FROM `video`
+        ORDER BY likes desc
+        limit 100
+    </select>
+    <select id="getRank2" resultType="com.bili.entity.Video">
+        SELECT * FROM `video`
+        ORDER BY comments desc
+        limit 100
+    </select>
+    <select id="getRank3" resultType="com.bili.entity.Video">
+        SELECT * FROM `video`
+        ORDER BY plays desc
+        limit 100
+    </select>
+
+    <select id="getByKeyword" resultType="com.bili.entity.Video">
+        select * from `video`
+        where pass = 1 and
+        title like concat('%', #{keyword}, '%')
+    </select>
+
+    <select id="getHomeDynamicVideo" resultType="com.bili.entity.Video">
+        select * from `watch_info`
+        where
+        id >= (select id from `watch_info` order by id limit #{start}, 1)
+        limit #{num};
+    </select>
+
+    <select id="getHomHistory" resultType="com.bili.entity.Watchinfo">
+        select * from `watch_info`
+        where
+        vid >= (select vid from `watch_info` order by vid limit #{start}, 1)
+        and uid = #{uid}
+        limit #{num};
+    </select>
+    <select id="getDm" resultType="com.bili.entity.Dm">
+        select * from `dm`
+        where
+        vid = #{vid}
+    </select>
+
+    <select id="searchTilte" resultType="java.lang.String">
+        select title from `video`
+        where pass = 1 and
+        title like concat('%', #{keyword}, '%')
+    </select>
+    <select id="searchName" resultType="java.lang.String">
+        select name from `user`
+        where
+        name like concat('%', #{keyword}, '%')
+    </select>
+    <select id="searchUserName" resultType="java.lang.Integer">
+        select uid from `user`
+        where
+        name like concat('%', #{keyword}, '%')
+    </select>
+
+    <select id="getByDuration1" resultType="com.bili.entity.Video">
+        select * from `video`
+        where
+        title like concat('%', #{keyword}, '%')
+        and duration between #{time1} and #{time2}
+    </select>
+
+    <select id="getFamous" resultType="com.bili.entity.Video">
+        select * from `video`
+        where
+        uid = #{uid} and famous = 1 and pass = 1
+    </select>
+    <select id="getUnfamous" resultType="com.bili.entity.Video">
+        select * from `video`
+        where
+        uid = #{uid} and famous = 0 and pass = 1
+        ORDER BY #{type} DESC
+    </select>
+
+    <select id="getAuditVideo" resultType="com.bili.entity.Video">
+        select * from `video`
+        where
+        pass = 0
+    </select>
+
+    <select id="getAllv" resultType="com.bili.entity.Video">
+        select * from `video`
+        where uid = #{uid}
+        and pass != 3
+    </select>
+
+    <select id="getUserVideoList" resultType="com.bili.entity.VideoList">
+        select * from `videolist`
+        where uid = #{uid}
+    </select>
+
+    <select id="getNumsOfVideoList" resultType="java.lang.Integer">
+        select count(*) from `videolist_info`
+        where listid = #{listid}
+    </select>
+    <select id="getAllListVideo" resultType="java.lang.Integer">
+        select vid from `videolist_info`
+        where listid = #{listid}
+    </select>
+
+    <select id="getByMaintag" resultType="com.bili.entity.Video">
+        select * from `video`
+        where maintag = #{maintag} and pass = 1
+        order by plays desc
+    </select>
+
+    <select id="getAllMainTag" resultType="java.lang.String">
+        select DISTINCT maintag from `video`
+    </select>
+
+    <select id="videoNumsMainTag" resultType="java.lang.Integer">
+        select count(*) from `video`
+        where maintag = #{maintag}
+    </select>
+
+    <select id="getTandN" resultType="com.bili.entity.temp.TagAndNums">
+        SELECT maintag, COUNT(maintag) as num FROM `video`
+        GROUP BY maintag
+        ORDER BY COUNT(maintag) DESC;
+    </select>
+
+
+    <delete id="deletedLike">
+        delete from `like_info`
+        where uid = #{uid} and vid = #{vid}
+    </delete>
+    <update id="deleteAll">
+        update `watch_info` set deleted = 1
+        where uid = #{uid}
+    </update>
+
+    <update id="deleteHistory">
+        update `watch_info` set deleted = 1
+        where uid = #{uid} and vid = #{vid}
+    </update>
+    <update id="updateVideoDm">
+        update `video`
+        set danmus = danmus + 1
+    </update>
+    <update id="updatePass">
+        update `video`
+        set pass = #{pass}
+        where vid = #{vid}
+    </update>
+</mapper>

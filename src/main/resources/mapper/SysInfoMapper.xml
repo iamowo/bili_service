@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bili.mapper.SysInfoMapper">
+
+    <insert id="addInfo">
+        insert into `sysinfo`
+        (uid, content, title) values (#{uid}, #{content}, #{title})
+    </insert>
+</mapper>
