@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bili.mapper.MgMapper">
+
+    <insert id="uploadMgInfo" useGeneratedKeys="true" keyProperty="mid">
+        INSERT INTO `mg` (title, chapters, author, intro, cover, done, tags)
+        values (#{title}, #{chapters}, #{author}, #{intro}, #{cover}, #{done}, #{tags})
+    </insert>
+
+    <insert id="uploadimgs">
+        insert into `mg_imgs` (mid, path, number, name， ind)
+        values (#{mid}, #{path}, #{number}, #{name}, #{ind})
+    </insert>
+
+    <insert id="addChapter">
+        insert into `mg_chapters` (mid, name, number)
+        values (#{mid}, #{name}, #{number})
+    </insert>
+
+    <insert id="addMgList">
+        insert into `mglist` (uid, mid, type, watchpage, watchtype, number)
+        values (#{uid}, #{mid}, #{type}, #{watchpage}, #{watchtype}, #{number})
+    </insert>
+
+    <update id="updateMgChapter">
+        update `mg`
+        set
+        chapters = chapters + #{num}
+    </update>
+
+    <update id="updateMgStatus">
+        update `mglist`
+            <set>
+                <if test="deleted != null">
+                    deleted = #{deleted},
+                </if>
+                <if test="watchtype != null">
+                    watchtype = #{watchtype},
+                </if>
+                <if test="watchpage != null">
+                    watchpage = #{watchpage},
+                </if>
+                <if test="number != null">
+                    number = #{number}
+                </if>
+            </set>
+        <where>
+            mid = #{mid} and uid = #{uid} and type = #{type}
+        </where>
+    </update>
+    <update id="changeAllList">
+        update `mglist`
+        <set>
+            <if test="deleted != null">
+                deleted = #{deleted}
+            </if>
+        </set>
+        <where>
+            uid = #{uid} and type = #{type}
+        </where>
+    </update>
+
+    <select id="getByTitle" resultType="com.bili.entity.Mg">
+        select * from `mg`
+        where
+        title like concat('%', #{keyword}, '%')
+    </select>
+
+    <select id="getOneMg" resultType="com.bili.entity.Mg">
+        select * from `mg`
+        where mid = #{mid}
+    </select>
+
+    <select id="getChapters" resultType="com.bili.entity.MgChapters">
+        select * from `mg_chapters`
+        where mid = #{mid}
+        limit #{page}, #{num}
+    </select>
+
+    <select id="getMgImgs" resultType="com.bili.entity.MgImgs">
+        select * from `mg_imgs`
+        where mid = #{mid} and number = #{number}
+        order by ind
+    </select>
+
+
+    <select id="getMgs" resultType="com.bili.entity.Mg">
+        select * from `mg`
+        order by #{type} desc
+        limit #{num}
+    </select>
+    <select id="getAllChapter" resultType="com.bili.entity.MgChapters">
+        select * from `mg_chapters`
+        where mid = #{mid}
+    </select>
+    <select id="getClassify" resultType="com.bili.entity.Mg">
+        select * from `mg` where 1=1
+        <if test="type1 != null">
+            and mtag = #{type1}
+        </if>
+        <if test="type2 != null and type2 != -1">
+            and done = #{type2}
+        </if>
+        <if test="type3 != null and type3 == 0">
+            order by time ASC
+        </if>
+        <if test="type3 != null and type3 == 1">
+            order by time DESC
+        </if>
+    </select>
+
+    <select id="getMgRanking" resultType="com.bili.entity.Mg">
+        select * from `mg`
+        order by #{type} limit 50
+    </select>
+
+    <select id="searchMg" resultType="com.bili.entity.Mg">
+        select * from `mg`
+        where
+        title like concat('%', #{keyword}, '%')
+        or author like concat('%', #{keyword}, '%')
+    </select>
+
+    <select id="judgeCollected" resultType="java.lang.Integer">
+        select count(*) from `mglist`
+        where
+        uid = #{uid} and mid = #{mid} and type = #{type} and deleted = #{deleted}
+    </select>
+    <select id="getMgList" resultType="java.lang.Integer">
+        select mid from `mglist`
+        where uid = #{uid} and type = #{type} and deleted = 0
+    </select>
+    <select id="getMgImgsRandom" resultType="com.bili.entity.MgImgs">
+        select * from `mg_imgs`
+        where mid = #{mid} and number = #{number}
+        limit #{num}
+    </select>
+
+
+</mapper>

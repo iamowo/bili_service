@@ -31,4 +31,10 @@ public interface FavlistMapper {
     void deleteFav(Integer fid);
 
     void addDefaultFavlist(FavoristList favoristList);
+
+    void deleteVideoFromFav(Integer fid, Integer vid);
+
+    void changeFavnums(Integer fid, int num);
+
+    void deleteAllVideo(Integer fid);
 }

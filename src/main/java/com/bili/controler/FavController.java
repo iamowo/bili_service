@@ -28,10 +28,10 @@ public class FavController {
     }
 
     // 获取一个收藏夹中的内容
-    @GetMapping("/getOneList/{fid}")
-    public Response getOneList(@PathVariable Integer fid) {
+    @GetMapping("/getOneList/{fid}/{type}/{keyword}")
+    public Response getOneList(@PathVariable Integer fid, @PathVariable Integer type, @PathVariable String keyword) {
         try {
-            List<Video> res = favlistService.getOneList(fid);
+            List<Video> res = favlistService.getOneList(fid, type, keyword);
             return Response.success(res);
         } catch (Exception e) {
             return Response.failure(500, "error: " + e);
@@ -79,6 +79,28 @@ public class FavController {
             favlistService.updateFav(fid, title, pub);
             List<FavoristList> res = favlistService.getFavlist(uid, -1);
             return Response.success(res);
+        } catch (Exception e) {
+            return Response.failure(500, "error: " + e);
+        }
+    }
+
+    // 删除一个视频
+    @GetMapping("/deleteVideoFromFav/{fid}/{vid}")
+    public Response deleteVideoFromFav(@PathVariable Integer fid,@PathVariable Integer vid) {
+        try {
+            favlistService.deleteVideoFromFav(fid, vid);
+            return Response.success(200);
+        } catch (Exception e) {
+            return Response.failure(500, "error: " + e);
+        }
+    }
+
+    // 批量删除视频
+    @GetMapping("/deleteMangFav/{fid}/{vids}")
+    public Response deleteMangFav(@PathVariable Integer fid,@PathVariable Integer[] vids) {
+        try {
+            favlistService.deleteMangFav(fid, vids);
+            return Response.success(200);
         } catch (Exception e) {
             return Response.failure(500, "error: " + e);
         }

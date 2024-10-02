@@ -1,6 +1,7 @@
 package com.bili.controler;
 
 import com.bili.entity.User;
+import com.bili.entity.UserSetting;
 import com.bili.entity.outEntity.Login;
 import com.bili.entity.outEntity.RegisterUser;
 import com.bili.entity.outEntity.UpdateUser;
@@ -22,6 +23,7 @@ public class UserController {
     @Autowired
     private UserMapper userMapper;
 
+    // 没有token的用户信息
     @GetMapping("/getByUid/{uid}")
     public Response getByUid (@PathVariable Integer uid) {
         try {
@@ -53,13 +55,25 @@ public class UserController {
                 return Response.success(1);
             } else {
                 User user = userMapper.findAccount(login.getAccount());
-                //user.setToken(TokenUtil.createToken());  // 生成token
                 String role = "XIXIX";
-                user.setToken(TokenUtil.getToken(user.getName(), role));
+                String token = TokenUtil.getToken(user.getName(), role);
+                user.setToken(token);
+                userService.updateTempToken(token);
                 return Response.success(user);
             }
         } catch (Exception e) {
             return Response.failure(500, "error");
+        }
+    }
+
+    @GetMapping("/getByUidWithToken/{uid}")
+    public Response getByUidWithToken (@PathVariable Integer uid) {
+        try {
+            User res = userService.getByUid(uid);
+            res.setToken(res.getTemptoken());
+            return Response.success(res);
+        } catch (Exception e) {
+            return Response.failure(500,"error:"+e);
         }
     }
 
@@ -74,6 +88,16 @@ public class UserController {
         }
     }
 
+    // 注册查询，是否有此账号
+    @GetMapping("/findAccount/{account}")
+    public Response findAccount(@PathVariable String account) {
+        try {
+            Integer res= userService.findAccount(account);
+            return Response.success(res);
+        } catch (Exception e) {
+            return Response.failure(500, "error");
+        }
+    }
     // 加关注
     @GetMapping("/toFollow/{uid1}/{uid2}")
     public Response toFollow (@PathVariable Integer uid1, @PathVariable Integer uid2) {
@@ -148,6 +172,27 @@ public class UserController {
             return Response.success(res);
         } catch (Exception e) {
             return Response.failure(500,"error:"+e);
+        }
+    }
+
+    @GetMapping("/getSetting/{uid}")
+    public Response getSetting (@PathVariable Integer uid) {
+        try {
+            UserSetting res = userService.getSetting(uid);
+            return Response.success(res);
+        } catch (Exception e) {
+            return Response.failure(500,"error:"+e);
+        }
+    }
+
+    // 更新设置
+    @PostMapping("/changeSetting")
+    public Response changeSetting(@RequestBody UserSetting userSetting) {
+        try {
+            userService.changeSetting(userSetting);
+            return Response.success(200);
+        } catch (Exception e) {
+            return Response.failure(500, "error");
         }
     }
 }

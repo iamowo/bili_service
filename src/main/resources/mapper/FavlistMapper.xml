@@ -32,13 +32,30 @@
         set title = #{title}, pub = #{pub}
         where fid = #{fid}
     </update>
+    <update id="changeFavnums">
+        update `favlist`
+        set
+        nums = nums + #{num}
+        where fid = #{fid}
+    </update>
 
     <delete id="deleteOneFAV">
         delete FROM `fav_info`
         where fid = #{fid} and vid = #{vid}
     </delete>
+
     <delete id="deleteFav">
         delete from `favlist`
+        where fid = #{fid}
+    </delete>
+
+    <delete id="deleteVideoFromFav">
+        delete from `fav_info`
+        where fid = #{fid} and vid = #{vid}
+    </delete>
+
+    <delete id="deleteAllVideo">
+        delete from `fav_info`
         where fid = #{fid}
     </delete>
 
@@ -50,6 +67,7 @@
     <select id="getAllVideoVid" resultType="java.lang.Integer">
         select vid from `fav_info`
         where fid = #{fid}
+        order by time DESC
     </select>
 
     <select id="getOneVideo" resultType="com.bili.entity.Video">

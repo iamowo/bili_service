@@ -1,7 +1,6 @@
 package com.bili.entity.outEntity;
 
 import lombok.Data;
-import org.springframework.web.multipart.MultipartFile;
 
 @Data
 public class UploadVideoInfos {
@@ -9,8 +8,11 @@ public class UploadVideoInfos {
     private Integer duration;
     private String intro;
     private Integer uid;
-    private MultipartFile cover;
-    private String covertype;
+    private String hashValue;
+//    private MultipartFile cover;
+//    private String covertype;
+    private String cover;    // 截取后时base64格式
+    private Integer listid;
 
     private String maintag;
     private String othertags;

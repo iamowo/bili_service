@@ -5,20 +5,16 @@ spring:
     name: bili
   datasource:
     url: jdbc:mysql://localhost:3306/bili?characterEncoding=utf-8&serverTimezone=Asia/Shanghai
-    #    url: jdbc:mysql://49.235.146.19:3306/pilipili?characterEncoding=utf-8&serverTimezone=Asia/Shanghai
     username: root
     password: Lz001126.
-    #    password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
   servlet:
     multipart:
       # ????????
-      max-file-size: 3000MB
+      max-file-size: 5000MB
       # ????????
       max-request-size: 1000MB
-  # Mybatis
 mybatis:
-  # ???
   type-aliases-package: src.main.java.com.bili.entity
   # XML??
   mapper-locations: classpath:mapper/*Mapper.xml
@@ -31,49 +27,58 @@ files:
   videoPath: D:/vsdata/reacttest2/data/resource/
   avatarPath: D:/vsdata/reacttest2/data/avatar/
   sysPath: D:/vsdata/reacttest2/data/sys/
+  mgPath: D:/vsdata/reacttest2/data/mg/
 
   videoNet: http://127.0.0.1:8082/video/
   avatarNet: http://127.0.0.1:8082/avatar/
   sysNet: http://127.0.0.1:8082/sys/
+  mgNet: http://127.0.0.1:8082/mg/
 
 # 前端地址
-url: http://127.0.0.1:3000
-
+url1: http://127.0.0.1:3000
 # ????
-urls: http://localhost:8080
+url2: http://localhost:8082
 
 
 
-  # ??
-  #spring:
-  #  datasource:
-  #    url: jdbc:mysql://49.235.146.19:3306/pilipili?characterEncoding=utf-8&serverTimezone=Asia/Shanghai
-  #    username: root
-  #    password: root
-  #    driver-class-name: com.mysql.cj.jdbc.Driver
-  #  servlet:
-  #    multipart:
-  #      max-file-size: 1000MB
-  #      max-request-size: 1000MB
-  #mybatis:
-  #  type-aliases-package: src.main.java.pilipili.entity
-  #  mapper-locations: classpath:mapper/*Mapper.xml
-  #  configuration:
-  #    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-  #    map-underscore-to-camel-case: true
-  #
-  #file:
-  #  uploadFolder: /data/pili/data/
-  #
-  #files:
-  #  upload:
-  #    vid_videoPath: /data/pili/data/vid/
-  #    vid_coverPath: /data/pili/data/cover/
-  #    avatarPath: /data/pili/data/avatar/
-  #    bannerPath: /data/pili/data/banner/
-  #  net:
-  #    video: http://49.235.146.19:8080/vid/
-  #    cover: http://49.235.146.19:8080/cover/
-  #    avatar: http://49.235.146.19:8080/avatar/
-  #  url: http://49.235.146.19
-  #  urls: http://49.235.146.19:8080
+#==================================
+#server:
+#  port: 8082
+#spring:
+#  application:
+#    name: bili
+#  datasource:
+#    url: jdbc:mysql://49.235.146.19:3306/bili?characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+#    username: root
+#    password: zXc1@3
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#  servlet:
+#    multipart:
+#      max-file-size: 3000MB
+#      max-request-size: 1000MB
+#  # Mybatis
+#mybatis:
+#  # ???
+#  type-aliases-package: src.main.java.com.bili.entity
+#  # XML??
+#  mapper-locations: classpath:mapper/*Mapper.xml
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#    # ??????
+#    map-underscore-to-camel-case: true
+#
+#files:
+#  videoPath: /project/bili/data/resource/
+#  avatarPath: /project/bili/data/avatar/
+#  sysPath: /project/bili/data/sys/
+#  mgPath: /project/bili/data/mg/
+#
+#  videoNet: http://49.235.146.19:8082/video/
+#  avatarNet: http://49.235.146.19:8082/avatar/
+#  sysNet: http://49.235.146.19:8082/sys/
+#  mgNet: http://49.235.146.19:8082/mg/
+#
+## 前端地址
+#url1: http://49.235.146.19:3000
+## 的后端地址
+#url2: http://49.235.146.19:8082

@@ -88,7 +88,7 @@ public class VideoController {
     }
     // 上传视频信息
     @PostMapping("/uploadVideoInfos")
-    public Response uploadVideoInfos (UploadVideoInfos uploadVideoInfos) {
+    public Response uploadVideoInfos (@RequestBody UploadVideoInfos uploadVideoInfos) {
         try {
             Integer vid = videoService.uploadVideoInfos(uploadVideoInfos);
             return Response.success(vid);
@@ -149,10 +149,21 @@ public class VideoController {
         }
     }
 
-    // 合并分片
-    @GetMapping("/mergeChunks")
-    public Response mergeChunks () {
+    // 获取已上传切片
+    @GetMapping("/getAlready/{hashValue}/{uid}")
+    public Response getAlready (@PathVariable String hashValue, @PathVariable Integer uid) {
         try {
+            Map<String, Object> res = videoService.getAlready(hashValue, uid);
+            return Response.success(res);
+        } catch (Exception e) {
+            return Response.failure(500, "error: "+e);
+        }
+    }
+    // 合并分片
+    @GetMapping("/mergeChunks/{uid}/{vid}")
+    public Response mergeChunks (@PathVariable Integer uid, @PathVariable Integer vid) {
+        try {
+            videoService.mergeChunks(uid, vid);
             return Response.success(200);
         } catch (Exception e) {
             return Response.failure(500, "error: "+e);
@@ -359,6 +370,36 @@ public class VideoController {
         }
     }
 
+    // 删除用户是怕你列表
+    @GetMapping("/deleteVideoList/{listid}")
+    public Response deleteVideoList (@PathVariable Integer listid) {
+        try {
+            videoService.deleteVideoList(listid);
+            return Response.success(200);
+        } catch (Exception e) {
+            return Response.failure(500, "error: "+e);
+        }
+    }
+    @PostMapping("/chanegListInfo")
+    public Response chanegListInfo (@RequestBody VideoList videoList) {
+        try {
+            videoService.chanegListInfo(videoList);
+            return Response.success(200);
+        } catch (Exception e) {
+            return Response.failure(500, "error: "+e);
+        }
+    }
+
+    @GetMapping("/getUserListOne/{listid}")
+    public Response getUserListOne (@PathVariable Integer listid) {
+        try {
+            VideoList res = videoService.getUserListOne(listid);
+            return Response.success(res);
+        } catch (Exception e) {
+            return Response.failure(500, "error: "+e);
+        }
+    }
+
     // 新建视频列表
     @PostMapping("/addVideoList")
     public Response addVideoList (@RequestBody VideoList videoList) {
@@ -370,10 +411,10 @@ public class VideoController {
         }
     }
     // 向视频列表中添加视频
-    @GetMapping("/addVideoToList/{listid}/{vids}/{uid}")
-    public Response addVideoToList (@PathVariable Integer listid, @PathVariable List<Integer> vids, @PathVariable Integer uid) {
+    @GetMapping("/addVideoToList/{listid}/{uid}/{vids}")
+    public Response addVideoToList (@PathVariable Integer listid, @PathVariable Integer uid, @PathVariable List<Integer> vids) {
         try {
-            videoService.addVideoToList(listid, vids, uid);
+            videoService.addVideoToList(listid, uid, vids);
             return Response.success(200);
         } catch (Exception e) {
             return Response.failure(500, "error: "+e);
@@ -392,10 +433,10 @@ public class VideoController {
     }
 
     // 一个列表中未添加过的视频
-    @GetMapping("/getUnaddVideo/{listid}/{uid}")
-    public Response getUnaddVideo (@PathVariable Integer listid, @PathVariable Integer uid) {
+    @GetMapping("/getUnaddVideo/{uid}")
+    public Response getUnaddVideo (@PathVariable Integer uid) {
         try {
-            List<Video> res = videoService.getUnaddVideo(listid, uid);
+            List<Video> res = videoService.getUnaddVideo(uid);
             return Response.success(res);
         } catch (Exception e) {
             return Response.failure(500, "error: "+e);

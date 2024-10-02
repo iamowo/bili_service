@@ -3,8 +3,8 @@
 <mapper namespace="com.bili.mapper.VideoMapper">
     <!--  这个配置可一获取生成的vid  -->
     <insert id="addInfos" useGeneratedKeys="true" keyProperty="vid">
-        insert into `video` (title, intro, cover, uid, duration, vidlong, maintag, othertags)
-        values (#{title}, #{intro}, #{cover}, #{uid}, #{duration}, #{vidlong}, #{maintag}, #{othertags})
+        insert into `video` (title, intro, cover, uid, duration, vidlong, maintag, othertags, hashValue, listid)
+        values (#{title}, #{intro}, #{cover}, #{uid}, #{duration}, #{vidlong}, #{maintag}, #{othertags}, #{hashValue}, #{listid})
     </insert>
 
     <insert id="addWatch">
@@ -41,6 +41,11 @@
         (title, intro, uid) values (#{title}, #{intro}, #{uid})
     </insert>
 
+    <insert id="addVideoToList">
+        insert into `videolist_info`
+        (vid, uid, listid) values (#{vid}, #{uid} ,#{listid})
+    </insert>
+
     <!--  基本信息  -->
     <update id="updateinfo">
         update `video`
@@ -58,7 +63,10 @@
                 title = #{title},
             </if>
             <if test="pass != null">
-                pass = #{pass}
+                pass = #{pass},
+            </if>
+            <if test="listid != null">
+                listid = #{listid}
             </if>
         </set>
         <where>
@@ -86,7 +94,10 @@
                 favorites = favorite + #{favorites},
             </if>
             <if test="shares != null">
-                shares = shares + #{shares}
+                shares = shares + #{shares},
+            </if>
+            <if test="listid != null">
+                listid = #{listid}
             </if>
         </set>
         <where>
@@ -324,8 +335,8 @@
     </select>
 
     <select id="getNumsOfVideoList" resultType="java.lang.Integer">
-        select count(*) from `videolist_info`
-        where listid = #{listid}
+        select count(*) from `video`
+        where listid = #{listid} and pass = 1
     </select>
     <select id="getAllListVideo" resultType="java.lang.Integer">
         select vid from `videolist_info`
@@ -353,11 +364,37 @@
         ORDER BY COUNT(maintag) DESC;
     </select>
 
+    <select id="getVideoByHash" resultType="com.bili.entity.Video">
+        select * from `video`
+        where hashValue = #{hashValue}
+    </select>
+
+    <select id="getUnExitList" resultType="com.bili.entity.Video">
+        select * from `video`
+        where pass = 1 and listid = -1 and uid = #{uid}
+    </select>
+
+    <select id="getVideoFormList" resultType="com.bili.entity.Video">
+        select * from `video`
+        where listid = #{listid} and pass = 1
+        order by time DESC
+    </select>
+    
+    <select id="getUserListOne" resultType="com.bili.entity.VideoList">
+        select * from `videolist`
+        where listid = #{listid}
+    </select>
 
     <delete id="deletedLike">
         delete from `like_info`
         where uid = #{uid} and vid = #{vid}
     </delete>
+
+    <delete id="deleteVideoList">
+        delete from `videolist`
+        where listid = #{listid}
+    </delete>
+
     <update id="deleteAll">
         update `watch_info` set deleted = 1
         where uid = #{uid}
@@ -371,9 +408,31 @@
         update `video`
         set danmus = danmus + 1
     </update>
+
     <update id="updatePass">
         update `video`
         set pass = #{pass}
         where vid = #{vid}
+    </update>
+
+    <update id="updateVideoInfoListid">
+        update `video`
+        set listid = -1
+        where listid = #{listid}
+    </update>
+
+    <update id="chanegListInfo">
+        update `videolist`
+        <set>
+            <if test="title != null">
+                title = #{title},
+            </if>
+            <if test="intro != null">
+                intro = #{intro}
+            </if>
+        </set>
+        <where>
+            listid = #{listid}
+        </where>
     </update>
 </mapper>

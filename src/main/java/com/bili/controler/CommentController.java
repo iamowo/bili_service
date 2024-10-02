@@ -1,6 +1,7 @@
 package com.bili.controler;
 
 import com.bili.entity.Comment;
+import com.bili.entity.LikeInfo;
 import com.bili.service.CommentService;
 import com.bili.util.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +15,10 @@ public class CommentController {
     @Autowired
     private CommentService commentService;
 
-    @GetMapping("/getAllComment/{vid}")
-    public Response getAllComment(@PathVariable Integer vid) {
+    @GetMapping("/getAllComment/{vid}/{uid}/{type}")
+    public Response getAllComment(@PathVariable Integer vid, @PathVariable Integer uid,@PathVariable Integer type) {
         try {
-            List<Comment> res = commentService.getAllComment(vid);
+            List<Comment> res = commentService.getAllComment(vid, uid, type);
             return Response.success(res);
         } catch (Exception e) {
             return Response.failure(500, "error: " + e);
@@ -27,8 +28,9 @@ public class CommentController {
     @PostMapping("/addComment")
     public Response addComment(@RequestBody Comment comment) {
         try {
-            commentService.addComment(comment);
-            return Response.success(200);
+            Integer res = commentService.addComment(comment);
+            // 新插入生成的id
+            return Response.success(res);
         } catch (Exception e) {
             return Response.failure(500, "error: " + e);
         }
@@ -38,6 +40,26 @@ public class CommentController {
     public Response deleteComment(@PathVariable Integer id, @PathVariable Integer vid) {
         try {
             commentService.deleteComment(id, vid);
+            return Response.success(200);
+        } catch (Exception e) {
+            return Response.failure(500, "error: " + e);
+        }
+    }
+
+    @PostMapping("/addLikeinfo")
+    public Response addLikeinfo(@RequestBody LikeInfo likeInfo) {
+        try {
+            commentService.addLikeinfo(likeInfo);
+            return Response.success(200);
+        } catch (Exception e) {
+            return Response.failure(500, "error: " + e);
+        }
+    }
+
+    @GetMapping("/deletelikeinfo/{cid}/{uid}")
+    public Response deletelikeinfo(@PathVariable Integer cid, @PathVariable Integer uid) {
+        try {
+            commentService.deletelikeinfo(cid, uid);
             return Response.success(200);
         } catch (Exception e) {
             return Response.failure(500, "error: " + e);

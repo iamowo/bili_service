@@ -36,9 +36,10 @@
             uid = #{uid}
         </where>
     </insert>
-    <insert id="addVideoToList">
-        insert into `videolist_info`
-        (listid, uid, vid) values (#{listid}, #{uid}, #{vid})
+
+    <insert id="addUserSettnig">
+        insert into `user_setting`
+         (uid) values(#{uid})
     </insert>
 
     <update id="addFollowNum1">
@@ -150,6 +151,37 @@
         <where>
             vid = #{vid}
         </where>
+    </update>
+    <update id="changeSetting">
+        update `user_setting`
+        <set>
+            <if test="favlist != null">
+                favlist = #{favlist},
+            </if>
+            <if test="followlist != null">
+                followlist = #{followlist},
+            </if>
+            <if test="likerecently != null">
+                likerecently = #{likerecently},
+            </if>
+            <if test="fanslist != null">
+                fanslist = #{fanslist},
+            </if>
+            <if test="birthday != null">
+                birthday = #{birthday},
+            </if>
+            <if test="donate != null">
+                donate = #{donate}
+            </if>
+        </set>
+        <where>
+            uid = #{uid}
+        </where>
+    </update>
+
+    <update id="updateTempToken">
+        update `user`
+        set temptoken = #{token}
     </update>
 
 
@@ -312,6 +344,11 @@
         select count(*)
         from `user`
         where account = #{account}
+    </select>
+
+    <select id="getSetting" resultType="com.bili.entity.UserSetting">
+        select * from `user_setting`
+        where uid = #{uid}
     </select>
 
 </mapper>

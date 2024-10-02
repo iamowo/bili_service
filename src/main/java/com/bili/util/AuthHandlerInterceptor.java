@@ -32,16 +32,20 @@ public class AuthHandlerInterceptor implements HandlerInterceptor {
         }
         //为空就返回错误
         String token = httpServletRequest.getHeader("token");
-        log.info("==============token:" + token);
+        log.info("token: " + token);
         if (null == token || "".equals(token.trim())) {
             return false;
         }
         Map<String, String> map = tokenUtil.parseToken(token);
         String userId = map.get("userId");
         String userRole = map.get("userRole");
+        // 总毫秒数  从1970年1月1日开始计算
+        // long totalMilisSeconds = System.currentTimeMillis();
+
         long timeOfUse = (System.currentTimeMillis() - Long.parseLong(map.get("timeStamp"))) / 1000;   //   得到 秒
         long timeOfUse2 = (System.currentTimeMillis() - Long.parseLong(map.get("timeStamp"))) / 1000 / 60;   //    得到 分钟
-        log.info(timeOfUse + " =0= " + timeOfUse2);
+        log.info("目前时间戳: " +System.currentTimeMillis() + "   开始时间戳:" + Long.parseLong(map.get("timeStamp")));
+        log.info("目前时间: " +timeOfUse + "   剩余时间:" + refreshTime);
         //1.判断 token 是否过期
         if (timeOfUse < refreshTime) {
             log.info("token验证成功");

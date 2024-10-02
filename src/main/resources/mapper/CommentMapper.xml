@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bili.mapper.CommentMapper">
-    <insert id="addComment">
+    <insert id="addComment"  useGeneratedKeys="true" keyProperty="id">
         insert into `comment` (uid, vid, content, topid, fid, hisuid)
         values (#{uid}, #{vid}, #{content}, #{topid}, #{fid}, #{hisuid})
+    </insert>
+    <insert id="addLikeinfo">
+        insert into `like_info`
+        (type, cid, hisuid, uid, vid) values (#{type}, #{cid}, #{hisuid}, #{uid}, #{vid})
     </insert>
 
     <update id="deleteComment">
@@ -17,15 +21,34 @@
             </where>
         </set>
     </update>
+    <update id="updataCommentLikes">
+        update `comment`
+        set likes = likes + #{num}
+        where id = #{cid}
+    </update>
+
+    <delete id="deletelikeinfo">
+        delete from `like_info`
+        where cid = #{cid} and uid = #{uid}
+    </delete>
 
     <select id="getAllComment" resultType="com.bili.entity.Comment">
         select * from `comment`
         where
         vid = #{vid} and topid = 0 and deleted = 0
+        order by ${order} desc
     </select>
+
     <select id="findSecond" resultType="com.bili.entity.Comment">
         select * from `comment`
         where
         topid = #{id} and deleted = 0
+        order by time
     </select>
+
+    <select id="getLikeinfo" resultType="java.lang.Integer">
+        select cid from `like_info`
+        where uid = #{uid} and vid = #{vid}
+    </select>
+
 </mapper>

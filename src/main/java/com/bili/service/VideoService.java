@@ -29,6 +29,9 @@ public class VideoService {
     private String videoPath;
     @Value("${files.videoNet}")
     private String videoNet;
+    @Value("${url2}")
+    private String neturl;
+
     @Autowired
     private VideoMapper videoMapper;
     @Autowired
@@ -76,13 +79,14 @@ public class VideoService {
     }
     public Integer uploadVideoInfos(UploadVideoInfos uploadVideoInfos) throws IOException {
         Video video = new Video();
-
         video.setUid(uploadVideoInfos.getUid());
         video.setTitle(uploadVideoInfos.getTitle());
         video.setIntro(uploadVideoInfos.getIntro());
+        video.setHashValue(uploadVideoInfos.getHashValue());
         video.setDuration(uploadVideoInfos.getDuration());
         video.setMaintag(uploadVideoInfos.getMaintag());
         video.setOthertags(uploadVideoInfos.getOthertags());
+        video.setListid(uploadVideoInfos.getListid());
         Integer duration = uploadVideoInfos.getDuration();
         String ss = duration % 60 < 10 ? "0" + duration % 60 : "" +  duration % 60;
         String mm = duration / 60 < 10 ? "0" + duration / 60 : "" +  duration / 60;
@@ -90,16 +94,52 @@ public class VideoService {
         String vidlong = duration >= 3600 ? hh + ":" + mm + ":" + ss : mm + ":" + ss;
         video.setVidlong(vidlong);
 
+        // 上传文件形式的封面
+//        UUID uuid = UUID.randomUUID();
+//        String path = uploadVideoInfos.getUid() + "/cover/" + uuid + "." + uploadVideoInfos.getCovertype();
+//        String netPath = videoNet + path;
+//        video.setCover(netPath);
+//        videoMapper.addInfos(video);
+//        // 封面存放地址
+//        File coverPath = new File(videoPath + path);
+//        uploadVideoInfos.getCover().transferTo(coverPath);
+//        // 返回生成的vid
+
+
+        // base64文件
         UUID uuid = UUID.randomUUID();
-        String path = uploadVideoInfos.getUid() + "/cover/" + uuid + "." + uploadVideoInfos.getCovertype();
-        String netPath = videoNet + path;
-        video.setCover(netPath);
+        String path = uploadVideoInfos.getUid() + "/cover/" + uuid + ".png";
+        video.setCover(videoNet + path);    // 网络地址
         videoMapper.addInfos(video);
         // 封面存放地址
-        File coverPath = new File(videoPath + path);
-        uploadVideoInfos.getCover().transferTo(coverPath);
-        // 返回生成的vid
-        return video.getVid();
+        String videopath = videoPath + path;   // 存放位置
+        // 解密
+        Base64.Decoder decoder = Base64.getDecoder();
+        // 去掉base64前缀
+        String b64file = uploadVideoInfos.getCover();
+        b64file = b64file.substring(b64file.indexOf(",", 1) + 1, b64file.length());
+        byte[] b = decoder.decode(b64file);
+        // 处理数据
+        for (int i = 0; i < b.length; ++i) {
+            if (b[i] < 0) {
+                b[i] += 256;
+            }
+        }
+        // 保存图片
+        OutputStream out = new FileOutputStream(videopath);
+        out.write(b);
+        out.flush();
+        out.close();
+
+        Integer vid = video.getVid();
+        if (uploadVideoInfos.getListid() != -1) {
+            VideoListInfo videoListInfo = new VideoListInfo();
+            videoListInfo.setVid(vid);
+            videoListInfo.setListid(uploadVideoInfos.getListid());
+            videoListInfo.setUid(uploadVideoInfos.getUid());
+            videoMapper.addVideoToList(videoListInfo);
+        }
+        return vid;
     }
 
     public void uploadChunks(OneChunk oneChunk) throws IOException {
@@ -108,28 +148,38 @@ public class VideoService {
         File newFile = new File(path);
         oneChunk.getFile().transferTo(newFile);
         // 最后一个切片上传后，合并
-        if (Objects.equals(oneChunk.getChunsnum() - 1, oneChunk.getIndex())) {
-            String netvideo = mergeChunks(uid);
-            if (!Objects.equals(netvideo, "error")) {
-                Video video = new Video();
-                video.setVid(oneChunk.getVid());
-                video.setPath(netvideo);
-                videoMapper.updateinfo(video);
-
-                // 发送动态
-                Dynamic dynamic = new Dynamic();
-                dynamic.setVordid(oneChunk.getVid());
-                dynamic.setUid(uid);
-                dynamic.setType(3);
-                dynamicMapper.sendDynamic(dynamic);
-                log.info("视频上传success");
-            } else {
-                log.info("视频上传失败");
+//        if (Objects.equals(oneChunk.getChunsnum() - 1, oneChunk.getIndex())) {
+//            String netvideo = mergeChunks(uid);
+//            if (!Objects.equals(netvideo, "error")) {
+//                Video video = new Video();
+//                video.setVid(oneChunk.getVid());
+//                video.setPath(netvideo);
+//                videoMapper.updateinfo(video);
+//                log.info("视频上传success");
+//            } else {
+//                log.info("视频上传失败");
+//            }
+//        }
+    }
+    public Map<String, Object> getAlready(String hashValue, Integer uid) {
+        List<String> list = new ArrayList<>();
+        Video video = videoMapper.getVideoByHash(hashValue);
+        Integer thisvid = video != null ?  video.getVid() : -1;
+        Map<String, Object> res = new HashMap<>();
+        File tempFile = new File(videoPath + uid + "/temp/");
+        File[] files = tempFile.listFiles();
+        for (File f : files) {
+            String filename = f.getName();
+            String thisHash = f.getName().split("_")[0];
+            if (Objects.equals(thisHash, hashValue)) {
+                list.add(filename);
             }
         }
+        res.put("already", list);
+        res.put("vid", thisvid);
+        return res;
     }
-
-    public String mergeChunks(Integer uid) throws IOException {
+    public void mergeChunks(Integer uid, Integer vid) throws IOException {
         String rPath = videoPath + uid + "/temp/";
         File rFile = new File(rPath);
         File[] files = rFile.listFiles();
@@ -165,13 +215,10 @@ public class VideoService {
         raf_rw.close();
         out.close();
 
-        boolean t = checkVideo(resPath);
-        if (t) {
-            log.info("视频完整");
-        } else {
-            log.info("视频有缺损");
-        }
-            return netVideoPath;
+        Video video = new Video();
+        video.setVid(vid);
+        video.setPath(netVideoPath);
+        videoMapper.updateinfo(video);
     }
 
 
@@ -288,7 +335,6 @@ public class VideoService {
         Video video = new Video();
         video.setVid(videoInfos.getVid());
         video.setUid(videoInfos.getUid());
-
         if (typestyle == 0) {
             // watch
             Watchinfo watchinfo = videoMapper.getLastWatch(vid, uid);
@@ -367,6 +413,8 @@ public class VideoService {
         } else if (typestyle == 9) {
             Integer danmus = videoMapper.getDanmus(vid);
             video.setDanmus(danmus);
+        } else if (typestyle == 10) {
+            video.setListid(videoInfos.getListid());
         }
 
         videoMapper.infos(video);
@@ -406,15 +454,16 @@ public class VideoService {
             User user = userMapper.getByUid(upuid);
             res.get(i).setUpname(user.getName());
             res.get(i).setUpavatar(user.getAvatar());
+            res.get(i).setUpuid(upuid);
 
             // 设置格式化时间
             Integer watchnum = res.get(i).getLastwatched();
             int h = watchnum / 3600;
             int m = watchnum / 60;
             int s = watchnum % 60;
-            String hh = h > 10 ? "" + h : "0" + h;
-            String mm = m > 10 ? "" + m : "0" + m;
-            String ss = s > 10 ? "" + s : "0" + s;
+            String hh = h >= 10 ? "" + h : "0" + h;
+            String mm = m >= 10 ? "" + m : "0" + m;
+            String ss = s >= 10 ? "" + s : "0" + s;
             String restime = mm + ":" + ss;
             if (h > 0) restime = hh + ":" + restime;
             res.get(i).setWatchtype(restime);
@@ -638,6 +687,12 @@ public class VideoService {
         String ititle = "";
         if (audit.getPass() == 1) {
             ititle = "稿件" + vidtitle + "通过体通知";
+            // 审核通过后在发送动态==========
+            Dynamic dynamic = new Dynamic();
+            dynamic.setVordid(audit.getVid());
+            dynamic.setUid(uid);
+            dynamic.setType(3);
+            dynamicMapper.sendDynamic(dynamic);
         } else {
             ititle = "稿件" + vidtitle + "未通过体通知";
         }
@@ -666,12 +721,16 @@ public class VideoService {
             res.get(i).setNums(nums);
             if (nums == 0) {
                 // 为空时默认
-                res.get(i).setCover("http://127.0.0.1:8082/sys/playlistbg.png");
+                res.get(i).setCover(neturl + "/sys/playlistbg.png");
             } else {
                 List<Integer> vids = getAllListVideo(res.get(i).getListid());
                 Video video = videoMapper.getByVid(vids.getFirst());
-                String cover = video.getCover();
-                res.get(i).setCover(cover);
+                if (video.getPass() == 0) {
+                    res.get(i).setCover(neturl + "/sys/playlistbg.png");
+                } else {
+                    String cover = video.getCover();
+                    res.get(i).setCover(cover);
+                }
             }
         }
         return res;
@@ -686,33 +745,30 @@ public class VideoService {
         return videoList.getListid();
     }
 
-    public void addVideoToList(Integer listid, List<Integer> vids, Integer uid) {
+    public void addVideoToList(Integer listid, Integer uid, List<Integer> vids) {
         for (int i = 0; i < vids.size(); i++) {
             Integer vid = vids.get(i);
-            userMapper.addVideoToList(listid, vid, uid);
+            Video video = new Video();
+            video.setVid(vid);
+            video.setListid(listid);
+            VideoListInfo videoListInfo = new VideoListInfo();
+            videoListInfo.setVid(vid);
+            videoListInfo.setListid(listid);
+            videoListInfo.setUid(uid);
+            videoMapper.addVideoToList(videoListInfo);
+            videoMapper.updateinfo(video);
         }
     }
 
+    // 得到一个列表中的视频(已经添加过的)
     public List<Video> getVideoFormList(Integer listid) {
-        List<Integer> vids = videoMapper.getAllListVideo(listid);
-        List<Video> res = new ArrayList<>();
-        for (int i = 0; i < vids.size(); i++) {
-            Integer vid = vids.get(i);
-            Video video = videoMapper.getByVid(vid);
-            res.add(video);
-        }
+        List<Video> res = videoMapper.getVideoFormList(listid);
         return res;
     }
 
-    public List<Video> getUnaddVideo(Integer listid, Integer uid) {
-        List<Video> uservideos = videoMapper.getVideoByUid(uid);   // 全部视频
-        List<Video> listvideos = getVideoFormList(listid);         // 此列表中已经存在的视频
-        for (Video vid: uservideos) {
-            if (listvideos.contains(vid)) {
-                uservideos.remove(vid);
-            }
-        }
-        return uservideos;
+    public List<Video> getUnaddVideo( Integer uid) {
+        List<Video> res =  videoMapper.getUnExitList(uid);
+        return res;
     }
 
     public List<Video> getByMaintag(String maintag) {
@@ -733,5 +789,22 @@ public class VideoService {
 //        }
         List<TagAndNums> res = videoMapper.getTandN();
         return res;
+    }
+
+
+    public VideoList getUserListOne(Integer listid) {
+        VideoList res = videoMapper.getUserListOne(listid);
+        return res;
+    }
+
+    public void deleteVideoList(Integer listid) {
+        // 删除列表
+        videoMapper.deleteVideoList(listid);
+        // 更改列表中的视频信息
+        videoMapper.updateVideoInfoListid(listid);
+    }
+
+    public void chanegListInfo(VideoList videoList) {
+        videoMapper.chanegListInfo(videoList);
     }
 }

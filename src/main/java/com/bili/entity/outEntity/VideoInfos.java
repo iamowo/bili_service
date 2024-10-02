@@ -15,6 +15,7 @@ public class VideoInfos {
     private Integer lastwatched;
     private Integer done;
 
+    private Integer listid;
     private Integer icons;
     //private Timestamp time2;  // like
 

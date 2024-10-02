@@ -1,6 +1,7 @@
 package com.bili.mapper;
 
 import com.bili.entity.User;
+import com.bili.entity.UserSetting;
 import com.bili.entity.Video;
 import com.bili.entity.outEntity.UpdateUser;
 import com.bili.entity.outEntity.UserData;
@@ -54,5 +55,11 @@ public interface UserMapper {
 
     Integer findAccount2(String account);
 
-    void addVideoToList(Integer listid, Integer vid, Integer uid);
+    void addUserSettnig(Integer uid);
+
+    UserSetting getSetting(Integer uid);
+
+    void changeSetting(UserSetting userSetting);
+
+    void updateTempToken(String token);
 }

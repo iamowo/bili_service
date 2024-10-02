@@ -26,7 +26,8 @@ public class Video{
     private Integer pass;
     private String maintag;
     private String othertags;
-
+    private String hashValue;
+    private Integer listid;    // 属于那个列表
     // append info
 //    private List<String> tags;
     private String[] tags;

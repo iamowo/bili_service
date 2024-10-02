@@ -2,6 +2,7 @@ package com.bili.service;
 
 import com.bili.entity.FavoristList;
 import com.bili.entity.User;
+import com.bili.entity.UserSetting;
 import com.bili.entity.Video;
 import com.bili.entity.outEntity.RegisterUser;
 import com.bili.entity.outEntity.UpdateUser;
@@ -23,6 +24,8 @@ public class UserService {
     private String avatarNet;
     @Value("${files.videoPath}")
     private String videoPath;
+    @Value("${url2}")
+    private String neturl;
     @Autowired
     private UserMapper userMapper;
     @Autowired
@@ -70,17 +73,19 @@ public class UserService {
         userMapper.addUser(user);
         Integer uid = user.getUid();  // xml 配置，可以获取uid
 
+        userMapper.addUserSettnig(uid);  // 添加user_setting表
         FavoristList favoristList = new FavoristList();
         favoristList.setPub(0);
         favoristList.setTitle("默认收藏夹");
         favoristList.setUid(uid);
         favlistMapper.addDefaultFavlist(favoristList);
         Integer fid = favoristList.getFid();   // 获得生成的fid
-
         user.setDefaultfid(fid);   // 默认收藏夹fid
+
         if (registerUser.getType() == 0) {
             user.setName("bili_user#" + uid);
-            user.setAvatar("http://127.0.0.1:8082/avatar/default.png");
+//            user.setAvatar("http://127.0.0.1:8082/avatar/default.png");
+            user.setAvatar(neturl + "/avatar/default.png");
         } else {
             user.setName(registerUser.getName());
             user.setIntro(registerUser.getIntro());
@@ -91,7 +96,7 @@ public class UserService {
             File file = new File(avataPath);
             registerUser.getAvatarfile().transferTo(file);
         }
-        userMapper.giveInfo(user);   // 添加信息
+        userMapper.giveInfo(user);            // 用户添加信息
 
         String resourcePath = videoPath + uid;
         File coverFile = new File(resourcePath + "/cover");
@@ -100,6 +105,8 @@ public class UserService {
         tempFile.mkdirs();
         File videoFile = new File(resourcePath + "/video");
         videoFile.mkdirs();
+        File imgFile = new File(resourcePath + "/imgs");
+        imgFile.mkdirs();
         return 100;
     }
 
@@ -203,5 +210,26 @@ public class UserService {
             res.add(u);
         }
         return res;
+    }
+
+    public Integer findAccount(String account) {
+        Integer r = userMapper.findAccount2(account);
+        if (r == 1) {
+            return 201;
+        } else {
+            return 202;
+        }
+    }
+
+    public UserSetting getSetting(Integer uid) {
+        return userMapper.getSetting(uid);
+    }
+
+    public void changeSetting(UserSetting userSetting) {
+        userMapper.changeSetting(userSetting);
+    }
+
+    public void updateTempToken(String token) {
+        userMapper.updateTempToken(token);
     }
 }

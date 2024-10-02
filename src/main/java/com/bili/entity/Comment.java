@@ -1,6 +1,8 @@
 package com.bili.entity;
 
+import lombok.Builder;
 import lombok.Data;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -18,6 +20,7 @@ public class Comment {
     private Integer likes;
 
     // append
+    private boolean liked;  // 是都点过攒了
     private String name;
     private String avatar;
     private String fname; // 回复的人的名字

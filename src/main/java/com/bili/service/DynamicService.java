@@ -30,10 +30,9 @@ public class DynamicService {
     private VideoMapper videoMapper;
 
     // 给视频添加信息
-    private void adduserinfoone(Video video) {
+    private void addvideoinfoone(Video video) {
         Integer uid = video.getUid();
         User user = userMapper.findUid(uid);
-
         video.setName(user.getName());
         video.setAvatar(user.getAvatar());
         video.setUserintro(user.getIntro());
@@ -76,7 +75,7 @@ public class DynamicService {
             if (res.get(i).getType() == 1 || res.get(i).getType() == 3) {
                 Integer vid = res.get(i).getVordid();
                 Video video = videoMapper.getByVid(vid);
-                adduserinfoone(video);
+                addvideoinfoone(video);
                 res.get(i).setVideo(video);
             } else if (res.get(i).getType() == 2) {
                 Integer did = res.get(i).getVordid();
@@ -129,7 +128,6 @@ public class DynamicService {
 
     public List<Dynamic> getDyanmciList(Integer uid, Integer flag) {
         List<Dynamic> res = dynamicMapper.getDyanmciList(uid);
-
         if (flag == 1) {
             List<Integer> followlist = dynamicMapper.getFollowlist(uid);   // 获得关注的人的id
             for (int i = 0; i < followlist.size(); i++) {
@@ -182,8 +180,10 @@ public class DynamicService {
             Integer did = dids.get(i);
             res.add(dynamicMapper.getOneDynamic(did));
         }
-        addUserinfo(res);
-        dealtype(res);
+        if (!res.isEmpty()) {
+            addUserinfo(res);
+            dealtype(res);
+        }
         return res;
     }
 

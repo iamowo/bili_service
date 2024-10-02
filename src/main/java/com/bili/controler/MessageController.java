@@ -2,6 +2,7 @@ package com.bili.controler;
 
 import com.bili.entity.LikeInfo;
 import com.bili.entity.Message.Whisper;
+import com.bili.entity.Message.WhisperCover;
 import com.bili.entity.SysInfo;
 import com.bili.service.MessageService;
 import com.bili.util.Response;
@@ -22,7 +23,18 @@ public class MessageController {
     @GetMapping("/getWhisperList/{uid}")
     public Response getWhisperList (@PathVariable Integer uid) {
         try {
-            Map<String, Object> res = messageService.getWhisperList(uid);
+            List<WhisperCover> res = messageService.getWhisperList(uid);
+            return Response.success(res);
+        } catch (Exception e) {
+            return Response.failure(500, "error: "+e);
+        }
+    }
+
+    // 获取全部私信
+    @GetMapping("/getWhisperConent/{uid}/{hisuid}")
+    public Response getWhisperConent (@PathVariable Integer uid, @PathVariable Integer hisuid) {
+        try {
+            List<Whisper> res = messageService.getWhisperConent(uid, hisuid);
             return Response.success(res);
         } catch (Exception e) {
             return Response.failure(500, "error: "+e);
@@ -33,8 +45,7 @@ public class MessageController {
     public Response sendMessage (@RequestBody Whisper whisper) {
         try {
             messageService.sendMessage(whisper);
-            Map<String, Object> res = messageService.getWhisperList(whisper.getUid1());
-            return Response.success(res);
+            return Response.success(200);
         } catch (Exception e) {
             return Response.failure(500, "error: "+e);
         }
@@ -44,8 +55,7 @@ public class MessageController {
     public Response sendImg (Whisper whisper) {
         try {
             messageService.snedImg(whisper);
-            Map<String, Object> res = messageService.getWhisperList(whisper.getUid1());
-            return Response.success(res);
+            return Response.success(200);
         } catch (Exception e) {
             return Response.failure(500, "error: "+e);
         }

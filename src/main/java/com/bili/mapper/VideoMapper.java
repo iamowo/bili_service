@@ -1,9 +1,6 @@
 package com.bili.mapper;
 
-import com.bili.entity.Dm;
-import com.bili.entity.Video;
-import com.bili.entity.VideoList;
-import com.bili.entity.Watchinfo;
+import com.bili.entity.*;
 import com.bili.entity.temp.TagAndNums;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -131,4 +128,20 @@ public interface VideoMapper {
     Integer videoNumsMainTag(String maintag);
 
     List<TagAndNums> getTandN();
+
+    Video getVideoByHash(String hashValue);
+
+    List<Video> getUnExitList(Integer uid);
+
+    List<Video> getVideoFormList(Integer listid);
+
+    void addVideoToList(VideoListInfo videoListInfo);
+
+    VideoList getUserListOne(Integer listid);
+
+    void deleteVideoList(Integer listid);
+
+    void updateVideoInfoListid(Integer listid);
+
+    void chanegListInfo(VideoList videoList);
 }

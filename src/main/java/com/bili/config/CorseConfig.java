@@ -9,7 +9,7 @@ import org.springframework.web.filter.CorsFilter;
 
 @Configuration
 public class CorseConfig {
-    @Value("${url}")
+    @Value("${url2}")
     private String url;
 
     // 跨越请求有效时长

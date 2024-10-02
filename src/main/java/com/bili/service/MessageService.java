@@ -5,6 +5,7 @@ import com.bili.entity.Message.Whisper;
 import com.bili.entity.Message.WhisperCover;
 import com.bili.entity.SysInfo;
 import com.bili.entity.User;
+import com.bili.entity.Video;
 import com.bili.mapper.MessageMapper;
 import com.bili.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +27,9 @@ public class MessageService {
     @Autowired
     private UserMapper userMapper;
 
-    public Map<String, Object> getWhisperList(Integer uid) {
+    public List<WhisperCover> getWhisperList(Integer uid) {
         Integer uid1 = uid;  // 自己的id
-        Map<String, Object> res = new HashMap<>();
-        List<Whisper> smallList = messageMapper.getCoverWhisperList(uid);
+        List<Whisper> smallList = messageMapper.getCoverWhisperList(uid);        // uid发送 接收消息列表
         List<WhisperCover> coverlist = new ArrayList<>();
         for (int i = 0; i < smallList.size(); i++) {
             Integer uid2 = -1;  // 对方的id
@@ -47,11 +47,9 @@ public class MessageService {
             temp.setUid2(uid2);
             temp.setAvatar(user.getAvatar());
             temp.setName(user.getName());
-
-//            temp.setLastContent(smallList.get(i).getContent());
             coverlist.add(temp);
         }
-        res.put("whisperlist", coverlist);
+
         List<List<Whisper>> contentlist = new ArrayList<>();
         for (int i = 0; i < coverlist.size(); i++) {
             List<Whisper> temp = new ArrayList<>();
@@ -59,17 +57,29 @@ public class MessageService {
             List<Whisper> list = messageMapper.getByTwoUid(uid1, uid2);
             contentlist.add(list);
 
-            Whisper lasewhisper = list.getLast();  // 最后一条评论
+            Whisper lasewhisper = list.getLast();  // 最后一条评论, 显示在左侧列表
+            coverlist.get(i).setLastTime(list.getLast().getTime());
             if (lasewhisper.getType() == 1) {
                 coverlist.get(i).setLastContent("图片");
             } else {
                 coverlist.get(i).setLastContent(list.getLast().getContent());
             }
         }
-        res.put("contentlist", contentlist);
-        return res;
+        // 排序，按照最后一条消息时间排序
+        Collections.sort(coverlist, new Comparator<WhisperCover>() {
+            @Override
+            public int compare(WhisperCover o1, WhisperCover o2) {
+                return o2.getLastTime().compareTo(o1.getLastTime());
+            }
+        });
+        return coverlist;
     }
 
+    public List<Whisper> getWhisperConent(Integer uid, Integer hisuid) {
+        // uid1 自己的uid
+        List<Whisper> res = messageMapper.getByTwoUid(uid, hisuid);
+        return res;
+    }
     public void sendMessage(Whisper whisper) {
         messageMapper.sendMessage(whisper);
     }

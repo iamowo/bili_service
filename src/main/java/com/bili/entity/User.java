@@ -28,7 +28,9 @@ public class User {
     private Integer defaultfid;
     private String intro;
     private String gonggao;
+    private Integer exp;          // 经验值
     private Integer permissions;  // 权限等级
+    private String temptoken;
 
     // append
     private String token;

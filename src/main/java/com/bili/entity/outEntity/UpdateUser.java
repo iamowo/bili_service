@@ -12,4 +12,5 @@ public class UpdateUser {
     private String intro;
     private String password;
     private String gonggao;
+    private String name;
 }

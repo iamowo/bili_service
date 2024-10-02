@@ -10,11 +10,12 @@ public class ResourceConfig implements WebMvcConfigurer {
     // 通过读取配置项获取的文件上传路径
     @Value("${files.videoPath}")
     private String videoPath;
-
     @Value("${files.avatarPath}")
     private String avatarPath;
     @Value("${files.sysPath}")
     private String sysPath;
+    @Value("${files.mgPath}")
+    private String mgPath;
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         /*
@@ -25,5 +26,6 @@ public class ResourceConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/video/**").addResourceLocations("file:" + videoPath);
         registry.addResourceHandler("/avatar/**").addResourceLocations("file:" + avatarPath);
         registry.addResourceHandler("/sys/**").addResourceLocations("file:" + sysPath);
+        registry.addResourceHandler("/mg/**").addResourceLocations("file:" + mgPath);
     }
 }
