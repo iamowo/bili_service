@@ -1,9 +1,6 @@
 package com.bili.controler;
 
-import com.bili.entity.Dm;
-import com.bili.entity.Video;
-import com.bili.entity.VideoList;
-import com.bili.entity.Watchinfo;
+import com.bili.entity.*;
 import com.bili.entity.outEntity.Audit;
 import com.bili.entity.outEntity.OneChunk;
 import com.bili.entity.outEntity.UploadVideoInfos;
@@ -160,10 +157,10 @@ public class VideoController {
         }
     }
     // 合并分片
-    @GetMapping("/mergeChunks/{uid}/{vid}")
-    public Response mergeChunks (@PathVariable Integer uid, @PathVariable Integer vid) {
+    @GetMapping("/mergeChunks/{uid}/{vid}/{type}")
+    public Response mergeChunks (@PathVariable Integer uid, @PathVariable Integer vid, @PathVariable Integer type) {
         try {
-            videoService.mergeChunks(uid, vid);
+            videoService.mergeChunks(uid, vid, type);
             return Response.success(200);
         } catch (Exception e) {
             return Response.failure(500, "error: "+e);
@@ -215,8 +212,8 @@ public class VideoController {
     }
 
     // topnav历史记录
-    @GetMapping("/getHomHistory/{uid}/{page}/{num}/{size}")
-    public Response getHomHistory (@PathVariable Integer uid, @PathVariable Integer page, @PathVariable Integer num, @PathVariable Integer size) {
+    @GetMapping("/getHomeHistory/{uid}/{page}/{num}/{size}")
+    public Response getHomeHistory (@PathVariable Integer uid, @PathVariable Integer page, @PathVariable Integer num, @PathVariable Integer size) {
         try {
             List<Watchinfo> res = videoService.getHomHistory(uid, page, num, size);
             return Response.success(res);
@@ -293,11 +290,16 @@ public class VideoController {
     }
 
     // 主页动态视频
-    @GetMapping("/getHomeDynamic/{uid}")
-    public Response getHomeDynamic (@PathVariable Integer uid) {
+    @GetMapping("/getHomeDynamic/{uid}/{type}")
+    public Response getHomeDynamic (@PathVariable Integer uid, @PathVariable Integer type) {
         try {
-            List<Video> res = videoService.getHomeDynamic(uid);
-            return Response.success(res);
+            if (type == 0) {
+                List<Video> res = videoService.getHomeDynamic(uid);
+                return Response.success(res);
+            } else {
+                List<User> res=  videoService.getFollowedUser(uid);
+                return Response.success(res);
+            }
         } catch (Exception e) {
             return Response.failure(500, "error: "+e);
         }

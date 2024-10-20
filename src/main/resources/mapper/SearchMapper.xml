@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bili.mapper.SearchMapper">
+    <insert id="addKeyword">
+        insert into `hot_keyword`
+        (uid, keyword) values (#{uid}, #{keyword})
+    </insert>
+
+    <delete id="deleteKeyword">
+        delete from `hot_keyword`
+        where kid = #{kid}
+    </delete>
+
+    <delete id="deleteAllKeyword">
+        delete from `hot_keyword`
+        where uid = #{uid}
+    </delete>
+
+    <select id="getAllKeyword" resultType="com.bili.entity.HotKeyword">
+        select * from `hot_keyword`
+        where uid = #{uid}
+    </select>
+
+    <select id="getSearched" resultType="java.lang.Integer">
+        select count(*) from `hot_keyword`
+        where uid = #{uid} and keyword = #{keyword}
+    </select>
+    <select id="getHotRanking" resultType="java.lang.String">
+        select keyword from `hot_keyword` group by keyword order by count(*) desc
+    </select>
+
+</mapper>

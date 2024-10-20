@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bili.mapper.AnimationMapper">
+
+    <insert id="subthisAnimation">
+        insert into `animation_sublist`
+        (aid, uid) values (#{aid}, #{uid})
+    </insert>
+
+    <update id="cnacleAnimation">
+        update `animation_sublist`
+        set deleted = #{deleted}
+        where id = #{id}
+    </update>
+    <update id="updateingfo">
+        update `animation_sublist`
+        set deleted = #{deleted}
+        where uid = #{uid} and aid = #{aid}
+    </update>
+
+    <select id="getAnimationList" resultType="com.bili.entity.Animation">
+        select * from `animation`
+    </select>
+
+    <select id="getAllByAid" resultType="com.bili.entity.AnimationList">
+        select * from `animation_list`
+        where aid = #{aid}
+        order by season and chapter desc
+    </select>
+    
+    <select id="hadSubed" resultType="java.lang.Integer">
+        select count(*) from `animation_sublist`
+        where aid = #{aid} and uid = #{uid}
+    </select>
+
+    <select id="getAnimationByAid" resultType="com.bili.entity.Animation">
+        select * from `animation`
+        where aid = #{aid}
+    </select>
+
+    <select id="getAnimationByKeyword" resultType="com.bili.entity.Animation">
+        select * from `animation`
+        where title like concat('%', #{keyword}, '%')
+    </select>
+</mapper>

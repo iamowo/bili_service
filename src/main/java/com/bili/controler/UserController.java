@@ -58,7 +58,7 @@ public class UserController {
                 String role = "XIXIX";
                 String token = TokenUtil.getToken(user.getName(), role);
                 user.setToken(token);
-                userService.updateTempToken(token);
+                userService.updateTempToken(token, user.getUid());
                 return Response.success(user);
             }
         } catch (Exception e) {

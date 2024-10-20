@@ -2,12 +2,18 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bili.mapper.CommentMapper">
     <insert id="addComment"  useGeneratedKeys="true" keyProperty="id">
-        insert into `comment` (uid, vid, content, topid, fid, hisuid)
-        values (#{uid}, #{vid}, #{content}, #{topid}, #{fid}, #{hisuid})
+        insert into `comment` (uid, vid, did, content, topid, fid, hisuid, type, atid, atname)
+        values (#{uid}, #{vid}, #{did}, #{content}, #{topid}, #{fid}, #{hisuid}, #{type}, #{atid}, #{atname})
     </insert>
+
     <insert id="addLikeinfo">
         insert into `like_info`
-        (type, cid, hisuid, uid, vid) values (#{type}, #{cid}, #{hisuid}, #{uid}, #{vid})
+        (type, cid, hisuid, uid, vid, did) values (#{type}, #{cid}, #{hisuid}, #{uid}, #{vid}, #{did})
+    </insert>
+
+    <insert id="addAt" useGeneratedKeys="true" keyProperty="atid">
+        insert into `at`
+        (uid1, uid2, vid, did, cid, atname, attitle, type) values (#{uid1}, #{uid2}, #{vid}, #{did}, #{cid}, #{atname}, #{attitle}, #{type})
     </insert>
 
     <update id="deleteComment">
@@ -21,6 +27,7 @@
             </where>
         </set>
     </update>
+
     <update id="updataCommentLikes">
         update `comment`
         set likes = likes + #{num}
@@ -29,13 +36,20 @@
 
     <delete id="deletelikeinfo">
         delete from `like_info`
-        where cid = #{cid} and uid = #{uid}
+        where cid = #{cid} and uid = #{uid} and type = 2
     </delete>
 
     <select id="getAllComment" resultType="com.bili.entity.Comment">
         select * from `comment`
         where
         vid = #{vid} and topid = 0 and deleted = 0
+        order by ${order} desc
+    </select>
+
+    <select id="getAllComment2" resultType="com.bili.entity.Comment">
+        select * from `comment`
+        where
+        did = #{did} and topid = 0 and deleted = 0
         order by ${order} desc
     </select>
 
@@ -48,7 +62,22 @@
 
     <select id="getLikeinfo" resultType="java.lang.Integer">
         select cid from `like_info`
-        where uid = #{uid} and vid = #{vid}
+        where uid = #{uid} and
+        <if test="type == 0">
+            vid = #{id}
+        </if>
+        <if test="type == 1">
+            did = #{id}
+        </if>
     </select>
 
+    <select id="getReplayComment" resultType="com.bili.entity.Comment">
+        select * from `comment`
+        where
+        (uid != #{uid} and hisuid = #{uid} and deleted = 0
+        and topid = 0)
+        or
+        (fid = #{uid})
+        order by time DESC
+    </select>
 </mapper>

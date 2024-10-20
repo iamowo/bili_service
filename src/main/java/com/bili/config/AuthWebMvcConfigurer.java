@@ -32,7 +32,8 @@ public class AuthWebMvcConfigurer implements WebMvcConfigurer {
                         "/video/getDm/**", "/video/getVideoLikely/**", "/video/searchKw/**",
                         "/video/getByMaintag/**", "/video/getAllMainTag",
                         "/comment/getAllComment", "/comment/getAllComment/**",
-                        "/video/**", "/sys/**", "/avatar/**"
+                        "/video/**", "/sys/**", "/avatar/**",
+                        "/animation/getSeasons/**"
                         );
         //    /video/** 时资源地址， 应更改
     }

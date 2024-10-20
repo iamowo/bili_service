@@ -16,6 +16,8 @@ public class Dynamic {
     private List<String> imgs;
     private Integer type;     // 0 图文类型  1 视频  2 动态
     private Integer vordid;   // vid or did（动态id）
+    private Integer deleted;
+    private String topical;   // 话题
     // ..
     private String name;
     private String avatar;
@@ -25,4 +27,6 @@ public class Dynamic {
 
     // 转发别人的动态
     private Dynamic dy2;
+
+    private Boolean liked;   // 点过赞
 }

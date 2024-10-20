@@ -249,4 +249,14 @@ public class MgService {
         List<MgImgs> res = mgMapper.getMgImgsRandom(mid, number, num);
         return res;
     }
+
+    public List<Mg> getUploadMg(Integer uid) {
+        List<Mg> res = mgMapper.getUploadMg(uid);
+        dealTaglist(res);
+        return res;
+    }
+
+    public void updateMgInfo(Mg mg) {
+        mgMapper.updateMgInfo(mg);
+    }
 }

@@ -1,5 +1,6 @@
 package com.bili.service;
 
+import com.bili.entity.At;
 import com.bili.entity.Comment;
 import com.bili.entity.LikeInfo;
 import com.bili.entity.User;
@@ -10,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class CommentService {
@@ -54,8 +57,8 @@ public class CommentService {
     }
 
     // 添加点赞信息
-    private void addLikeinfos(List<Comment> res, Integer uid, Integer vid) {
-        List<Integer> cids = commentMapper.getLikeinfo(uid, vid);   // 点过赞的评论
+    private void addLikeinfos(List<Comment> res, Integer uid, Integer id, Integer type) {
+        List<Integer> cids = commentMapper.getLikeinfo(uid, id, type);   // 点过赞的评论
         for (Comment i : res) {
             if (cids.contains(i.getId())) {
                 i.setLiked(true);
@@ -69,31 +72,72 @@ public class CommentService {
             }
         }
     }
-    public List<Comment> getAllComment(Integer vid, Integer uid, Integer type) {
+    public List<Comment> getAllComment(Integer id, Integer uid, Integer sort, Integer type) {
         String order = "likes";
-        if (type == 1) {
+        if (sort == 1) {
             order = "time";
         }
-        List<Comment> res = commentMapper.getAllComment(vid, order);
+        List<Comment> res = new ArrayList<>();
+        if (type == 0) {
+            res.addAll(commentMapper.getAllComment(id, order));
+        } else {
+            res.addAll(commentMapper.getAllComment2(id, order));
+        }
         loadinfos(res);
         if (uid != -1) {
-            addLikeinfos(res, uid, vid);
+            addLikeinfos(res, uid, id, type);
         }
         return res;
     }
 
     public Integer addComment(Comment comment) {
+        Integer atid = -1;
+        if (comment.getAtuid() != -1) {
+            // @某人
+            At at = new At();
+            at.setType(comment.getType());
+            at.setUid1(comment.getUid());
+            at.setUid2(comment.getAtuid());
+            at.setAtname(comment.getAtname());
+            at.setType(comment.getType());
+            if (comment.getType() == 0) {
+                at.setVid(comment.getVid());
+            } else if (comment.getType() == 1) {
+                at.setDid(comment.getDid());
+            } else if (comment.getType() == 2) {
+                // 评论
+                at.setVid(comment.getVid());
+                at.setCid(comment.getReplaycid());
+                at.setAttitle(comment.getReplaycontent());        // 视频和动态不用设置
+            }
+            commentMapper.addAt(at);
+            atid = at.getAtid();
+        }
         // 更新video中的infos
-        Integer vid = comment.getVid();
-        videoMapper.chnageCommentNum(1, vid);   // video表中， 评论数 + 1
-        commentMapper.addComment(comment);
+        comment.setAtid(atid);
+        if (comment.getType() == 0) {
+            // 视频
+            Integer vid = comment.getVid();
+            videoMapper.chnageCommentNum(1, vid);   // video表中， 评论数 + 1
+            commentMapper.addComment(comment);
+        } else if (comment.getType() == 1) {
+            // 动态
+            Integer did = comment.getDid();
+            videoMapper.chnageCommentNumDynamic(1, did);
+            commentMapper.addComment(comment);
+        }
         Integer comment_id = comment.getId();         // 新插入数据获得的id
         return comment_id;
     }
 
-    public void deleteComment(Integer id, Integer vid) {
-        Integer num = -1;
-        videoMapper.chnageCommentNum(num, vid);
+    public void deleteComment(Integer id, Integer deletedid, Integer type) {
+        if (type == 0) {
+            // 视频评论
+            videoMapper.chnageCommentNum(-1, deletedid);
+        } else if (type == 1) {
+            // 动态评论
+            videoMapper.chnageCommentNumDynamic(-1, deletedid);
+        }
         commentMapper.deleteComment(id);
     }
 
@@ -105,5 +149,21 @@ public class CommentService {
     public void deletelikeinfo(Integer cid, Integer uid) {
         commentMapper.deletelikeinfo(cid, uid);
         commentMapper.updataCommentLikes(cid, -1);
+    }
+
+    public List<Map> getReplayComment(Integer uid) {
+        List<Map> res=  new ArrayList<>();
+        List<Comment> comments = commentMapper.getReplayComment(uid);
+        for (int i = 0; i < comments.size(); i++) {
+            Map<String, Object> temp = new HashMap<>();
+            User userinfo = userMapper.getByUid(comments.get(i).getUid());
+            temp.put("avatar", userinfo.getAvatar());
+            temp.put("name", userinfo.getName());
+            temp.put("content", comments.get(i).getContent());
+            temp.put("time", comments.get(i).getTime());
+            temp.put("type", comments.get(i).getType());
+            res.add(temp);
+        }
+        return res;
     }
 }

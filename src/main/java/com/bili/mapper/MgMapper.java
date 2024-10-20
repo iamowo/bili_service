@@ -49,4 +49,8 @@ public interface MgMapper {
     void changeAllList(MgList mgList);
 
     List<MgImgs> getMgImgsRandom(Integer mid, Integer number, Integer num);
+
+    List<Mg> getUploadMg(Integer uid);
+
+    void updateMgInfo(Mg mg);
 }

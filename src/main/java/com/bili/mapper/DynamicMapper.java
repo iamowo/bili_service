@@ -1,9 +1,6 @@
 package com.bili.mapper;
 
-import com.bili.entity.Dyimgs;
-import com.bili.entity.Dynamic;
-import com.bili.entity.Follow;
-import com.bili.entity.Video;
+import com.bili.entity.*;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -26,4 +23,26 @@ public interface DynamicMapper {
     List<Integer> getImgssDid(Integer uid);
 
     Dynamic getDynamic(Integer did);
+
+    void commentDynamic(Dynamic dynamic);
+
+    void addDynamicLike(LikeInfo likeInfo);
+
+    void addLikeNum(Integer did, Integer num);
+
+    Integer getLiked(Integer did, Integer uid);
+
+    void deleteOneDynamicLike(LikeInfo likeInfo);
+
+    List<Topical> getAllTopical();
+
+    void addTopical(Topical topical);
+
+    void addTopicalCount(Integer tid, Integer num);
+
+    void addTopicalWatch(Integer tid, String topical, Integer num);
+
+    List<Dynamic> getDynamicByTopical(String topical, Integer sort);
+
+    Topical getOneTopical(String topical);
 }

@@ -16,6 +16,8 @@ public class ResourceConfig implements WebMvcConfigurer {
     private String sysPath;
     @Value("${files.mgPath}")
     private String mgPath;
+    @Value("${files.animationPath}")
+    private String animationPath;
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         /*
@@ -27,5 +29,6 @@ public class ResourceConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/avatar/**").addResourceLocations("file:" + avatarPath);
         registry.addResourceHandler("/sys/**").addResourceLocations("file:" + sysPath);
         registry.addResourceHandler("/mg/**").addResourceLocations("file:" + mgPath);
+        registry.addResourceHandler("/animation/**").addResourceLocations("file:" + animationPath);
     }
 }

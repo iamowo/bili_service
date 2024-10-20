@@ -13,6 +13,7 @@ public class Whisper {
     private Integer type;
     private Timestamp time;
     private String content;
+    private Integer wid;
 
     private MultipartFile img;
     private String filetype;

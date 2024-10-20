@@ -1,8 +1,6 @@
 package com.bili.controler;
 
-import com.bili.entity.Dyimgs;
-import com.bili.entity.Dynamic;
-import com.bili.entity.Video;
+import com.bili.entity.*;
 import com.bili.entity.outEntity.UpDynamicimgs;
 import com.bili.service.DynamicService;
 import com.bili.util.Response;
@@ -17,10 +15,10 @@ public class DynamicController {
     @Autowired
     private DynamicService dynamicService;
 
-    @GetMapping("/getDynamic/{did}")
-    public Response getDynamic (@PathVariable Integer did) {
+    @GetMapping("/getDynamic/{did}/{uid}")
+    public Response getDynamic (@PathVariable Integer did, @PathVariable Integer uid) {
         try {
-            Dynamic res = dynamicService.getDynamic(did);
+            Dynamic res = dynamicService.getDynamic(did, uid);
             return Response.success(res);
         } catch (Exception e) {
             return Response.failure(500, "error: "+e);
@@ -36,6 +34,7 @@ public class DynamicController {
         }
     }
 
+    // topnav 历史动态
     @GetMapping("/getDyanmciListWidthImg/{uid}")
     public Response getDyanmciList (@PathVariable Integer uid) {
         try {
@@ -77,22 +76,80 @@ public class DynamicController {
         }
     }
 
-    @GetMapping("/likeDynamic/{uid}")
-    public Response likeDynamic (@PathVariable Integer uid) {
+    @PostMapping("/updateDyinfo")
+    public Response updateDyinfo (@RequestBody Dynamic dynamic) {
         try {
-            dynamicService.likeDynamic(uid);
+            dynamicService.updateDyinfo(dynamic);
             return Response.success(200);
         } catch (Exception e) {
             return Response.failure(500, "error: "+e);
         }
     }
 
-    @PostMapping("/commentDynamic")
-    public Response commentDynamic (@RequestBody Dynamic dynamic) {
+    @PostMapping("/addDynamicLike")
+    public Response addDynamicLike (@RequestBody LikeInfo likeInfo) {
         try {
-            dynamicService.commentDynamic(dynamic);
-//            Map<String, Object> res = messageService.getWhisperList(whisper.getUid1());
+            dynamicService.addDynamicLike(likeInfo);
             return Response.success(200);
+        } catch (Exception e) {
+            return Response.failure(500, "error: "+e);
+        }
+    }
+
+    @GetMapping("/getAllTopical")
+    public Response getAllTopical () {
+        try {
+            List<Topical> res = dynamicService.getAllTopical();
+            return Response.success(res);
+        } catch (Exception e) {
+            return Response.failure(500, "error: "+e);
+        }
+    }
+
+    @PostMapping("/addTopical")
+    public Response addTopical (@RequestBody Topical topical) {
+        try {
+            dynamicService.addTopical(topical);
+            return Response.success(200);
+        } catch (Exception e) {
+            return Response.failure(500, "error: "+e);
+        }
+    }
+
+    @GetMapping("/addTopicalCount/{tid}")
+    public Response addTopicalCount (@PathVariable Integer tid) {
+        try {
+            dynamicService.addTopicalCount(tid);
+            return Response.success(200);
+        } catch (Exception e) {
+            return Response.failure(500, "error: "+e);
+        }
+    }
+
+    @GetMapping("/addTopicalWatchs/{tid}/{topical}")
+    public Response addTopicalWatch (@PathVariable Integer tid, @PathVariable String topical) {
+        try {
+            dynamicService.addTopicalWatch(tid, topical);
+            return Response.success(200);
+        } catch (Exception e) {
+            return Response.failure(500, "error: "+e);
+        }
+    }
+
+    @GetMapping("/getOneTopical/{topical}")
+    public Response getOneTopical (@PathVariable String topical) {
+        try {
+            Topical res = dynamicService.getOneTopical(topical);
+            return Response.success(res);
+        } catch (Exception e) {
+            return Response.failure(500, "error: "+e);
+        }
+    }
+    @GetMapping("/getDynamicByTopical/{topical}/{uid}/{sort}")
+    public Response getDynamicByTopical (@PathVariable String topical, @PathVariable Integer uid, @PathVariable Integer sort) {
+        try {
+            List<Dynamic> res = dynamicService.getDynamicByTopical(topical, uid, sort);
+            return Response.success(res);
         } catch (Exception e) {
             return Response.failure(500, "error: "+e);
         }

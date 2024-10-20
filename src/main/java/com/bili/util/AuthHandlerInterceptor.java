@@ -33,6 +33,9 @@ public class AuthHandlerInterceptor implements HandlerInterceptor {
         //为空就返回错误
         String token = httpServletRequest.getHeader("token");
         log.info("token: " + token);
+        if (token == null) {
+            log.info("请求地址: ", httpServletRequest.getRequestURL());
+        }
         if (null == token || "".equals(token.trim())) {
             return false;
         }

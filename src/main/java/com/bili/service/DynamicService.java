@@ -2,6 +2,7 @@ package com.bili.service;
 
 import com.bili.entity.*;
 import com.bili.entity.outEntity.UpDynamicimgs;
+import com.bili.entity.outEntity.UserData;
 import com.bili.mapper.DynamicMapper;
 import com.bili.mapper.UserMapper;
 import com.bili.mapper.VideoMapper;
@@ -137,14 +138,21 @@ public class DynamicService {
             }
             quickSort(res, 0, res.size() - 1);  // 按时间排序
         }
-        addUserinfo(res);
-        dealtype(res);
+        addUserinfo(res);     // 添加用户信息
+        dealtype(res);        // 处理 type
+        handleLikeInfos(res, uid);
         return res;
     }
 
+    // dynamic信息
     public Integer sendDynamic(Dynamic dynamic) {
         dynamicMapper.sendDynamic(dynamic);
         Integer did = dynamic.getId();
+        // 更新user表中dynamic数据 + 1
+        UserData userData = new UserData();
+        userData.setUid(dynamic.getUid());
+        userData.setDynamics(1);
+        userMapper.updateUser1(userData);
         return did;
     }
 
@@ -166,13 +174,6 @@ public class DynamicService {
     public void shareDynamic(Integer uid) {
     }
 
-    public void likeDynamic(Integer uid) {
-    }
-
-    public void commentDynamic(Dynamic dynamic) {
-
-    }
-
     public List<Dynamic> getDyanmciListWidthImg(Integer uid) {
         List<Integer> dids = dynamicMapper.getImgssDid(uid);
         List<Dynamic> res = new ArrayList<>();
@@ -187,9 +188,89 @@ public class DynamicService {
         return res;
     }
 
-    public Dynamic getDynamic(Integer did) {
+    // 获得一个dynamic
+    public Dynamic getDynamic(Integer did, Integer uid) {
         Dynamic res = dynamicMapper.getDynamic(did);
         addUserinfoOne(res);
+        if (uid != -1) {
+            getOneLikeInfo(res, uid);   // 是否点过赞了
+        }
+        return res;
+    }
+
+    public void updateDyinfo(Dynamic dynamic) {
+        dynamicMapper.commentDynamic(dynamic);
+        if (dynamic.getDeleted() == 1) {
+            // 更新user表中dynamic数据 - 1
+            UserData userData = new UserData();
+            userData.setUid(dynamic.getUid());
+            userData.setDynamics(-1);
+            userMapper.updateUser1(userData);
+        }
+    }
+
+    public void addDynamicLike(LikeInfo likeInfo) {
+        Integer num = dynamicMapper.getLiked(likeInfo.getDid(), likeInfo.getUid());
+        if (num == 1) {
+            // 取消带点赞
+            dynamicMapper.deleteOneDynamicLike(likeInfo);
+            dynamicMapper.addLikeNum(likeInfo.getDid(), -1);
+        } else {
+            dynamicMapper.addDynamicLike(likeInfo);
+            dynamicMapper.addLikeNum(likeInfo.getDid(), 1);
+        }
+    }
+
+    // 获取动态时，获得点赞信息
+    private void getOneLikeInfo(Dynamic dynamic, Integer uid) {
+        Integer num = dynamicMapper.getLiked(dynamic.getId(), uid);
+        if (num == 1) {
+            dynamic.setLiked(true);
+        } else {
+            dynamic.setLiked(false);
+        }
+    }
+    private void handleLikeInfos (List<Dynamic> dynamics, Integer uid) {
+        for (int i = 0; i < dynamics.size(); i++) {
+            Dynamic dynamic = dynamics.get(i);
+            getOneLikeInfo(dynamic, uid);
+        }
+    }
+
+    public List<Topical> getAllTopical() {
+        List<Topical> res = dynamicMapper.getAllTopical();
+        return res;
+    }
+
+    public void addTopical(Topical topical) {
+        dynamicMapper.addTopical(topical);
+    }
+
+    public void addTopicalCount(Integer tid) {
+        dynamicMapper.addTopicalCount(tid, 1);
+    }
+
+    public void addTopicalWatch(Integer tid, String topical) {
+        dynamicMapper.addTopicalWatch(tid, topical, 1);
+    }
+
+
+    // 得到相关主题的动态
+    public List<Dynamic> getDynamicByTopical(String topical, Integer uid, Integer sort) {
+        List<Dynamic> res = dynamicMapper.getDynamicByTopical(topical, sort);
+        addUserinfo(res);     // 添加用户信息
+        dealtype(res);        // 处理 type
+        if (uid != -1) {
+            handleLikeInfos(res, uid);
+        }
+        return res;
+    }
+
+    public Topical getOneTopical(String topical) {
+        Topical res = dynamicMapper.getOneTopical(topical);
+        User user = userMapper.getByUid(res.getUid());
+        res.setAvatar(user.getAvatar());
+        res.setName(user.getName());
         return res;
     }
 }

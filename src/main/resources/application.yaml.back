@@ -1,0 +1,42 @@
+server:
+  port: 8082
+spring:
+  application:
+    name: bili
+  datasource:
+    url: jdbc:mysql://49.235.146.19:3306/bili?characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    username: root
+    password: zXc1@3
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  servlet:
+    multipart:
+      max-file-size: 3000MB
+      max-request-size: 1000MB
+  # Mybatis
+mybatis:
+  # ???
+  type-aliases-package: src.main.java.com.bili.entity
+  # XML??
+  mapper-locations: classpath:mapper/*Mapper.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    # ??????
+    map-underscore-to-camel-case: true
+
+files:
+  videoPath: /project/bili/data/resource/
+  avatarPath: /project/bili/data/avatar/
+  sysPath: /project/bili/data/sys/
+  mgPath: /project/bili/data/mg/
+  animationPath: /project/bili/data/animation/
+
+  videoNet: http://49.235.146.19:8082/video/
+  avatarNet: http://49.235.146.19:8082/avatar/
+  sysNet: http://49.235.146.19:8082/sys/
+  mgNet: http://49.235.146.19:8082/mg/
+  animationNet: http://49.235.146.19:8082/animation/
+
+# 前端地址
+url1: http://49.235.146.19:3000
+# 的后端地址
+url2: http://49.235.146.19:8082

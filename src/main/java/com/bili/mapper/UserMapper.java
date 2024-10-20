@@ -61,5 +61,5 @@ public interface UserMapper {
 
     void changeSetting(UserSetting userSetting);
 
-    void updateTempToken(String token);
+    void updateTempToken(String token, Integer uid);
 }

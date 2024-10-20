@@ -3,8 +3,8 @@
 <mapper namespace="com.bili.mapper.VideoMapper">
     <!--  这个配置可一获取生成的vid  -->
     <insert id="addInfos" useGeneratedKeys="true" keyProperty="vid">
-        insert into `video` (title, intro, cover, uid, duration, vidlong, maintag, othertags, hashValue, listid)
-        values (#{title}, #{intro}, #{cover}, #{uid}, #{duration}, #{vidlong}, #{maintag}, #{othertags}, #{hashValue}, #{listid})
+        insert into `video` (title, intro, cover, uid, duration, vidlong, maintag, othertags, hashValue, listid, type, pass, aid)
+        values (#{title}, #{intro}, #{cover}, #{uid}, #{duration}, #{vidlong}, #{maintag}, #{othertags}, #{hashValue}, #{listid}, #{type}, #{pass}, #{aid})
     </insert>
 
     <insert id="addWatch">
@@ -44,6 +44,16 @@
     <insert id="addVideoToList">
         insert into `videolist_info`
         (vid, uid, listid) values (#{vid}, #{uid} ,#{listid})
+    </insert>
+
+    <insert id="insertAnimation" useGeneratedKeys="true" keyProperty="aid">
+        insert into `animation`
+        (title, chapters, intro, cover, uid) values (#{title}, #{chapters}, #{intro}, #{cover}, #{uid})
+    </insert>
+
+    <insert id="insertAnimationList"  useGeneratedKeys="true" keyProperty="id">
+        insert into `animation_list`
+        (aid, season, chapter, chaptertitle, uid) values (#{aid}, #{season}, #{chapter}, #{chaptertitle}, #{uid})
     </insert>
 
     <!--  基本信息  -->
@@ -109,6 +119,12 @@
         update `video` set
         comments = comments + #{num}
         where vid = #{vid}
+    </update>
+
+    <update id="chnageCommentNumDynamic">
+        update `dynamic` set
+        comments = comments + #{num}
+        where id = #{did}
     </update>
 
     <update id="updateWatchinfo">
@@ -280,6 +296,7 @@
         select * from `dm`
         where
         vid = #{vid}
+        order by sendtime
     </select>
 
     <select id="searchTilte" resultType="java.lang.String">
@@ -387,7 +404,7 @@
 
     <delete id="deletedLike">
         delete from `like_info`
-        where uid = #{uid} and vid = #{vid}
+        where uid = #{uid} and vid = #{vid} and type = 0
     </delete>
 
     <delete id="deleteVideoList">
@@ -434,5 +451,34 @@
         <where>
             listid = #{listid}
         </where>
+    </update>
+
+    <update id="uploadAnimationList">
+        update `animation_list`
+        <set>
+            <if test="season != null">
+                season = #{season},
+            </if>
+            <if test="chapter != null">
+                chapter = #{chapter},
+            </if>
+            <if test="chaptertitle != null">
+                chaptertitle = #{chaptertitle},
+            </if>
+            <if test="vid != null">
+                vid = #{vid}
+            </if>
+        </set>
+        <where>
+            id = #{id}
+        </where>
+    </update>
+
+    <update id="updateAnimationChpaters">
+        update `animation`
+        set
+        chapters = chapters + #{num}
+        where
+        aid = #{aid}
     </update>
 </mapper>

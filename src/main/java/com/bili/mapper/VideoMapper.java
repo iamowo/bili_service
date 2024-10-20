@@ -53,7 +53,7 @@ public interface VideoMapper {
 
     void chnageCommentNum(Integer num, Integer vid);
 
-
+    void chnageCommentNumDynamic(Integer num, Integer did);
 
     Integer getUserLikes(Integer vid, Integer uid);
 
@@ -144,4 +144,13 @@ public interface VideoMapper {
     void updateVideoInfoListid(Integer listid);
 
     void chanegListInfo(VideoList videoList);
+
+    void insertAnimation(Animation animation);
+
+    void insertAnimationList(AnimationList animationList);
+
+    void uploadAnimationList(AnimationList animationList);
+
+    void updateAnimationChpaters(Integer aid, int num);
+
 }

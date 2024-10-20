@@ -10,6 +10,7 @@ public class Dm {
     private Integer uid;
     private Integer vid;
     private Integer sendtime;
+    private String typetime;
     private String text;
     private String color;
     private Integer type;

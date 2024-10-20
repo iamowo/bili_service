@@ -28,6 +28,9 @@ public class Video{
     private String othertags;
     private String hashValue;
     private Integer listid;    // 属于那个列表
+    private Integer type;      // 0 自上传    1 连续剧
+    private Integer aid;
+
     // append info
 //    private List<String> tags;
     private String[] tags;

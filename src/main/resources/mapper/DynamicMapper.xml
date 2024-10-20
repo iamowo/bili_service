@@ -3,18 +3,69 @@
 <mapper namespace="com.bili.mapper.DynamicMapper">
     <insert id="sendDynamic" useGeneratedKeys="true" keyProperty="id">
         insert into `dynamic`
-        (uid, content, type, vordid) values (#{uid}, #{content}, #{type}, #{vordid})
+        (uid, content, type, vordid, topical) values (#{uid}, #{content}, #{type}, #{vordid}, #{topical})
     </insert>
 
     <insert id="addDyimgs">
         insert into `dyimgs`
         (did, img, uid) values (#{did}, #{img}, #{uid})
     </insert>
+    <insert id="addDynamicLike">
+        insert into `like_info`
+        (uid, hisuid, did, type) values (#{uid}, #{hisuid}, #{did}, #{type})
+    </insert>
+
+    <insert id="addLikeNum">
+        update `dynamic`
+        set
+        likes = likes + #{num}
+        where id = #{did}
+    </insert>
+
+    <insert id="addTopical">
+        insert into `topical`
+        (topical, counts, uid, intro, watch) values (#{topical}, 1, #{uid}, #{intro}, 0)
+    </insert>
+
+    <insert id="addTopicalWatch">
+        update `topical`
+        set watch = watch + #{num}
+        where
+        <if test="tid != -1">
+            tid = #{tid}
+        </if>
+        <if test="tid == -1">
+            topical = #{topical}
+        </if>
+    </insert>
+
+    <update id="addTopicalCount">
+        update `topical`
+        set counts = counts + #{num}
+        where tid = #{tid}
+    </update>
+
+    <update id="commentDynamic">
+        update `dynamic`
+        <set>
+            <if test="deleted != null">
+                deleted = #{deleted}
+            </if>
+        </set>
+        <where>
+            id = #{id}
+        </where>
+    </update>
+
+    <delete id="deleteOneDynamicLike">
+        delete from `like_info`
+        where uid = #{uid} and did = #{did} and type = 1
+    </delete>
 
     <select id="getDyanmciList" resultType="com.bili.entity.Dynamic">
         select * from `dynamic`
         where
-        uid = #{uid}
+        uid = #{uid} and deleted = 0
         ORDER BY id DESC
     </select>
 
@@ -44,6 +95,33 @@
         select * from `dynamic`
         where
         id = #{did}
+    </select>
+
+    <select id="getLiked" resultType="java.lang.Integer">
+        select count(*) from `like_info`
+        where uid = #{uid} and did = #{did} and type = 1
+    </select>
+
+    <select id="getAllTopical" resultType="com.bili.entity.Topical">
+        select * from `topical`
+    </select>
+
+    <select id="getDynamicByTopical" resultType="com.bili.entity.Dynamic">
+        select * from `dynamic`
+        where topical = #{topical} and deleted = 0
+        order by
+        <if test="sort == 0">
+            likes
+        </if>
+        <if test="sort == 1">
+            time
+        </if>
+        desc
+    </select>
+
+    <select id="getOneTopical" resultType="com.bili.entity.Topical">
+        select * from `topical`
+        where topical = #{topical}
     </select>
 
 

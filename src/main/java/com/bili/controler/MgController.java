@@ -113,6 +113,17 @@ public class MgController {
         }
     }
 
+    // 修改信息
+    @PostMapping("/updateMgInfo")
+    public Response updateMgInfo (@RequestBody Mg mg) {
+        try {
+            mgService.updateMgInfo(mg);
+            return Response.success(200);
+        } catch (Exception e) {
+            return Response.failure(500, "error:" + e);
+        }
+    }
+
     @GetMapping("/getOneMg/{mid}/{uid}")
     public Response getOneMg (@PathVariable Integer mid, @PathVariable Integer uid) {
         try {
@@ -167,6 +178,16 @@ public class MgController {
     public Response searchMg (@PathVariable String keyword) {
         try {
             List<Mg> res = mgService.searchMg(keyword);
+            return Response.success(res);
+        } catch (Exception e) {
+            return Response.failure(500, "error:" + e);
+        }
+    }
+
+    @GetMapping("/getUploadMg/{uid}")
+    public Response getUploadMg (@PathVariable Integer uid) {
+        try {
+            List<Mg> res = mgService.getUploadMg(uid);
             return Response.success(res);
         } catch (Exception e) {
             return Response.failure(500, "error:" + e);

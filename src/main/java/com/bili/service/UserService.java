@@ -229,7 +229,7 @@ public class UserService {
         userMapper.changeSetting(userSetting);
     }
 
-    public void updateTempToken(String token) {
-        userMapper.updateTempToken(token);
+    public void updateTempToken(String token, Integer uid) {
+        userMapper.updateTempToken(token, uid);
     }
 }

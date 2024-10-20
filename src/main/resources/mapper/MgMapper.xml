@@ -3,8 +3,8 @@
 <mapper namespace="com.bili.mapper.MgMapper">
 
     <insert id="uploadMgInfo" useGeneratedKeys="true" keyProperty="mid">
-        INSERT INTO `mg` (title, chapters, author, intro, cover, done, tags)
-        values (#{title}, #{chapters}, #{author}, #{intro}, #{cover}, #{done}, #{tags})
+        INSERT INTO `mg` (title, chapters, author, intro, cover, done, tags, uid)
+        values (#{title}, #{chapters}, #{author}, #{intro}, #{cover}, #{done}, #{tags}, #{uid})
     </insert>
 
     <insert id="uploadimgs">
@@ -48,6 +48,7 @@
             mid = #{mid} and uid = #{uid} and type = #{type}
         </where>
     </update>
+
     <update id="changeAllList">
         update `mglist`
         <set>
@@ -60,10 +61,33 @@
         </where>
     </update>
 
+    <update id="updateMgInfo">
+        update `mg`
+        <set>
+            <if test="title != null">
+                title = #{title},
+            </if>
+            <if test="author != null">
+                author = #{author},
+            </if>
+            <if test="intro != null">
+                intro = #{intro},
+            </if>
+            <if test="deleted != null">
+                deleted = #{deleted}
+            </if>
+        </set>
+        <where>
+            mid = #{mid}
+        </where>
+    </update>
+
     <select id="getByTitle" resultType="com.bili.entity.Mg">
         select * from `mg`
         where
         title like concat('%', #{keyword}, '%')
+        and
+        deleted = 0
     </select>
 
     <select id="getOneMg" resultType="com.bili.entity.Mg">
@@ -86,6 +110,8 @@
 
     <select id="getMgs" resultType="com.bili.entity.Mg">
         select * from `mg`
+        where
+        deleted = 0
         order by #{type} desc
         limit #{num}
     </select>
@@ -111,14 +137,19 @@
 
     <select id="getMgRanking" resultType="com.bili.entity.Mg">
         select * from `mg`
+        where
+        deleted = 0
         order by #{type} limit 50
     </select>
 
     <select id="searchMg" resultType="com.bili.entity.Mg">
         select * from `mg`
         where
-        title like concat('%', #{keyword}, '%')
-        or author like concat('%', #{keyword}, '%')
+        deleted = 0
+        and
+        (title like concat('%', #{keyword}, '%')
+        or
+        author like concat('%', #{keyword}, '%'))
     </select>
 
     <select id="judgeCollected" resultType="java.lang.Integer">
@@ -134,6 +165,13 @@
         select * from `mg_imgs`
         where mid = #{mid} and number = #{number}
         limit #{num}
+    </select>
+
+    <select id="getUploadMg" resultType="com.bili.entity.Mg">
+        select * from `mg`
+        where uid = #{uid}
+        and deleted = 0
+        order by time DESC
     </select>
 
 

@@ -13,12 +13,17 @@ public class Comment {
     private Integer uid;
     private Integer hisuid;
     private Integer vid;
+    private Integer cid;
+    private Integer did;
     private String content;
     private Timestamp time;
     private Integer topid;  // 二级评论 顶层id
     private Integer fid;    // 二级评论父id
+    private String replaycontent;
     private Integer likes;
-
+    private Integer type;   // 0视频   1 动态   2评论
+    private Integer atid;
+    private Integer replaycid;
     // append
     private boolean liked;  // 是都点过攒了
     private String name;
@@ -26,4 +31,7 @@ public class Comment {
     private String fname; // 回复的人的名字
     private List<Comment> lists;
     private Integer listslength;
+    // input
+    private Integer atuid;
+    private String atname;
 }

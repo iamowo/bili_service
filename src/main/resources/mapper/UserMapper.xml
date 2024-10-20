@@ -101,8 +101,8 @@
             <if test="videos != null">
                 videos = videos + #{videos},
             </if>
-            <if test="dynamic != null">
-                dynamic = dynamic + #{dynamic},
+            <if test="dynamics != null">
+                dynamics = dynamics + #{dynamics},
             </if>
             <if test="animas != null">
                 animas = animas + #{animas}
@@ -125,11 +125,13 @@
         where
         uid1 = #{uid1} and uid2 = #{uid2}
     </update>
+
     <update id="updateFamous">
         update `video` set
         famous = #{num}
         where vid = #{vid}
     </update>
+
     <update id="userdeletevideo">
         update `video`
         set pass = 3
@@ -182,6 +184,7 @@
     <update id="updateTempToken">
         update `user`
         set temptoken = #{token}
+        where uid = #{uid}
     </update>
 
 
@@ -334,6 +337,7 @@
         select uid1 from `follow`
         where
         uid2 = #{uid}
+        and deleted = 0
     </select>
     <select id="getFans" resultType="java.lang.Integer">
         select uid2 from `follow`

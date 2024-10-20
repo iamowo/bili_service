@@ -1,10 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bili.mapper.MessageMapper">
+
     <insert id="sendMessage">
         insert into `whisper`
-        (uid1, uid2, content, type) values (#{uid1}, #{uid2}, #{content}, #{type})
+        (uid1, uid2, content, type, wid) values (#{uid1}, #{uid2}, #{content}, #{type}, #{wid})
     </insert>
+
+    <insert id="addWhisperList"  useGeneratedKeys="true" keyProperty="wid">
+        insert into `whisper_list`
+        (uid1, uid2) values (#{uid1}, #{uid2})
+    </insert>
+    
+    <update id="updateWhisperListTime">
+        update `whisper_list`
+        set time = #{time}
+        where
+        (uid1 = #{uid1} and uid2 = #{uid2})
+        or
+        (uid1 = #{uid2} and uid2 = #{uid1})
+
+    </update>
+
+    <update id="updateWhisperList">
+        update `whisper_list`
+        set
+        deleted = #{deleted}
+        where wid = #{wid}
+    </update>
 
     <select id="getWhiseperList" resultType="com.bili.entity.Message.Whisper">
         select * from `whisper`
@@ -15,7 +38,7 @@
     <select id="getCoverWhisperList" resultType="com.bili.entity.Message.Whisper">
         select * from `whisper`
         where
-        uid1 = #{uid} or uid2 = #{uid}
+        (uid1 = #{uid} or uid2 = #{uid})
         GROUP BY uid1, uid2
         ORDER BY time DESC
     </select>
@@ -39,5 +62,41 @@
         where
         uid = #{uid}
     </select>
+    <select id="existWhisperList" resultType="java.lang.Integer">
+        select count(*) from `whisper_list`
+        where
+        (uid1 = #{uid1} and uid2 = #{uid2})
+        or
+        (uid1 = #{uid2} and uid2 = #{uid1})
+        and deleted = 0
+    </select>
 
+    <select id="getHisAllWhisperList" resultType="com.bili.entity.WhisperList">
+        select * from `whisper_list`
+        where
+        (uid1 = #{uid1} or uid2 = #{uid1})
+        and deleted = 0
+        order by time DESC
+    </select>
+
+    <select id="getLastMapper" resultType="java.lang.String">
+        select content from `whisper`
+        where wid = #{wid}
+        order by time DESC
+        limit 1
+    </select>
+
+    <select id="findWid" resultType="java.lang.Integer">
+        select wid from `whisper_list`
+        where
+        (uid1 = #{uid1} and uid2 = #{uid2})
+        or
+        (uid1 = #{uid2} and uid2 = #{uid1})
+        and deleted = 0
+    </select>
+
+    <select id="getAtinfo" resultType="com.bili.entity.At">
+        select * from `at`
+        where uid2 = #{uid}
+    </select>
 </mapper>

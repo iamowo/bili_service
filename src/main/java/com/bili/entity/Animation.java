@@ -3,15 +3,19 @@ package com.bili.entity;
 import lombok.Data;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Data
 public class Animation {
     private Integer aid;
+    private Integer uid;
     private String title;
-    private Integer chapters;
     private Timestamp publish;
+    private Timestamp time;
     private String intro;
     private String cover;
-    private Integer season;   // 第几季
-    private Integer sid;      // 季 id
+    private Integer chapters;
+
+    // append
+    private List<Integer> vids;
 }

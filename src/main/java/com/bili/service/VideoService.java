@@ -6,10 +6,7 @@ import com.bili.entity.outEntity.OneChunk;
 import com.bili.entity.outEntity.UploadVideoInfos;
 import com.bili.entity.outEntity.VideoInfos;
 import com.bili.entity.temp.TagAndNums;
-import com.bili.mapper.DynamicMapper;
-import com.bili.mapper.SysInfoMapper;
-import com.bili.mapper.UserMapper;
-import com.bili.mapper.VideoMapper;
+import com.bili.mapper.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,6 +28,10 @@ public class VideoService {
     private String videoNet;
     @Value("${url2}")
     private String neturl;
+    @Value("${files.animationPath}")
+    private String animationPath;
+    @Value("${files.animationNet}")
+    private String animationNet;
 
     @Autowired
     private VideoMapper videoMapper;
@@ -40,6 +41,8 @@ public class VideoService {
     private SysInfoMapper sysInfoMapper;
     @Autowired
     private DynamicMapper dynamicMapper;
+    @Autowired
+    private SearchMapper searchMapper;
 
     public List<Video> getAll() {
         List<Video> videos = videoMapper.getAll();
@@ -63,7 +66,6 @@ public class VideoService {
         for (int i = 0; i < video.size(); i++) {
             Integer uid = video.get(i).getUid();
             User user = userMapper.findUid(uid);
-
             video.get(i).setName(user.getName());
             video.get(i).setAvatar(user.getAvatar());
             video.get(i).setUserintro(user.getIntro());
@@ -72,15 +74,83 @@ public class VideoService {
     private void adduserinfoone(Video video) {
         Integer uid = video.getUid();
         User user = userMapper.findUid(uid);
-
         video.setName(user.getName());
         video.setAvatar(user.getAvatar());
         video.setUserintro(user.getIntro());
     }
     public Integer uploadVideoInfos(UploadVideoInfos uploadVideoInfos) throws IOException {
         Video video = new Video();
+        video.setType(uploadVideoInfos.getType());
+        video.setPass(0);
+        Integer aid = -1;
+        Integer animation_list_id = -1;
+        // 添加animation表信息
+        Animation animation = new Animation();
+
+        // base64文件(生成cover)
+        // 封面存放地址
+        String videopath = "";
+        UUID uuid = UUID.randomUUID();
+        if (uploadVideoInfos.getType() == 0) {
+            String path = uploadVideoInfos.getUid() + "/cover/" + uuid + ".png";
+            video.setCover(videoNet + path);       // 网络地址
+            videopath = videoPath + path;   // 存放位置
+        } else {
+            String path = "cover/" + uuid + ".png";
+            video.setCover(animationNet + path);       // 网络地址
+            animation.setCover(animationNet + path);  // 另一个
+            videopath = animationPath + path;   // 存放位置
+        }
+        // 解密==========================================
+        Base64.Decoder decoder = Base64.getDecoder();
+        // 去掉base64前缀
+        String b64file = uploadVideoInfos.getCover();
+        b64file = b64file.substring(b64file.indexOf(",", 1) + 1, b64file.length());
+        byte[] b = decoder.decode(b64file);
+        // 处理数据
+        for (int i = 0; i < b.length; ++i) {
+            if (b[i] < 0) {
+                b[i] += 256;
+            }
+        }
+        // 保存图片=======================================
+        OutputStream out = new FileOutputStream(videopath);
+        out.write(b);
+        out.flush();
+        out.close();
+
+        if (uploadVideoInfos.getType() == 1) {
+            video.setPass(1);                                      // 连续剧某人通过， 不用审核
+            // 插入 animation_list 信息
+            AnimationList animationList = new AnimationList();
+            if (uploadVideoInfos.getAid() == -1) {
+                // 第一次上传
+                animation.setTitle(uploadVideoInfos.getTitle());  // 标题
+                animation.setIntro(uploadVideoInfos.getIntro());
+                animation.setChapters(1);
+                animation.setUid(uploadVideoInfos.getUid());
+                videoMapper.insertAnimation(animation);
+                aid = animation.getAid();
+                animationList.setAid(aid);
+                video.setAid(aid);                                    // 是连续剧， 不是连续剧的话aid = -1
+            } else {
+                // animation 中 chapters + 1
+                videoMapper.updateAnimationChpaters(uploadVideoInfos.getAid(), 1);
+                animationList.setAid(uploadVideoInfos.getAid());
+                video.setAid(uploadVideoInfos.getAid());
+            }
+            animationList.setUid(uploadVideoInfos.getUid());
+            animationList.setSeason(uploadVideoInfos.getSeason());
+            animationList.setChapter(uploadVideoInfos.getChapter());
+            animationList.setChaptertitle(uploadVideoInfos.getChaptertitle());
+            videoMapper.insertAnimationList(animationList);
+            animation_list_id = animationList.getId();
+        }
         video.setUid(uploadVideoInfos.getUid());
         video.setTitle(uploadVideoInfos.getTitle());
+        if (uploadVideoInfos.getType() == 1) {
+            video.setTitle(uploadVideoInfos.getChaptertitle());
+        }
         video.setIntro(uploadVideoInfos.getIntro());
         video.setHashValue(uploadVideoInfos.getHashValue());
         video.setDuration(uploadVideoInfos.getDuration());
@@ -93,6 +163,7 @@ public class VideoService {
         String hh = duration / 3600 < 10 ? "0" + duration / 3600 : "" +  duration / 3600;
         String vidlong = duration >= 3600 ? hh + ":" + mm + ":" + ss : mm + ":" + ss;
         video.setVidlong(vidlong);
+        videoMapper.addInfos(video);    // 插入数据
 
         // 上传文件形式的封面
 //        UUID uuid = UUID.randomUUID();
@@ -105,34 +176,16 @@ public class VideoService {
 //        uploadVideoInfos.getCover().transferTo(coverPath);
 //        // 返回生成的vid
 
-
-        // base64文件
-        UUID uuid = UUID.randomUUID();
-        String path = uploadVideoInfos.getUid() + "/cover/" + uuid + ".png";
-        video.setCover(videoNet + path);    // 网络地址
-        videoMapper.addInfos(video);
-        // 封面存放地址
-        String videopath = videoPath + path;   // 存放位置
-        // 解密
-        Base64.Decoder decoder = Base64.getDecoder();
-        // 去掉base64前缀
-        String b64file = uploadVideoInfos.getCover();
-        b64file = b64file.substring(b64file.indexOf(",", 1) + 1, b64file.length());
-        byte[] b = decoder.decode(b64file);
-        // 处理数据
-        for (int i = 0; i < b.length; ++i) {
-            if (b[i] < 0) {
-                b[i] += 256;
-            }
-        }
-        // 保存图片
-        OutputStream out = new FileOutputStream(videopath);
-        out.write(b);
-        out.flush();
-        out.close();
-
         Integer vid = video.getVid();
+        if (uploadVideoInfos.getType() == 1) {
+            // animation_list  更新vid
+            AnimationList animationList = new AnimationList();
+            animationList.setId(animation_list_id);
+            animationList.setVid(vid);
+            videoMapper.uploadAnimationList(animationList);
+        }
         if (uploadVideoInfos.getListid() != -1) {
+            // 添加到视频列表
             VideoListInfo videoListInfo = new VideoListInfo();
             videoListInfo.setVid(vid);
             videoListInfo.setListid(uploadVideoInfos.getListid());
@@ -179,7 +232,7 @@ public class VideoService {
         res.put("vid", thisvid);
         return res;
     }
-    public void mergeChunks(Integer uid, Integer vid) throws IOException {
+    public void mergeChunks(Integer uid, Integer vid, Integer type) throws IOException {
         String rPath = videoPath + uid + "/temp/";
         File rFile = new File(rPath);
         File[] files = rFile.listFiles();
@@ -188,10 +241,16 @@ public class VideoService {
 
         UUID uuid = UUID.randomUUID();
         String videotype = files[0].toString().split("\\.")[1];
-        String resPath = videoPath + uid + "/video/" + uuid + "." + videotype;
-        String netVideoPath = videoNet + uid + "/video/" + uuid + "." + videotype;
+        String resPath = "";                // 存储地址
+        String netVideoPath = "";           // 网络地址
+        if (type == 0) {
+            resPath = videoPath + uid + "/video/" + uuid + "." + videotype;
+            netVideoPath = videoNet + uid + "/video/" + uuid + "." + videotype;
+        } else {
+            resPath = animationPath + "resource/" + uuid + "." + videotype;
+            netVideoPath = animationNet + "resource/" + uuid + "." + videotype;
+        }
         File resFile = new File(resPath);         // 合并后的文件
-
         BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(resFile));
         // 向合并文件写的流
         RandomAccessFile raf_rw = new RandomAccessFile(resFile, "rw");
@@ -622,6 +681,14 @@ public class VideoService {
 
     public List<Dm> getDm(Integer vid) {
         List<Dm> res = videoMapper.getDm(vid);
+        for (int i = 0; i < res.size(); i++) {
+            Integer t = res.get(i).getSendtime();
+            String hh = t / 3600 >= 10 ?  "" + t / 3600 : "0" + t / 3600;
+            String mm = t / 60 >= 10 ? "" + t / 60 : "0" + t / 60;
+            String ss = t % 60 >= 10 ? "" + t % 60 : "0" + t % 60;
+            String type = t >= 3600 ? hh+":"+mm+":"+ss  : mm+":"+ss;
+            res.get(i).setTypetime(type);
+        }
         return res;
     }
 
@@ -629,6 +696,8 @@ public class VideoService {
         List<String> res1 = videoMapper.searchName(keyword);
         List<String> res2 = videoMapper.searchTilte(keyword);
         res1.addAll(res2);
+        // 添加hot_keyword
+//        searchMapper.addKeyword(uid, keyword);
         return res2;
     }
 
@@ -653,6 +722,14 @@ public class VideoService {
         return res;
     }
 
+    public List<User> getFollowedUser(Integer uid) {
+        List<User> res = new ArrayList<>();
+        List<Integer> follows = userMapper.finfAllFollows(uid);
+        for (int i = 0; i < follows.size(); i++) {
+            res.add(userMapper.getByUid(follows.get(i)));
+        }
+        return res;
+    }
     public List<Video> getHomeDynamic(Integer uid) {
         List<Video> res = new ArrayList<>();
         List<Integer> follows = userMapper.finfAllFollows(uid);

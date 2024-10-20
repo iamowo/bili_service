@@ -1,5 +1,6 @@
 package com.bili.controler;
 
+import com.bili.entity.At;
 import com.bili.entity.LikeInfo;
 import com.bili.entity.Message.Whisper;
 import com.bili.entity.Message.WhisperCover;
@@ -30,7 +31,7 @@ public class MessageController {
         }
     }
 
-    // 获取全部私信
+    // 获取私信内容
     @GetMapping("/getWhisperConent/{uid}/{hisuid}")
     public Response getWhisperConent (@PathVariable Integer uid, @PathVariable Integer hisuid) {
         try {
@@ -41,6 +42,7 @@ public class MessageController {
         }
     }
 
+    // 发送私信（文字）
     @PostMapping("/sendMessage")
     public Response sendMessage (@RequestBody Whisper whisper) {
         try {
@@ -51,6 +53,7 @@ public class MessageController {
         }
     }
 
+    // 发送私信 （图片）
     @PostMapping("/sendImg")
     public Response sendImg (Whisper whisper) {
         try {
@@ -77,6 +80,27 @@ public class MessageController {
         try {
             List<LikeInfo> res = messageService.getLikeinfo(uid);
             return Response.success(res);
+        } catch (Exception e) {
+            return Response.failure(500, "error: "+e);
+        }
+    }
+
+    @GetMapping("/getAtinfo/{uid}")
+    public Response getAtinfo (@PathVariable Integer uid) {
+        try {
+            List<At> res = messageService.getAtinfo(uid);
+            return Response.success(res);
+        } catch (Exception e) {
+            return Response.failure(500, "error: "+e);
+        }
+    }
+
+    // 修改deleted
+    @GetMapping("/updateWhisperList/{wid}/{deleted}")
+    public Response updateWhisperList (@PathVariable Integer wid, @PathVariable Integer deleted) {
+        try {
+            messageService.updateWhisperList(wid, deleted);
+            return Response.success(200);
         } catch (Exception e) {
             return Response.failure(500, "error: "+e);
         }
