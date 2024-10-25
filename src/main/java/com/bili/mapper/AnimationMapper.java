@@ -9,13 +9,13 @@ import java.util.List;
 
 @Mapper
 public interface AnimationMapper {
-    List<Animation> getAnimationList();
+    List<AnimationSublist> getAnimationList(Integer uid);
 
     List<AnimationList> getAllByAid(Integer aid);
 
-    void subthisAnimation(Integer uid, Integer uid1);
+    void subthisAnimation(Integer uid, Integer aid);
 
-    void cnacleAnimation(Integer id, Integer deleted);
+    void cnacleAnimation(Integer uid, Integer aid);
 
     Integer hadSubed(Integer uid, Integer aid);
 
@@ -24,4 +24,6 @@ public interface AnimationMapper {
     Animation getAnimationByAid(Integer aid);
 
     List<Animation> getAnimationByKeyword(String keyword);
+
+    Integer userLikeIt(Integer uid, Integer aid);
 }

@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
@@ -121,10 +122,10 @@ public class UserController {
     }
 
     // 获取关注
-    @GetMapping("/getFollow/{uid}")
-    public Response getFollow (@PathVariable Integer uid) {
+    @PostMapping("/getFollow")
+    public Response getFollow (@RequestBody Map<String, Object> map) {
         try {
-            List<User> res = userService.getFollow(uid);
+            Map<String, Object> res = userService.getFollow(map);
             return Response.success(res);
         } catch (Exception e) {
             return Response.failure(500,"error:"+e);
@@ -132,10 +133,11 @@ public class UserController {
     }
 
     // 获取粉丝
-    @GetMapping("/getFans/{uid}")
-    public Response getFans (@PathVariable Integer uid) {
+//    @GetMapping("/getFans/{uid}/{page}/{nums}/{keyword}")
+    @PostMapping("/getFans")
+    public Response getFans (@RequestBody Map<String, Object> map) {
         try {
-            List<User> res = userService.getFans(uid);
+            Map<String, Object> res = userService.getFans(map);
             return Response.success(res);
         } catch (Exception e) {
             return Response.failure(500,"error:"+e);
@@ -191,6 +193,17 @@ public class UserController {
         try {
             userService.changeSetting(userSetting);
             return Response.success(200);
+        } catch (Exception e) {
+            return Response.failure(500, "error");
+        }
+    }
+
+    // 得到用户数据
+    @GetMapping("/getUserData")
+    public Response getUserData(@RequestParam Integer uid) {
+        try {
+            Map<String, Integer> res = userService.getUserData(uid);
+            return Response.success(res);
         } catch (Exception e) {
             return Response.failure(500, "error");
         }

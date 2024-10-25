@@ -273,4 +273,11 @@ public class DynamicService {
         res.setName(user.getName());
         return res;
     }
+
+    public List<Dynamic> getDynamicByKeyword(Integer uid, String keyword) {
+        List<Dynamic> res = dynamicMapper.getDynamicByKeyword(uid, keyword);
+        addUserinfo(res);     // 添加用户信息
+        dealtype(res);        // 处理 type
+        return res;
+    }
 }

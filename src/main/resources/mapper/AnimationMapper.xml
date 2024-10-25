@@ -9,17 +9,19 @@
 
     <update id="cnacleAnimation">
         update `animation_sublist`
-        set deleted = #{deleted}
-        where id = #{id}
+        set deleted = 1
+        where uid = #{uid} and aid = #{aid}
     </update>
+
     <update id="updateingfo">
         update `animation_sublist`
         set deleted = #{deleted}
         where uid = #{uid} and aid = #{aid}
     </update>
 
-    <select id="getAnimationList" resultType="com.bili.entity.Animation">
-        select * from `animation`
+    <select id="getAnimationList" resultType="com.bili.entity.AnimationSublist">
+        select * from `animation_sublist`
+        where uid = #{uid} and deleted = 0
     </select>
 
     <select id="getAllByAid" resultType="com.bili.entity.AnimationList">
@@ -41,5 +43,10 @@
     <select id="getAnimationByKeyword" resultType="com.bili.entity.Animation">
         select * from `animation`
         where title like concat('%', #{keyword}, '%')
+    </select>
+
+    <select id="userLikeIt" resultType="java.lang.Integer">
+        select count(*) from `animation_sublist`
+        where uid = #{uid} and aid = #{aid} and deleted = 0
     </select>
 </mapper>

@@ -3,7 +3,7 @@
 <mapper namespace="com.bili.mapper.DynamicMapper">
     <insert id="sendDynamic" useGeneratedKeys="true" keyProperty="id">
         insert into `dynamic`
-        (uid, content, type, vordid, topical) values (#{uid}, #{content}, #{type}, #{vordid}, #{topical})
+        (uid, content, type, vordid, topical, vordid) values (#{uid}, #{content}, #{type}, #{vordid}, #{topical}, #{vordid})
     </insert>
 
     <insert id="addDyimgs">
@@ -122,6 +122,12 @@
     <select id="getOneTopical" resultType="com.bili.entity.Topical">
         select * from `topical`
         where topical = #{topical}
+    </select>
+    <select id="getDynamicByKeyword" resultType="com.bili.entity.Dynamic">
+        select * from `dynamic`
+        where uid = #{uid}
+        and content like concat('%', #{keyword}, '%')
+        and deleted = 0
     </select>
 
 

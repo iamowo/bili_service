@@ -402,6 +402,49 @@
         where listid = #{listid}
     </select>
 
+    <select id="getOneMounthPlays" resultType="java.lang.Integer">
+        select count(*) from `watch_info`
+        where uid = #{uid}
+        and DATE_SUB(CURDATE(),  INTERVAL 1 MONTH) &lt;= date(time);
+    </select>
+
+    <select id="getOneMounthDms" resultType="java.lang.Integer">
+        select count(*) from `dm`
+        where vid = #{vid}
+        and DATE_SUB(CURDATE(),  INTERVAL 1 MONTH) &lt;= date(time);
+    </select>
+
+    <select id="getOneMounthLikes" resultType="java.lang.Integer">
+        select count(*) from `like_info`
+        where hisuid = #{uid}
+        and DATE_SUB(CURDATE(),  INTERVAL 1 MONTH) &lt;= date(time);
+    </select>
+
+    <select id="getOneMounthShares" resultType="java.lang.Integer">
+        select count(*) from `share_info`
+        where vid = #{vid}
+        and DATE_SUB(CURDATE(),  INTERVAL 1 MONTH) &lt;= date(time);
+    </select>
+
+    <select id="getOneMounthCollects" resultType="java.lang.Integer">
+        select count(*) from `fav_info`
+        where vid = #{vid}
+        and DATE_SUB(CURDATE(),  INTERVAL 1 MONTH) &lt;= date(time);
+    </select>
+
+    <select id="getOneMounthIcons" resultType="java.lang.Integer">
+        select count(*) from `icon_info`
+        where vid = #{vid}
+        and DATE_SUB(CURDATE(),  INTERVAL 1 MONTH) &lt;= date(time);
+    </select>
+
+    <select id="getVideoByKeyword" resultType="com.bili.entity.Video">
+        select * from `video`
+        where uid = #{uid}
+        and title like concat('%', #{keyword}, '%')
+        and pass = 1
+    </select>
+
     <delete id="deletedLike">
         delete from `like_info`
         where uid = #{uid} and vid = #{vid} and type = 0

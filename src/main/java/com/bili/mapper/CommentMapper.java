@@ -30,4 +30,6 @@ public interface CommentMapper {
     List<Comment> getReplayComment(Integer uid);
 
     void addAt(At at);
+
+    Integer getOneMounthComments(Integer uid);
 }

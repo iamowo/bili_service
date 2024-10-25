@@ -7,8 +7,10 @@ import com.bili.entity.Video;
 import com.bili.entity.outEntity.RegisterUser;
 import com.bili.entity.outEntity.UpdateUser;
 import com.bili.entity.outEntity.UserData;
+import com.bili.mapper.CommentMapper;
 import com.bili.mapper.FavlistMapper;
 import com.bili.mapper.UserMapper;
+import com.bili.mapper.VideoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,6 +32,10 @@ public class UserService {
     private UserMapper userMapper;
     @Autowired
     private FavlistMapper favlistMapper;
+    @Autowired
+    private VideoMapper videoMapper;
+    @Autowired
+    private CommentMapper commentMapper;
 
     public User getByUid(Integer uid) {
         User res = userMapper.getByUid(uid);
@@ -192,23 +198,41 @@ public class UserService {
         }
     }
 
-    public List<User> getFollow(Integer uid) {
-        List<Integer> uids = userMapper.finfAllFollows(uid);
-        List<User> res = new ArrayList<>();
+    public Map<String, Object> getFollow(Map<String, Object> map) {
+        Integer uid = (Integer) map.get("uid");
+        Integer page = (Integer) map.get("page");
+        Integer nums = (Integer) map.get("nums");
+        String keyword = (String) map.get("keyword");
+
+        Map<String, Object> res = new HashMap<>();
+        Integer len = userMapper.getFollowsLength(uid, keyword);
+        List<Integer> uids = userMapper.finfAllFollows(uid, (page - 1) * nums, nums, keyword);
+        List<User> users = new ArrayList<>();
         for (Integer uid2 : uids) {
             User u = userMapper.getByUid(uid2);
-            res.add(u);
+            users.add(u);
         }
+        res.put("list", users);
+        res.put("len", len);
         return res;
     }
 
-    public List<User> getFans(Integer uid) {
-        List<Integer> uids = userMapper.getFans(uid);
-        List<User> res = new ArrayList<>();
+    public Map<String ,Object> getFans(Map<String, Object> map) {
+        Integer uid = (Integer) map.get("uid");
+        Integer page = (Integer) map.get("page");
+        Integer nums = (Integer) map.get("nums");
+        String keyword = (String) map.get("keyword");
+
+        Map<String, Object> res = new HashMap<>();
+        Integer len = userMapper.getFansLength(uid, keyword);
+        List<Integer> uids = userMapper.getFans(uid, (page - 1) * nums, nums, keyword);
+        List<User> users = new ArrayList<>();
         for (Integer uid2 : uids) {
             User u = userMapper.getByUid(uid2);
-            res.add(u);
+            users.add(u);
         }
+        res.put("list", users);
+        res.put("len", len);
         return res;
     }
 
@@ -231,5 +255,28 @@ public class UserService {
 
     public void updateTempToken(String token, Integer uid) {
         userMapper.updateTempToken(token, uid);
+    }
+
+    public Map<String, Integer> getUserData(Integer uid) {
+        Map<String, Integer> res = new HashMap<>();
+        res.put("fans", userMapper.getOneMounthFans(uid));
+        res.put("plays", videoMapper.getOneMounthPlays(uid));
+        res.put("comments", commentMapper.getOneMounthComments(uid));
+        res.put("likes", videoMapper.getOneMounthLikes(uid));
+
+        List<Video> vids = videoMapper.getAllv(uid);
+        int dms = 0, shares = 0, collects = 0, icons = 0;
+        for (int i = 0; i < vids.size(); i++) {
+            Integer thisvid = vids.get(i).getVid();
+            dms += videoMapper.getOneMounthDms(thisvid);
+            shares += videoMapper.getOneMounthShares(thisvid);
+            collects += videoMapper.getOneMounthCollects(thisvid);
+            icons += videoMapper.getOneMounthIcons(thisvid);
+        }
+        res.put("dms", dms);
+        res.put("shares", shares);
+        res.put("collects", collects);
+        res.put("icons", icons);
+        return res;
     }
 }

@@ -8,6 +8,7 @@ import com.bili.entity.outEntity.VideoInfos;
 import com.bili.entity.temp.TagAndNums;
 import com.bili.service.VideoService;
 import com.bili.util.Response;
+import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -459,6 +460,16 @@ public class VideoController {
     public Response getAllMainTag () {
         try {
             List<TagAndNums> res = videoService.getAllMainTag();
+            return Response.success(res);
+        } catch (Exception e) {
+            return Response.failure(500, "error: "+e);
+        }
+    }
+
+    @GetMapping("/getVideoByKeyword")
+    public Response getVideoByKeyword (@RequestParam ("uid") Integer uid, @RequestParam ("keyword") String keyword) {
+        try {
+            List<Video> res = videoService.getVideoByKeyword(uid, keyword);
             return Response.success(res);
         } catch (Exception e) {
             return Response.failure(500, "error: "+e);

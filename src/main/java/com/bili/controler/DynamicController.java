@@ -4,6 +4,7 @@ import com.bili.entity.*;
 import com.bili.entity.outEntity.UpDynamicimgs;
 import com.bili.service.DynamicService;
 import com.bili.util.Response;
+import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -149,6 +150,16 @@ public class DynamicController {
     public Response getDynamicByTopical (@PathVariable String topical, @PathVariable Integer uid, @PathVariable Integer sort) {
         try {
             List<Dynamic> res = dynamicService.getDynamicByTopical(topical, uid, sort);
+            return Response.success(res);
+        } catch (Exception e) {
+            return Response.failure(500, "error: "+e);
+        }
+    }
+
+    @GetMapping("/getDynamicByKeyword")
+    public Response getDynamicByKeyword (@RequestParam ("uid") Integer uid, @RequestParam ("keyword") String keyword) {
+        try {
+            List<Dynamic> res = dynamicService.getDynamicByKeyword(uid, keyword);
             return Response.success(res);
         } catch (Exception e) {
             return Response.failure(500, "error: "+e);

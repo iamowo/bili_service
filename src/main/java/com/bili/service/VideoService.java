@@ -724,7 +724,7 @@ public class VideoService {
 
     public List<User> getFollowedUser(Integer uid) {
         List<User> res = new ArrayList<>();
-        List<Integer> follows = userMapper.finfAllFollows(uid);
+        List<Integer> follows = userMapper.finfAllFollows(uid, 0, 0, "");
         for (int i = 0; i < follows.size(); i++) {
             res.add(userMapper.getByUid(follows.get(i)));
         }
@@ -732,7 +732,7 @@ public class VideoService {
     }
     public List<Video> getHomeDynamic(Integer uid) {
         List<Video> res = new ArrayList<>();
-        List<Integer> follows = userMapper.finfAllFollows(uid);
+        List<Integer> follows = userMapper.finfAllFollows(uid, 0, 0, "");
         for (int i = 0; i < follows.size(); i++) {
             List<Video> temp = videoMapper.getVideoByUid(follows.get(i));
             res.addAll(temp);
@@ -883,5 +883,11 @@ public class VideoService {
 
     public void chanegListInfo(VideoList videoList) {
         videoMapper.chanegListInfo(videoList);
+    }
+
+    public List<Video> getVideoByKeyword(Integer uid, String keyword) {
+        List<Video> res = videoMapper.getVideoByKeyword(uid, keyword);
+        adduserinfo(res);
+        return res;
     }
 }

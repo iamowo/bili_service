@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bili.mapper.OrderMapper">
+
+    <insert id="addOrders" useGeneratedKeys="true" keyProperty="id">
+        insert into `order`
+        (uid, totalAmount, product) values (#{uid}, #{totalAmount}, #{product})
+    </insert>
+
+
+    <update id="updateById">
+        update `order`
+        set
+        where id = #{id}
+    </update>
+
+    <update id="dealDone">
+        update `order`
+        set
+        status = 1
+        where id = #{id}
+    </update>
+
+    <select id="getByOrderId" resultType="com.bili.entity.Orders">
+        select * from `order`
+        where
+        id = #{id}
+    </select>
+</mapper>

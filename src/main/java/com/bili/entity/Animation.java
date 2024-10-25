@@ -18,4 +18,5 @@ public class Animation {
 
     // append
     private List<Integer> vids;
+    private Boolean liked;
 }

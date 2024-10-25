@@ -21,8 +21,19 @@ public class AnimationService {
 
     @Autowired
     private VideoMapper videoMapper;
-    public List<Animation> getAnimationList() {
-        return animationMapper.getAnimationList();
+    public List<Animation> getAnimationList(Integer uid) {
+        // 带uid，获得个人收藏的
+        List<AnimationSublist> lists = animationMapper.getAnimationList(uid);
+        List<Animation> res =  new ArrayList<>();
+        for (int i = 0; i < lists.size(); i++) {
+            Integer aid = lists.get(i).getAid();
+            Animation temp = animationMapper.getAnimationByAid(aid);
+            temp.setLiked(UserLikeIt(uid, aid));
+            // 获取每个视频的vid
+            addAnimationVid(temp);
+            res.add(temp);
+        }
+        return res;
     }
 
     public List<List<AnimationList>> getSeasons(Integer aid) {
@@ -54,14 +65,19 @@ public class AnimationService {
         }
     }
 
-    public void cnacleAnimation(Integer id, Integer deleted) {
-        animationMapper.cnacleAnimation(id, deleted);
+    public void cnacleAnimation(Integer uid, Integer aid) {
+        animationMapper.cnacleAnimation(uid, aid);
     }
 
-    public Animation getAnimationByVid(Integer vid) {
+    public Animation getAnimationByVid(Integer vid, Integer uid) {
         Video v = videoMapper.getByVid(vid);
         Integer aid = v.getAid();
         Animation res = animationMapper.getAnimationByAid(aid);
+        if (uid == -1) {
+            res.setLiked(false);
+        } else {
+            res.setLiked(UserLikeIt(uid, vid));
+        }
         return res;
     }
 
@@ -77,5 +93,24 @@ public class AnimationService {
             res.get(i).setVids(vids);
         }
         return res;
+    }
+
+    // 添加所有视频的vid
+    private void addAnimationVid (Animation animation) {
+        Integer aid = animation.getAid();
+        List<AnimationList> anis = animationMapper.getAllByAid(aid);
+        List<Integer> vids = new ArrayList<>();
+        for (int j = 0; j < anis.size(); j++) {
+            vids.add(anis.get(j).getVid());
+        }
+        animation.setVids(vids);
+    }
+    // 判断是否追剧
+    private boolean UserLikeIt(Integer uid, Integer aid) {
+        Integer exist = animationMapper.userLikeIt(uid, aid);
+        if (exist == 0) {
+            return false;
+        }
+        return true;
     }
 }

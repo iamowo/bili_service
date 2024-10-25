@@ -187,112 +187,6 @@
         where uid = #{uid}
     </update>
 
-
-    <!--    <insert id="addfan">-->
-<!--        update `user` set fan_num = fan_num + 1 where uid = #{hisid}-->
-<!--    </insert>-->
-<!--    <update id="addsub">-->
-<!--        update `user` set sub_num = sub_num + 1 where uid = #{yourid}-->
-<!--    </update>-->
-
-<!--    <update id="updateUser">-->
-<!--        &lt;!&ndash;        update `user` set user_name = #{userName}, introduction = #{introduction} where uid = #{uid}&ndash;&gt;-->
-<!--        update `user`-->
-<!--        <set>-->
-<!--            <if test="userName != null">-->
-<!--                user_name = #{userName},-->
-<!--            </if>-->
-<!--            <if test="fanNum != null">-->
-<!--                fan_num = #{fanNum},-->
-<!--            </if>-->
-<!--            <if test="introduction != null">-->
-<!--                introduction = #{introduction},-->
-<!--            </if>-->
-<!--            <if test="avatar != null">-->
-<!--                avatar = #{avatar},-->
-<!--            </if>-->
-<!--            <if test="uuid != null">-->
-<!--                uuid = #{uuid},-->
-<!--            </if>-->
-<!--            <if test="account != null">-->
-<!--                account = #{account},-->
-<!--            </if>-->
-<!--            <if test="password != null">-->
-<!--                password = #{password},-->
-<!--            </if>-->
-<!--            <if test="subNum != null">-->
-<!--                sub_num = #{subNum},-->
-<!--            </if>-->
-<!--            <if test="createTime != null">-->
-<!--                create_time = #{createTime},-->
-<!--            </if>-->
-<!--            <if test="trendsNum != null">-->
-<!--                trends_num = #{trendsNum},-->
-<!--            </if>-->
-<!--            <if test="vidNum != null">-->
-<!--                vid_num = #{vidNum},-->
-<!--            </if>-->
-<!--            <if test="birthday != null">-->
-<!--                birthday = #{birthday},-->
-<!--            </if>-->
-<!--            <if test="qianming != null">-->
-<!--                qianming = #{qianming},-->
-<!--            </if>-->
-<!--            <if test="gonggao != null">-->
-<!--                gonggao = #{gonggao}-->
-<!--            </if>-->
-<!--        </set>-->
-<!--        <where>-->
-<!--            uid = #{uid}-->
-<!--        </where>-->
-<!--    </update>-->
-<!--    <update id="changeState">-->
-<!--        update `user`-->
-<!--        <set>-->
-<!--            <if test="his_flag != null">-->
-<!--                his_flag = !his_flag-->
-<!--            </if>-->
-<!--        </set>-->
-<!--        <where>-->
-<!--            uid = #{uid}-->
-<!--        </where>-->
-<!--    </update>-->
-<!--    &lt;!&ndash;  减去个关注  &ndash;&gt;-->
-<!--    <update id="subtractsub">-->
-<!--        update `user` set sub_num = sub_num - 1 where uid = #{yourid}-->
-<!--    </update>-->
-<!--    &lt;!&ndash;  减去一个粉丝  &ndash;&gt;-->
-<!--    <update id="subtractfan">-->
-<!--        update `user` set fan_num = fan_num - 1 where uid = #{hisid}-->
-<!--    </update>-->
-
-<!--    <delete id="deleteUser">-->
-<!--        delete from `user` where uid = #{uid}-->
-<!--    </delete>-->
-
-<!--    <select id="getById" resultType="pilipili.entity.User">-->
-<!--        select * from `user` where uid = #{uid}-->
-<!--    </select>-->
-
-<!--    <select id="getAll" resultType="pilipili.entity.User">-->
-<!--        select * from `user`-->
-<!--    </select>-->
-
-<!--    <select id="findPage" resultType="pilipili.entity.User">-->
-<!--        select * from `user` limit #{pageNum}, #{pageSize}-->
-<!--    </select>-->
-
-<!--    <select id="total" resultType="java.lang.Integer">-->
-<!--        select count(*) from `user`-->
-<!--    </select>-->
-
-<!--    <select id="getByAccount" resultType="pilipili.entity.User">-->
-<!--        select * from `user` where account = #{account}-->
-<!--    </select>-->
-<!--    <select id="getByWord" resultType="pilipili.entity.User">-->
-<!--        select * from `user` where user_name like CONCAT('%',#{keyword},'%')-->
-<!--    </select>-->
-
     <select id="findAccount" resultType="com.bili.entity.User">
         select * from `user`
         where account = #{account}
@@ -338,12 +232,43 @@
         where
         uid2 = #{uid}
         and deleted = 0
+        <if test="keyword != null and keyword !=''">
+            and name like concat('%', #{keyword}, '%')
+        </if>
+        <if test="nums != 0">
+            limit #{page}, #{nums}
+        </if>
     </select>
+
+    <select id="getFollowsLength" resultType="java.lang.Integer">
+        select count(*) from `follow`
+        where uid2 = #{uid}
+<!--        <if test="keyword != null and keyword !=''">-->
+<!--            and name like concat('%', #{keyword}, '%')-->
+<!--        </if>-->
+    </select>
+
+    <select id="getFansLength" resultType="java.lang.Integer">
+        select count(*) from `follow`
+        where uid1 = #{uid}
+<!--        <if test="keyword != null and keyword !=''">-->
+<!--            and name like concat('%', #{keyword}, '%')-->
+<!--        </if>-->
+    </select>
+
     <select id="getFans" resultType="java.lang.Integer">
         select uid2 from `follow`
         where
         uid1 = #{uid}
+        and deleted = 0
+        <if test="keyword != null and keyword !=''">
+            and name like concat('%', #{keyword}, '%')
+        </if>
+        <if test="nums != 0">
+            limit #{page}, #{nums}
+        </if>
     </select>
+
     <select id="findAccount2" resultType="java.lang.Integer">
         select count(*)
         from `user`
@@ -353,6 +278,14 @@
     <select id="getSetting" resultType="com.bili.entity.UserSetting">
         select * from `user_setting`
         where uid = #{uid}
+    </select>
+
+<!--    原符号 	  < 	   <= 	   > 	   >= 	    & 	     ' 	      "
+        替换符号 	&lt; 	&lt;= 	&gt; 	&gt;= 	&amp; 	&apos; 	&quot;-->
+    <select id="getOneMounthFans" resultType="java.lang.Integer">
+        select count(*) from `follow`
+        where uid1 = #{uid}
+        and DATE_SUB(CURDATE(),  INTERVAL 1 MONTH) &lt;= date(time);
     </select>
 
 </mapper>

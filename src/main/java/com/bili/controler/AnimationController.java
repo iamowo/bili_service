@@ -21,10 +21,10 @@ public class AnimationController {
     private AnimationService animationService;
 
 
-    @GetMapping("/getAnimationList")
-    public Response getAnimationList () {
+    @GetMapping("/getAnimationList/{uid}")
+    public Response getAnimationList (@PathVariable Integer uid) {
         try {
-            List<Animation> res = animationService.getAnimationList();
+            List<Animation> res = animationService.getAnimationList(uid);
             return Response.success(res);
         } catch (Exception e) {
             return Response.failure(500, "error: "+e);
@@ -51,20 +51,20 @@ public class AnimationController {
         }
     }
 
-    @GetMapping("/cnacleAnimation/{id}/{deleted}")
-    public Response cnacleAnimation (@PathVariable Integer id, @PathVariable Integer deleted) {
+    @GetMapping("/cnacleAnimation/{uid}/{aid}")
+    public Response cnacleAnimation (@PathVariable Integer uid, @PathVariable Integer aid) {
         try {
-            animationService.cnacleAnimation(id, deleted);
+            animationService.cnacleAnimation(uid, aid);
             return Response.success(200);
         } catch (Exception e) {
             return Response.failure(500, "error: "+e);
         }
     }
 
-    @GetMapping("/getAnimationByVid/{vid}")
-    public Response getAnimationByVid (@PathVariable Integer vid) {
+    @GetMapping("/getAnimationByVid/{vid}/{uid}")
+    public Response getAnimationByVid (@PathVariable Integer vid, @PathVariable Integer uid) {
         try {
-            Animation res = animationService.getAnimationByVid(vid);
+            Animation res = animationService.getAnimationByVid(vid, uid);
             return Response.success(res);
         } catch (Exception e) {
             return Response.failure(500, "error: "+e);

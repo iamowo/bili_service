@@ -16,6 +16,15 @@ public class AuthWebMvcConfigurer implements WebMvcConfigurer {
 
     @Value("${url2}")
     private String url2;
+    String[] urls = new String[]{"/user/login", "/user/register",  "/user/findAccount/**", "/user/getByUidFollowed/**","/user/getByUidWithToken/**",
+                                    "/video/getAllVideo","/video/getByVid/**", "/video/getRandom", "/video/getDm/**", "/video/getVideoLikely/**", "/video/searchKw/**",
+                                    "/video/getByMaintag/**", "/video/getAllMainTag", "/video/**",
+                                    "/comment/getAllComment", "/comment/getAllComment/**",
+                                    "/sys/**",
+                                    "/avatar/**",
+                                    "/animation/getSeasons/**",
+                                    "/alipay/**"
+                                  };
     /**
      * 给除了 /login 的接口都配置拦截器,拦截转向到 authHandlerInterceptor
      */
@@ -25,16 +34,7 @@ public class AuthWebMvcConfigurer implements WebMvcConfigurer {
         // excludePathPatterns为不拦截此路径的请求
         registry.addInterceptor(authHandlerInterceptor)
                 .addPathPatterns("/**")
-                .excludePathPatterns(
-                        "/user/login", "/user/register",  "/user/findAccount/**", "/user/getByUidFollowed/**",
-                        "/user/getByUidWithToken/**",
-                        "/video/getAllVideo","/video/getByVid/**", "/video/getRandom",
-                        "/video/getDm/**", "/video/getVideoLikely/**", "/video/searchKw/**",
-                        "/video/getByMaintag/**", "/video/getAllMainTag",
-                        "/comment/getAllComment", "/comment/getAllComment/**",
-                        "/video/**", "/sys/**", "/avatar/**",
-                        "/animation/getSeasons/**"
-                        );
+                .excludePathPatterns(urls);
         //    /video/** 时资源地址， 应更改
     }
 }

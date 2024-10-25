@@ -44,8 +44,8 @@ public interface UserMapper {
 
     void updateFamous(Integer vid, int num);
 
-    List<Integer> finfAllFollows(Integer uid);
-    List<Integer> getFans(Integer uid);
+    List<Integer> finfAllFollows(Integer uid, Integer page, Integer nums, String keyword);
+    List<Integer> getFans(Integer uid, Integer page, Integer nums, String keyword);
 
     void userdeletevideo(Integer vid);
 
@@ -62,4 +62,10 @@ public interface UserMapper {
     void changeSetting(UserSetting userSetting);
 
     void updateTempToken(String token, Integer uid);
+
+    Integer getOneMounthFans(Integer uid);
+
+    Integer getFansLength(Integer uid, String keyword);
+
+    Integer getFollowsLength(Integer uid, String keyword);
 }

@@ -153,4 +153,17 @@ public interface VideoMapper {
 
     void updateAnimationChpaters(Integer aid, int num);
 
+    Integer getOneMounthPlays(Integer uid);
+
+    Integer getOneMounthDms(Integer vid);
+
+    Integer getOneMounthLikes(Integer uid);
+
+    Integer getOneMounthShares(Integer vid);
+
+    Integer getOneMounthCollects(Integer vid);
+
+    Integer getOneMounthIcons(Integer vid);
+
+    List<Video> getVideoByKeyword(Integer uid, String keyword);
 }

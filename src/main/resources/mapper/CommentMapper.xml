@@ -80,4 +80,10 @@
         (fid = #{uid})
         order by time DESC
     </select>
+
+    <select id="getOneMounthComments" resultType="java.lang.Integer">
+        select count(*) from `comment`
+        where hisuid = #{uid}
+        and DATE_SUB(CURDATE(),  INTERVAL 1 MONTH) &lt;= date(time);
+    </select>
 </mapper>
