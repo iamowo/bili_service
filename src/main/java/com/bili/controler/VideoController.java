@@ -41,6 +41,17 @@ public class VideoController {
         }
     }
 
+    // 下滑加载更过（每次多加载5个）
+    @GetMapping("/getSomeVideos")
+    public Response getSomeVideos(@RequestParam("vids") List<Integer> vids, @RequestParam("num") Integer num) {
+        try {
+            List<Video> res = videoService.getSomeVideos(vids, num);
+            return Response.success(res);
+        } catch (Exception e) {
+            return Response.failure(500, "error: "+e);
+        }
+    }
+
     // 获取莫个人的视频
     @GetMapping("/getVideoByUid/{uid}/{nums}")
     public Response getVideoByUid(@PathVariable Integer uid, @PathVariable Integer nums) {
@@ -64,10 +75,10 @@ public class VideoController {
     }
 
     // 随机推荐（未登录）
-    @GetMapping("/getRandom")
-    public Response getRandom() {
+    @GetMapping("/getRandom/{num}")
+    public Response getRandom(@PathVariable Integer num) {
         try {
-            List<Video> res = videoService.getRandom();
+            List<Video> res = videoService.getRandom(num);
             return Response.success(res);
         } catch (Exception e) {
             return Response.failure(500, "error: "+e);
@@ -471,6 +482,28 @@ public class VideoController {
         try {
             List<Video> res = videoService.getVideoByKeyword(uid, keyword);
             return Response.success(res);
+        } catch (Exception e) {
+            return Response.failure(500, "error: "+e);
+        }
+    }
+
+
+    // 分类
+    @GetMapping("/getAllClassify")
+    public Response getAllClassify () {
+        try {
+            List<VideoClassify> res = videoService.getAllClassify();
+            return Response.success(res);
+        } catch (Exception e) {
+            return Response.failure(500, "error: "+e);
+        }
+    }
+
+    @GetMapping("/addClassify/{value}")
+    public Response addClassify (@PathVariable String value) {
+        try {
+            videoService.addClassify(value);
+            return Response.success(200);
         } catch (Exception e) {
             return Response.failure(500, "error: "+e);
         }

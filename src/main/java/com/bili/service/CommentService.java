@@ -80,8 +80,10 @@ public class CommentService {
         List<Comment> res = new ArrayList<>();
         if (type == 0) {
             res.addAll(commentMapper.getAllComment(id, order));
-        } else {
+        } else if (type == 1){
             res.addAll(commentMapper.getAllComment2(id, order));
+        } else if (type == 2) {
+            res.addAll(commentMapper.getAllComment3(id, order));
         }
         loadinfos(res);
         if (uid != -1) {
@@ -124,6 +126,9 @@ public class CommentService {
             // 动态
             Integer did = comment.getDid();
             videoMapper.chnageCommentNumDynamic(1, did);
+            commentMapper.addComment(comment);
+        } else if (comment.getType() == 2) {
+            // 漫画
             commentMapper.addComment(comment);
         }
         Integer comment_id = comment.getId();         // 新插入数据获得的id

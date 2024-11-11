@@ -49,4 +49,15 @@
         select count(*) from `animation_sublist`
         where uid = #{uid} and aid = #{aid} and deleted = 0
     </select>
+
+    <select id="getSubed" resultType="java.lang.Integer">
+        select count(*) from `animation_sublist`
+        where aid = #{aid} and deleted = 0
+    </select>
+
+    <select id="getUploadAniList" resultType="com.bili.entity.Animation">
+        select *
+        from `animation`
+        where uid = #{uid}
+    </select>
 </mapper>

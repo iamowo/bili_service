@@ -16,7 +16,7 @@ public interface VideoMapper {
 
     void updateinfo(Video video);
 
-    List<Video> getRandom();
+    List<Video> getRandom(List<Integer> vids, Integer num);
 
     Video getByVid(Integer vid);
 
@@ -166,4 +166,12 @@ public interface VideoMapper {
     Integer getOneMounthIcons(Integer vid);
 
     List<Video> getVideoByKeyword(Integer uid, String keyword);
+
+    List<Integer> getVidsByAid(Integer aid);
+
+    Integer getAllvideos();
+
+    List<VideoClassify> getAllClassify();
+
+    void addClassify(String value);
 }

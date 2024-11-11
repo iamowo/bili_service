@@ -46,6 +46,12 @@ public class VideoService {
 
     public List<Video> getAll() {
         List<Video> videos = videoMapper.getAll();
+        for (int i = 0; i < videos.size(); i++) {
+            // 加载tag信息
+            String s =  videos.get(i).getOthertags();
+            String[] ss = s.split(" ");
+            videos.get(i).setTags(ss);
+        }
         adduserinfo(videos);
         return videos;
     }
@@ -56,8 +62,8 @@ public class VideoService {
         return videos;
     }
 
-    public List<Video> getRandom() {
-        List<Video> videos = videoMapper.getRandom();
+    public List<Video> getRandom(Integer num) {
+        List<Video> videos = videoMapper.getRandom(null, num);
         adduserinfo(videos);
         return videos;
     }
@@ -163,6 +169,7 @@ public class VideoService {
         String hh = duration / 3600 < 10 ? "0" + duration / 3600 : "" +  duration / 3600;
         String vidlong = duration >= 3600 ? hh + ":" + mm + ":" + ss : mm + ":" + ss;
         video.setVidlong(vidlong);
+
         videoMapper.addInfos(video);    // 插入数据
 
         // 上传文件形式的封面
@@ -351,8 +358,8 @@ public class VideoService {
         Video res = videoMapper.getByVid(vid);
         adduserinfoone(res);          // 加载作者相关信息
         // 加载tag信息
-        String s = res.getMaintag() + "," + res.getOthertags();
-        String[] ss = s.split(",");
+        String s = res.getMaintag() + " " + res.getOthertags();
+        String[] ss = s.split(" ");
         res.setTags(ss);
         
         if (uid == -1) { // 未登录
@@ -889,5 +896,19 @@ public class VideoService {
         List<Video> res = videoMapper.getVideoByKeyword(uid, keyword);
         adduserinfo(res);
         return res;
+    }
+
+    public List<Video> getSomeVideos(List<Integer> vids, Integer num) {
+        List<Video> res = videoMapper.getRandom(vids, num);
+        adduserinfo(res);
+        return res;
+    }
+
+    public List<VideoClassify> getAllClassify() {
+        return videoMapper.getAllClassify();
+    }
+
+    public void addClassify(String value) {
+        videoMapper.addClassify(value);
     }
 }

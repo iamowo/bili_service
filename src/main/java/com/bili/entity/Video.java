@@ -23,7 +23,7 @@ public class Video{
     private Integer favorites;
     private Integer shares;
     private Integer comments;
-    private Integer pass;
+    private Integer pass;   // 0 审核中  1 通过  2 审核失败   3 删除
     private String maintag;
     private String othertags;
     private String hashValue;

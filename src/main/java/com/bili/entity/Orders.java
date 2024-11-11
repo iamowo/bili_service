@@ -17,6 +17,6 @@ public class Orders {
     * */
     private String product;
     private Timestamp startTime;
-    private Timestamp endTime;
-    private String tradeNo;   // 交易编号
+    private String paytime;
+    private String endtime;
 }

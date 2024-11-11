@@ -20,6 +20,8 @@ public class Mg {
     private Integer favorited;
     private Integer reads;
     private Integer deleted;
+    private Integer comments;
+    private Integer score;
 
     // append
     private String[] taglist;

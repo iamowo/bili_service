@@ -3,7 +3,7 @@
 <mapper namespace="com.bili.mapper.DynamicMapper">
     <insert id="sendDynamic" useGeneratedKeys="true" keyProperty="id">
         insert into `dynamic`
-        (uid, content, type, vordid, topical, vordid) values (#{uid}, #{content}, #{type}, #{vordid}, #{topical}, #{vordid})
+        (uid, content, type, vordid, topical) values (#{uid}, #{content}, #{type}, #{vordid}, #{topical})
     </insert>
 
     <insert id="addDyimgs">
@@ -128,6 +128,11 @@
         where uid = #{uid}
         and content like concat('%', #{keyword}, '%')
         and deleted = 0
+    </select>
+
+    <select id="getAllDynamic" resultType="com.bili.entity.Dynamic">
+        select * from `dynamic`
+        order by time
     </select>
 
 

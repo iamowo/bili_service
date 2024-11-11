@@ -12,16 +12,17 @@ public class Comment {
     private Integer id;
     private Integer uid;
     private Integer hisuid;
-    private Integer vid;
-    private Integer cid;
-    private Integer did;
+    private Integer vid;  // 视频id
+    private Integer mid;  // 漫画id
+    private Integer cid;  //
+    private Integer did;  // 动态id
     private String content;
     private Timestamp time;
     private Integer topid;  // 二级评论 顶层id
     private Integer fid;    // 二级评论父id
     private String replaycontent;
     private Integer likes;
-    private Integer type;   // 0视频   1 动态   2评论
+    private Integer type;   // 0视频   1 动态   2评论  3 漫画
     private Integer atid;
     private Integer replaycid;
     // append

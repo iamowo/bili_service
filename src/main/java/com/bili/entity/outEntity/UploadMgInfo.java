@@ -5,6 +5,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Data
 public class UploadMgInfo {
+    private Integer uid;
     private String cover;
     private String title;
     private String author;

@@ -13,6 +13,7 @@ public class LikeInfo {
     private Integer vid;
     private Integer did;
     private Integer cid;  // 评论id
+    private Integer mid;  // 漫画
     private Timestamp time;
 
     private String title; // 点赞的视频

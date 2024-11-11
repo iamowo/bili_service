@@ -56,6 +56,10 @@
         (aid, season, chapter, chaptertitle, uid) values (#{aid}, #{season}, #{chapter}, #{chaptertitle}, #{uid})
     </insert>
 
+    <insert id="addClassify">
+        INSERT IGNORE INTO `video_classify` (value) VALUES (#{value});
+    </insert>
+
     <!--  基本信息  -->
     <update id="updateinfo">
         update `video`
@@ -149,9 +153,7 @@
     </update>
 
     <select id="getAll" resultType="com.bili.entity.Video">
-        select * from `video`
-        where
-        pass = 1
+        select * from `video` order by time
     </select>
 
     <select id="getRecommend" resultType="com.bili.entity.Video">
@@ -161,9 +163,12 @@
     </select>
 
     <select id="getRandom" resultType="com.bili.entity.Video">
-        select * from `video` as res
-        where
-        pass = 1 and res.vid>=(RAND()*(SELECT MAX(vid) FROM `video`))LIMIT 6
+        SELECT * FROM video
+        <if test="vids != null">
+            where vid not in #{vids}
+        </if>
+        ORDER BY RAND()
+        LIMIT #{num};
     </select>
 
     <select id="getByVid" resultType="com.bili.entity.Video">
@@ -258,18 +263,21 @@
 
     <select id="getRank1" resultType="com.bili.entity.Video">
         SELECT * FROM `video`
+        where pass = 1
         ORDER BY likes desc
-        limit 100
+        limit 50
     </select>
     <select id="getRank2" resultType="com.bili.entity.Video">
         SELECT * FROM `video`
+        where pass = 1
         ORDER BY comments desc
-        limit 100
+        limit 50
     </select>
     <select id="getRank3" resultType="com.bili.entity.Video">
         SELECT * FROM `video`
+        where pass = 1
         ORDER BY plays desc
-        limit 100
+        limit 50
     </select>
 
     <select id="getByKeyword" resultType="com.bili.entity.Video">
@@ -393,7 +401,7 @@
 
     <select id="getVideoFormList" resultType="com.bili.entity.Video">
         select * from `video`
-        where listid = #{listid} and pass = 1
+        where listid = #{listid} and pass = 1 and listid != -1
         order by time DESC
     </select>
     
@@ -443,6 +451,23 @@
         where uid = #{uid}
         and title like concat('%', #{keyword}, '%')
         and pass = 1
+    </select>
+
+    <select id="getVidsByAid" resultType="java.lang.Integer">
+        select * from `video`
+        where aid = #{aid}
+        and aid != -1
+        and pass = 1
+    </select>
+
+    <select id="getAllvideos" resultType="java.lang.Integer">
+        select count(*) from video
+    </select>
+
+    <select id="getAllClassify" resultType="com.bili.entity.VideoClassify">
+        select * from `video_classify`
+        where type = 0 and ind > -1
+        order by time
     </select>
 
     <delete id="deletedLike">

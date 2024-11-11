@@ -46,7 +46,7 @@ public class UserService {
         User res = userMapper.getByUid(uid);
         if (myuid >= 0 && !Objects.equals(uid, myuid)) {
             Integer exist = userMapper.judgeFollow(uid, myuid);
-            if (exist == 1) {
+            if (exist >= 1) {
                 res.setFollowed(true);
             } else {
                 res.setFollowed(false);

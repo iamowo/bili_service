@@ -26,4 +26,8 @@ public interface AnimationMapper {
     List<Animation> getAnimationByKeyword(String keyword);
 
     Integer userLikeIt(Integer uid, Integer aid);
+
+    Integer getSubed(Integer aid);
+
+    List<Animation> getUploadAniList(Integer uid);
 }

@@ -15,8 +15,13 @@ public class Animation {
     private String intro;
     private String cover;
     private Integer chapters;
+    private Integer deleted;
 
     // append
     private List<Integer> vids;
     private Boolean liked;
+
+    private Integer plays;  // 播放次数
+    private Integer dms;    // 弹幕数
+    private Integer subs;   // 追番人数
 }

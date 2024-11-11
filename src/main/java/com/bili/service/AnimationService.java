@@ -21,6 +21,11 @@ public class AnimationService {
 
     @Autowired
     private VideoMapper videoMapper;
+    public List<Animation> getUploadAniList(Integer uid) {
+        // 带uid，获得个人收藏的
+        List<Animation> res = animationMapper.getUploadAniList(uid);
+        return res;
+    }
     public List<Animation> getAnimationList(Integer uid) {
         // 带uid，获得个人收藏的
         List<AnimationSublist> lists = animationMapper.getAnimationList(uid);
@@ -76,8 +81,9 @@ public class AnimationService {
         if (uid == -1) {
             res.setLiked(false);
         } else {
-            res.setLiked(UserLikeIt(uid, vid));
+            res.setLiked(UserLikeIt(uid, aid));
         }
+        addAnimationInfos(res);
         return res;
     }
 
@@ -112,5 +118,22 @@ public class AnimationService {
             return false;
         }
         return true;
+    }
+
+    // 播放 收藏 弹幕信息
+    private void addAnimationInfos (Animation res) {
+        List<Integer> vids = videoMapper.getVidsByAid(res.getAid());
+        int plays = 0,
+            dms = 0;
+        for (int i = 0; i < vids.size(); i++) {
+            Video video = videoMapper.getByVid(vids.get(i));
+            plays += video.getPlays();
+            dms += video.getDanmus();
+        }
+        // 追番人数
+        Integer subs = animationMapper.getSubed(res.getAid());
+        res.setPlays(plays);
+        res.setDms(dms);
+        res.setSubs(subs);
     }
 }

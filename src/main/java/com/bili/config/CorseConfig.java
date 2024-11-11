@@ -11,10 +11,8 @@ import org.springframework.web.filter.CorsFilter;
 public class CorseConfig {
     @Value("${url2}")
     private String url;
-
     // 跨越请求有效时长
     private static final long MAX_AGE = 24 * 60 * 60;
-
     @Bean
     public CorsFilter corsFilter (){
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

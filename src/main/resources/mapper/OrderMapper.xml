@@ -8,17 +8,25 @@
     </insert>
 
 
-    <update id="updateById">
-        update `order`
-        set
-        where id = #{id}
-    </update>
-
     <update id="dealDone">
         update `order`
-        set
-        status = 1
-        where id = #{id}
+        <set>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="endtime != null">
+                endtime = #{endtime},
+            </if>
+            <if test="paytime != null">
+                paytime = #{paytime},
+            </if>
+            <if test="traceNo != null">
+                traceno = #{traceNo}
+            </if>
+        </set>
+        <where>
+            id = #{id}
+        </where>
     </update>
 
     <select id="getByOrderId" resultType="com.bili.entity.Orders">

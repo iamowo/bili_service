@@ -13,6 +13,8 @@ public interface CommentMapper {
 
     List<Comment> getAllComment(Integer vid, String order);
     List<Comment> getAllComment2(Integer did, String order);
+
+    List<Comment> getAllComment3(Integer mid, String order);
     void addComment(Comment comment);
 
     void deleteComment(Integer id);

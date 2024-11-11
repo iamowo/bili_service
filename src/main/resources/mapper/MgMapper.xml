@@ -4,11 +4,11 @@
 
     <insert id="uploadMgInfo" useGeneratedKeys="true" keyProperty="mid">
         INSERT INTO `mg` (title, chapters, author, intro, cover, done, tags, uid)
-        values (#{title}, #{chapters}, #{author}, #{intro}, #{cover}, #{done}, #{tags}, #{uid})
+        values (#{title}, 1, #{author}, #{intro}, #{cover}, #{done}, #{tags}, #{uid})
     </insert>
 
     <insert id="uploadimgs">
-        insert into `mg_imgs` (mid, path, number, name， ind)
+        insert into `mg_imgs` (mid, path, number, name, ind)
         values (#{mid}, #{path}, #{number}, #{name}, #{ind})
     </insert>
 

@@ -26,7 +26,7 @@ public class MgService {
 
     public Integer uploadMgInfo(UploadMgInfo uploadMgInfo) throws IOException {
         UUID uuid = UUID.randomUUID();
-        String covername = "/cover/" + uuid + ".png";
+        String covername = "cover/" + uuid + ".png";
         uploadMgInfo.setCover(mgNet + covername);    // 网络地址
         uploadMgInfo.setChapters(1);
         String[] taglist = uploadMgInfo.getTaglist();

@@ -34,5 +34,6 @@ public class User {
 
     // append
     private String token;
+    private Boolean vip;
     private Boolean followed;  // 是否关注了
 }

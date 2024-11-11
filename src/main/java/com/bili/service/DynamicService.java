@@ -280,4 +280,10 @@ public class DynamicService {
         dealtype(res);        // 处理 type
         return res;
     }
+
+    public List<Dynamic> getAllDynamic() {
+        List<Dynamic> res = dynamicMapper.getAllDynamic();
+        addUserinfo(res);
+        return res;
+    }
 }

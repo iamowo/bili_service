@@ -116,7 +116,7 @@ public class AliPayController {
                 System.out.println("买家付款金额: " + params.get("buyer_pay_amount"));
 
                 // 更新订单未已支付(订单已完成)
-                orderService.updateOrder(Integer.parseInt(tradeNo));
+                orderService.updateOrder(Integer.parseInt(tradeNo), params.get("subject"), params.get("trade_no"));
 
                 Orders orders = orderService.getByOrderId(Integer.parseInt(tradeNo));
                 HashSet<Integer> userIds = new HashSet<>();

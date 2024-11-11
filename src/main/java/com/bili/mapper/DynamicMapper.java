@@ -47,4 +47,6 @@ public interface DynamicMapper {
     Topical getOneTopical(String topical);
 
     List<Dynamic> getDynamicByKeyword(Integer uid, String keyword);
+
+    List<Dynamic> getAllDynamic();
 }
