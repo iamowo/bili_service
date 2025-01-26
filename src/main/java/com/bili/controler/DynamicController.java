@@ -16,6 +16,15 @@ public class DynamicController {
     @Autowired
     private DynamicService dynamicService;
 
+    @GetMapping("/getDynamics/{type}")
+    public Response getDynamics (@PathVariable Integer type) {
+        try {
+            List<Dynamic> res = dynamicService.getDynamics(type);
+            return Response.success(res);
+        } catch (Exception e) {
+            return Response.failure(500, "error: "+e);
+        }
+    }
     @GetMapping("/getAllDynamic")
     public Response getAllDynamic () {
         try {

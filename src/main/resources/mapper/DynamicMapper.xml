@@ -134,6 +134,12 @@
         select * from `dynamic`
         order by time
     </select>
+    <select id="getDynamics" resultType="com.bili.entity.Dynamic">
+        select * from `dynamic`
+        <if test="type != null and type == 0">
+            where deleted = 0
+        </if>
+    </select>
 
 
 </mapper>

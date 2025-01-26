@@ -56,6 +56,14 @@ public class VideoService {
         return videos;
     }
 
+    public List<Video> getVideos(Integer type) {
+        // 获取pass = 1（审核通过）
+        List<Video> res = videoMapper.getVideos(type);
+
+        adduserinfo(res);
+        return res;
+    }
+
     public List<Video> getRecommend() {
         List<Video> videos = videoMapper.getRecommend();
         adduserinfo(videos);
@@ -898,7 +906,9 @@ public class VideoService {
         return res;
     }
 
-    public List<Video> getSomeVideos(List<Integer> vids, Integer num) {
+    public List<Video> getSomeVideos(Map<String, Object> map) {
+        List<Integer> vids = (List<Integer>)map.get("vids");
+        Integer num = (Integer)map.get("num");
         List<Video> res = videoMapper.getRandom(vids, num);
         adduserinfo(res);
         return res;
@@ -911,4 +921,5 @@ public class VideoService {
     public void addClassify(String value) {
         videoMapper.addClassify(value);
     }
+
 }

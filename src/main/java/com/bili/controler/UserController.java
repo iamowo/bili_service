@@ -35,6 +35,17 @@ public class UserController {
         }
     }
 
+    // 获取全部User
+    @GetMapping("/AllUser")
+    public Response AllUser () {
+        try {
+            List<User> res = userService.AllUser();
+            return Response.success(res);
+        } catch (Exception e) {
+            return Response.failure(500,"error:"+e);
+        }
+    }
+
     @GetMapping("/getByUidFollowed/{uid}/{myuid}")
     public Response getByUidFollowed (@PathVariable Integer uid, @PathVariable Integer myuid) {
         try {

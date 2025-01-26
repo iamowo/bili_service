@@ -44,6 +44,10 @@ public class UserService {
 
     public User getByUidFollowed(Integer uid, Integer myuid) {
         User res = userMapper.getByUid(uid);
+        if (uid == myuid) {
+            res.setFollowed(false);
+            return res;
+        }
         if (myuid >= 0 && !Objects.equals(uid, myuid)) {
             Integer exist = userMapper.judgeFollow(uid, myuid);
             if (exist >= 1) {
@@ -277,6 +281,11 @@ public class UserService {
         res.put("shares", shares);
         res.put("collects", collects);
         res.put("icons", icons);
+        return res;
+    }
+
+    public List<User> AllUser() {
+        List<User> res = userMapper.AllUser();
         return res;
     }
 }

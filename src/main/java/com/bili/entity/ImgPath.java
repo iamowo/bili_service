@@ -5,11 +5,11 @@ import lombok.Data;
 import java.sql.Timestamp;
 
 @Data
-public class VideoClassify {
+public class ImgPath {
     private Integer id;
-    private String value;
-    private Integer type;
-    private Integer topid;
-    private Integer ind;
+    private Integer imgId;
+    private String path;
+    private Integer height;
     private Timestamp time;
+    private Integer ind;
 }

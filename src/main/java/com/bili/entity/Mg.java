@@ -3,6 +3,7 @@ package com.bili.entity;
 import lombok.Data;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Data
 public class Mg {
@@ -24,6 +25,6 @@ public class Mg {
     private Integer score;
 
     // append
-    private String[] taglist;
+    private List<String> taglist;
     private boolean collected;  // 是否收藏
 }

@@ -14,4 +14,14 @@ public interface BannerMapper {
     List<Banner> getBannerUnselected();
 
     void setBanner(Integer ind);
+
+    void addNewBanner(Banner banner);
+
+    void updateOneBanner(Banner banner);
+
+    void sortBanner(Integer ind);
+
+    void deleteThis(Integer ind);
+
+    void addBannerToList(Integer id, Integer len);
 }

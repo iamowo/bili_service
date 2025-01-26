@@ -60,4 +60,8 @@
         from `animation`
         where uid = #{uid}
     </select>
+
+    <select id="getAnimations" resultType="com.bili.entity.Animation">
+        select * from `animation`
+    </select>
 </mapper>

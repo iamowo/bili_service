@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bili.mapper.ImgMapper">
+
+    <insert id="uploadImgInfon" useGeneratedKeys="true" keyProperty="id">
+        insert into `imgs`
+        (uid, title, intro, nums) values (#{uid}, #{title}, #{intro}, #{nums})
+    </insert>
+
+    <insert id="uploadImgs">
+        insert into `imgs_path`
+        (img_id, path, height, ind) values (#{imgId}, #{netPath}, #{height}, #{ind})
+    </insert>
+
+    <select id="getAllImg" resultType="com.bili.entity.outEntity.ImgInfos">
+        select res1.*, res2.path, res2.height, res2.ind
+        from
+        (
+            select u.uid, u.name, u.avatar, i.id, i.title, i.likes, i.collects, i.maintag, i.tags
+            from user u join imgs i
+            on u.uid = i.uid
+        )
+        res1 join imgs_path res2
+        on res1.id = res2.img_id
+        where
+        res2.ind = 0
+    </select>
+
+    <select id="getOneById" resultType="com.bili.entity.outEntity.ImgInfos">
+        select info.*, path.path, path.height
+        from
+        imgs info left join imgs_path path
+        on info.id = path.img_id
+        where info.id = #{imgid}
+    </select>
+
+    <select id="judgeCollected" resultType="java.lang.Integer">
+        select count(*) from imgs_like where img_id = #{imgid} and uid = #{uid}
+    </select>
+
+    <select id="getAllBoards" resultType="com.bili.entity.ImgBoard">
+        select b.*, res.path from imgs_board b left join
+        (select f.*, p.path from imgs_followimg f left join imgs_path p on f.img_id = p.img_id where f.board_id) res
+        on b.id = res.board_id
+        where b.uid = #{uid}
+    </select>
+
+
+</mapper>

@@ -5,10 +5,53 @@
     <insert id="addBanner">
 
     </insert>
+
+    <insert id="addNewBanner">
+        insert into `banner`
+        (title, cover, bgc, type, target_id) values (#{title}, #{cover}, #{bgc}, #{type}, #{targetId})
+    </insert>
+
+    <update id="addBannerToList">
+        update `banner`
+        set
+        ind = #{len}
+        where id = #{id}
+    </update>
+
     <update id="setBanner">
         update `banner`
         set
         ind = #{ind}
+    </update>
+
+    <update id="updateOneBanner">
+        update `banner`
+        <set>
+            <if test="title != null">
+                title = #{title},
+            </if>
+            <if test="bgc != null">
+                bgc = #{bgc},
+            </if>
+            <if test="ind != null">
+                ind = #{ind}
+            </if>
+        </set>
+        <where>
+            id = #{id}
+        </where>
+    </update>
+
+    <update id="sortBanner">
+        update `banner` set
+        ind = ind - 1
+        where ind > #{ind}
+    </update>
+
+    <update id="deleteThis">
+        update `banner` set
+        ind = -1
+        where ind = #{ind}
     </update>
 
     <select id="getBanner" resultType="com.bili.entity.Banner">

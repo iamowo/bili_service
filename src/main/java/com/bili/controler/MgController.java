@@ -19,6 +19,15 @@ public class MgController {
     @Autowired
     private MgService mgService;
 
+    @GetMapping("/getMgsss/{type}")
+    public Response getMgsss (@PathVariable Integer type) {
+        try {
+            List<Mg> res = mgService.getMgsss(type);
+            return Response.success(res);
+        } catch (Exception e) {
+            return Response.failure(500, "error:" + e);
+        }
+    }
     @GetMapping("/getByTitle/{keyword}")
     public Response getByTitle (@PathVariable String keyword) {
         try {

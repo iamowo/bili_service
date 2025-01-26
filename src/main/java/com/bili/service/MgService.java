@@ -112,13 +112,17 @@ public class MgService {
 
     private void dealTaglist (List<Mg> res) {
         for (int i = 0; i < res.size(); i++) {
-            String[] r = res.get(i).getTags().split(" ");
-            res.get(i).setTaglist(r);
+            List<String> n = new ArrayList<>();
+            if (res.get(i).getTags().length() == 0) {
+                res.get(i).setTaglist(n);
+            }
+            String[] r = res.get(i).getTags().trim().split(" ");
+            res.get(i).setTaglist(Arrays.asList(r));
         }
     }
     private void dealOne (Mg res) {
-        String[] r = res.getTags().split(" ");
-        res.setTaglist(r);
+        String[] r = res.getTags().trim().split(" ");
+        res.setTaglist(Arrays.asList(r));
     }
 
     public List<Mg> getMgs(Integer num, Integer type) {
@@ -258,5 +262,11 @@ public class MgService {
 
     public void updateMgInfo(Mg mg) {
         mgMapper.updateMgInfo(mg);
+    }
+
+    public List<Mg> getMgsss(Integer type) {
+        List<Mg> res = mgMapper.getMgsss(type);
+        dealTaglist(res);
+        return res;
     }
 }

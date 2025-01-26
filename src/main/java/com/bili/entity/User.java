@@ -31,6 +31,7 @@ public class User {
     private Integer exp;          // 经验值
     private Integer permissions;  // 权限等级
     private String temptoken;
+    private Integer banned;
 
     // append
     private String token;

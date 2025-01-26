@@ -19,20 +19,20 @@ public class Comment {
     private String content;
     private Timestamp time;
     private Integer topid;  // 二级评论 顶层id
-    private Integer fid;    // 二级评论父id
+    private Integer fid;    // 二级评论父uid
     private String replaycontent;
     private Integer likes;
     private Integer type;   // 0视频   1 动态   2评论  3 漫画
     private Integer atid;
     private Integer replaycid;
     // append
-    private boolean liked;  // 是都点过攒了
+    private boolean liked;        // 是都点过攒了
     private String name;
     private String avatar;
-    private String fname; // 回复的人的名字
+    private String fname;         // 回复的人的名字
     private List<Comment> lists;
     private Integer listslength;
     // input
-    private Integer atuid;
-    private String atname;
+    private Integer atuid;    // @的人的uid
+    private String atname;    // @的人的name
 }

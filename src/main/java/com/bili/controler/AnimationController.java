@@ -21,6 +21,16 @@ public class AnimationController {
     private AnimationService animationService;
 
 
+    @GetMapping("/getAnimations/{type}")
+    public Response getAnimations (@PathVariable Integer type) {
+        try {
+            List<Animation> res = animationService.getAnimations(type);
+            return Response.success(res);
+        } catch (Exception e) {
+            return Response.failure(500, "error: "+e);
+        }
+    }
+
     @GetMapping("/getUploadAniList/{uid}")
     public Response getUploadAniList (@PathVariable Integer uid) {
         try {

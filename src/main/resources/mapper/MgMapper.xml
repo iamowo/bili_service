@@ -174,5 +174,12 @@
         order by time DESC
     </select>
 
+    <select id="getMgsss" resultType="com.bili.entity.Mg">
+        select * from `mg`
+        <if test="type != null and type = 0">
+            deleted = 0
+        </if>
+    </select>
+
 
 </mapper>

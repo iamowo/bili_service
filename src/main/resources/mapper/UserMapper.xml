@@ -288,4 +288,8 @@
         and DATE_SUB(CURDATE(),  INTERVAL 1 MONTH) &lt;= date(time);
     </select>
 
+    <select id="AllUser" resultType="com.bili.entity.User">
+        select * from `user`
+    </select>
+
 </mapper>

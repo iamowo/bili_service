@@ -164,9 +164,14 @@
 
     <select id="getRandom" resultType="com.bili.entity.Video">
         SELECT * FROM video
-        <if test="vids != null">
-            where vid not in #{vids}
-        </if>
+        <where>
+            <if test="vids != null and vids.size != 0">
+                vid not in
+                <foreach collection="vids" index="index" item="one" open="(" separator="," close=")">
+                    #{one}
+                </foreach>
+            </if>
+        </where>
         ORDER BY RAND()
         LIMIT #{num};
     </select>
@@ -466,8 +471,14 @@
 
     <select id="getAllClassify" resultType="com.bili.entity.VideoClassify">
         select * from `video_classify`
-        where type = 0 and ind > -1
         order by time
+    </select>
+
+    <select id="getVideos" resultType="com.bili.entity.Video">
+        select * from `video`
+        <if test="type != null and type == 0">
+            where pass = 1
+        </if>
     </select>
 
     <delete id="deletedLike">

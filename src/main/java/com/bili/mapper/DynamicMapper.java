@@ -49,4 +49,6 @@ public interface DynamicMapper {
     List<Dynamic> getDynamicByKeyword(Integer uid, String keyword);
 
     List<Dynamic> getAllDynamic();
+
+    List<Dynamic> getDynamics(Integer type);
 }

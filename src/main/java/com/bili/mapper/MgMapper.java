@@ -53,4 +53,6 @@ public interface MgMapper {
     List<Mg> getUploadMg(Integer uid);
 
     void updateMgInfo(Mg mg);
+
+    List<Mg> getMgsss(Integer type);
 }

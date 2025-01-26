@@ -23,7 +23,8 @@ public class AuthWebMvcConfigurer implements WebMvcConfigurer {
                                     "/sys/**",
                                     "/avatar/**",
                                     "/animation/getSeasons/**",
-                                    "/alipay/**"
+                                    "/alipay/**",
+                                    "/banner/getBanner"
                                   };
     /**
      * 给除了 /login 的接口都配置拦截器,拦截转向到 authHandlerInterceptor

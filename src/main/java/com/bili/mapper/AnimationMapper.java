@@ -30,4 +30,6 @@ public interface AnimationMapper {
     Integer getSubed(Integer aid);
 
     List<Animation> getUploadAniList(Integer uid);
+
+    List<Animation> getAnimations(Integer type);
 }

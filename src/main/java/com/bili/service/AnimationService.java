@@ -136,4 +136,12 @@ public class AnimationService {
         res.setDms(dms);
         res.setSubs(subs);
     }
+
+    public List<Animation> getAnimations(Integer type) {
+        List<Animation> res = animationMapper.getAnimations(type);
+        for (int i = 0; i < res.size(); i++) {
+            addAnimationInfos(res.get(i));
+        }
+        return res;
+    }
 }

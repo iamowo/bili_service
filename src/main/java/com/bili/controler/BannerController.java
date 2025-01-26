@@ -55,4 +55,44 @@ public class BannerController {
             return Response.failure(500, "error: " + e);
         }
     }
+
+    @PostMapping("/addNewBanner")
+    public Response addNewBanner(@RequestBody Banner banner) {
+        try {
+            bannerService.addNewBanner(banner);
+            return Response.success(200);
+        } catch (Exception e) {
+            return Response.failure(500, "error: " + e);
+        }
+    }
+
+    @PostMapping("/updateOneBanner")
+    public Response updateOneBanner(@RequestBody Banner banner) {
+        try {
+            bannerService.updateOneBanner(banner);
+            return Response.success(200);
+        } catch (Exception e) {
+            return Response.failure(500, "error: " + e);
+        }
+    }
+
+    @GetMapping("/deleteThisBanner/{ind}")
+    public Response deleteThisBanner(@PathVariable Integer ind) {
+        try {
+            bannerService.deleteThisBanner(ind);
+            return Response.success(200);
+        } catch (Exception e) {
+            return Response.failure(500, "error: " + e);
+        }
+    }
+
+    @GetMapping("/addBannerToList/{id}/{len}")
+    public Response addBannerToList(@PathVariable Integer id, @PathVariable Integer len) {
+        try {
+            bannerService.addBannerToList(id, len);
+            return Response.success(200);
+        } catch (Exception e) {
+            return Response.failure(500, "error: " + e);
+        }
+    }
 }

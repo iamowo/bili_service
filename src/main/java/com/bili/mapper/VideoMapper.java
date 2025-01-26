@@ -174,4 +174,6 @@ public interface VideoMapper {
     List<VideoClassify> getAllClassify();
 
     void addClassify(String value);
+
+    List<Video> getVideos(Integer type);
 }

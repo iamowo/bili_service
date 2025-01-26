@@ -286,4 +286,9 @@ public class DynamicService {
         addUserinfo(res);
         return res;
     }
+
+    public List<Dynamic> getDynamics(Integer type) {
+        List<Dynamic> res = dynamicMapper.getDynamics(type);
+        return res;
+    }
 }

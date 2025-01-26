@@ -68,4 +68,6 @@ public interface UserMapper {
     Integer getFansLength(Integer uid, String keyword);
 
     Integer getFollowsLength(Integer uid, String keyword);
+
+    List<User> AllUser();
 }

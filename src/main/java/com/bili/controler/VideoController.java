@@ -41,11 +41,22 @@ public class VideoController {
         }
     }
 
-    // 下滑加载更过（每次多加载5个）
-    @GetMapping("/getSomeVideos")
-    public Response getSomeVideos(@RequestParam("vids") List<Integer> vids, @RequestParam("num") Integer num) {
+    // 获取videos
+    @GetMapping("/getVideos/{type}")
+    public Response getVideos(@PathVariable Integer type) {
         try {
-            List<Video> res = videoService.getSomeVideos(vids, num);
+            List<Video> res = videoService.getVideos(type);
+            return Response.success(res);
+        } catch (Exception e) {
+            return Response.failure(500, "error: "+e);
+        }
+    }
+
+    // 下滑加载更过（每次多加载5个）
+    @PostMapping("/getSomeVideos")
+    public Response getSomeVideos(@RequestBody Map<String, Object> map) {
+        try {
+            List<Video> res = videoService.getSomeVideos(map);
             return Response.success(res);
         } catch (Exception e) {
             return Response.failure(500, "error: "+e);
