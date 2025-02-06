@@ -12,6 +12,11 @@
         (img_id, path, height, ind) values (#{imgId}, #{netPath}, #{height}, #{ind})
     </insert>
 
+    <insert id="collectOneImg">
+        insert into 'imgs_following'
+        (img_id, uid, board_id) values (imgid. uid, boardid)
+    </insert>
+
     <select id="getAllImg" resultType="com.bili.entity.outEntity.ImgInfos">
         select res1.*, res2.path, res2.height, res2.ind
         from

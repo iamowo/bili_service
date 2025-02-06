@@ -21,4 +21,6 @@ public interface ImgMapper {
     Integer judgeCollected(Integer imgid, Integer uid);
 
     List<ImgBoard> getAllBoards(Integer uid);
+
+    void collectOneImg(Integer uid, Integer imgid, Integer boardid);
 }

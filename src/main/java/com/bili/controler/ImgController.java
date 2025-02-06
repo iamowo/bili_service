@@ -75,7 +75,7 @@ public class ImgController {
     @GetMapping("collectOneImg/{uid}/{imgid}/{boardid}")
     public Response collectOneImg(@PathVariable Integer uid, @PathVariable Integer imgid, @PathVariable Integer boardid) {
         try {
-            imgService.collectOneImg(uid);
+            imgService.collectOneImg(uid, imgid, boardid);
             return Response.success(200);
         } catch (Exception e) {
             return Response.failure(500, "error: " + e);

@@ -80,7 +80,8 @@ public class ImgService {
         return res;
     }
 
-    public void collectOneImg(Integer uid) {
+    public void collectOneImg(Integer uid, Integer imgid, Integer boardid) {
+        imgMapper.collectOneImg(uid, imgid, boardid);
     }
 
     public void createNewBoard(Map<String, Object> data) {
