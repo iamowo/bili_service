@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/user")
@@ -215,6 +216,19 @@ public class UserController {
         try {
             Map<String, Integer> res = userService.getUserData(uid);
             return Response.success(res);
+        } catch (Exception e) {
+            return Response.failure(500, "error");
+        }
+    }
+
+    // 生成登录二维码
+    @GetMapping("/generateQrCode")
+    public Response generateQrCode() {
+        try {
+            // 生成唯一UUID作为二维码内容
+            String qrCodeContent = UUID.randomUUID().toString();
+            // 将二维码存储到redis中，后续验证
+            return Response.success(qrCodeContent);
         } catch (Exception e) {
             return Response.failure(500, "error");
         }

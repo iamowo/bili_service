@@ -16,7 +16,8 @@ public class AuthWebMvcConfigurer implements WebMvcConfigurer {
 
     @Value("${url2}")
     private String url2;
-    String[] urls = new String[]{"/user/login", "/user/register",  "/user/findAccount/**", "/user/getByUidFollowed/**","/user/getByUidWithToken/**",
+    // 不需要拦截
+    String[] urls = new String[]{"/user/login", "/user/register",  "/user/findAccount/**", "/user/getByUidFollowed/**","/user/getByUidWithToken/**", "/user/generateQrCode",
                                     "/video/getAllVideo","/video/getByVid/**", "/video/getRandom", "/video/getDm/**", "/video/getVideoLikely/**", "/video/searchKw/**",
                                     "/video/getByMaintag/**", "/video/getAllMainTag", "/video/**",
                                     "/comment/getAllComment", "/comment/getAllComment/**",
