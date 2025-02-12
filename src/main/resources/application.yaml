@@ -62,7 +62,8 @@ alipay:
   notifyUrl: http://134f273e.r12.cpolar.top/alipay/notify
 
 # 前端地址
-url1: http://127.0.0.1:3000
+# web
+#url1: http://127.0.0.1:3000
 # ????
 url2: http://127.0.0.1:8082
 

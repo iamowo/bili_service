@@ -8,6 +8,7 @@ class BiliApplicationTests {
 
 	@Test
 	void contextLoads() {
+		System.out.println("123");
 	}
 
 }

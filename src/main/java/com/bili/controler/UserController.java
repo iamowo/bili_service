@@ -7,15 +7,19 @@ import com.bili.entity.outEntity.RegisterUser;
 import com.bili.entity.outEntity.UpdateUser;
 import com.bili.entity.outEntity.UserData;
 import com.bili.mapper.UserMapper;
+import com.bili.service.RedisService;
 import com.bili.service.UserService;
 import com.bili.util.Response;
 import com.bili.util.TokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping("/user")
@@ -24,6 +28,14 @@ public class UserController {
     private UserService userService;
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private RedisTemplate<String, Object> redisTemplate;
+
+    @Autowired
+    private RedisService redisService;
+    @Value("${url2}")
+    private String url;
 
     // 没有token的用户信息
     @GetMapping("/getByUid/{uid}")
@@ -226,9 +238,33 @@ public class UserController {
     public Response generateQrCode() {
         try {
             // 生成唯一UUID作为二维码内容
-            String qrCodeContent = UUID.randomUUID().toString();
+            String token = UUID.randomUUID().toString();
+            String qrCodeContent = url + "?token=" + token;
             // 将二维码存储到redis中，后续验证
+            redisService.setValue("pending", token, 3);
             return Response.success(qrCodeContent);
+        } catch (Exception e) {
+            return Response.failure(500, "error");
+        }
+    }
+
+    // 验证二维码
+    @PostMapping("/verifyQrCode")
+    public Response verifyQrCode(@RequestBody Map<String, String> request) {
+        try {
+            String qrCodeContent = request.get("qrCodeContent");
+            // 从Redis或数据库中获取二维码状态
+            // String status = redisTemplate.opsForValue().get(qrCodeContent);
+            String status = "pending"; // 假设状态为pending
+            if ("pending".equals(status)) {
+                // 更新二维码状态为已扫描
+                // redisTemplate.opsForValue().set(qrCodeContent, "scanned");
+                return Response.success("二维码已扫描");
+            } else if ("scanned".equals(status)) {
+                return Response.success("二维码已使用");
+            } else {
+                return Response.success("二维码无效");
+            }
         } catch (Exception e) {
             return Response.failure(500, "error");
         }
