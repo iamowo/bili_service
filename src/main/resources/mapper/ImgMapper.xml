@@ -13,8 +13,8 @@
     </insert>
 
     <insert id="collectOneImg">
-        insert into 'imgs_following'
-        (img_id, uid, board_id) values (imgid. uid, boardid)
+        insert into `imgs_followimg`
+        (img_id, uid, board_id) values (#{imgid}, #{uid}, #{boardid})
     </insert>
 
     <select id="getAllImg" resultType="com.bili.entity.outEntity.ImgInfos">
