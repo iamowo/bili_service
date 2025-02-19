@@ -47,6 +47,7 @@ public class ImgService {
         List<ImgInfos> res = imgMapper.getAllImg();
         for (int i = 0; i < res.size(); i++) {
             setTgas(res.get(i));
+            res.get(i).setLiked(judgeCollected(res.get(i).getId(), uid));
         }
         return res;
     }

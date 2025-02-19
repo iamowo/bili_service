@@ -40,7 +40,7 @@
     </select>
 
     <select id="judgeCollected" resultType="java.lang.Integer">
-        select count(*) from imgs_like where img_id = #{imgid} and uid = #{uid}
+        select count(*) from imgs_followimg where img_id = #{imgid} and uid = #{uid}
     </select>
 
     <select id="getAllBoards" resultType="com.bili.entity.ImgBoard">
