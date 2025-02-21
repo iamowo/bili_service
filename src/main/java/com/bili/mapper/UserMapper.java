@@ -70,4 +70,6 @@ public interface UserMapper {
     Integer getFollowsLength(Integer uid, String keyword);
 
     List<User> AllUser();
+
+    void createLikeBoard(Integer uid);
 }

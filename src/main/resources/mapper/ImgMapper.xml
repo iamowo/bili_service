@@ -17,6 +17,29 @@
         (img_id, uid, board_id) values (#{imgid}, #{uid}, #{boardid})
     </insert>
 
+    <update id="changeBoardData">
+        update `imgs_board`
+        <set>
+            <if test="num1 != 0">
+                nums = nums + #{num1},
+            </if>
+            <if test="num2 != 0">
+                collects = collects + #{num2},
+            </if>
+            <if test="num3 != 0">
+                likes = likes + #{num3},
+            </if>
+            <where>
+                id = #{boradid}
+            </where>
+        </set>
+    </update>
+
+    <delete id="cancleCollectOneImg">
+        delete from `imgs_followimg`
+        where img_id = #{imgid} and board_id = #{boardid} and uid = #{uid}
+    </delete>
+
     <select id="getAllImg" resultType="com.bili.entity.outEntity.ImgInfos">
         select res1.*, res2.path, res2.height, res2.ind
         from
@@ -41,13 +64,24 @@
 
     <select id="judgeCollected" resultType="java.lang.Integer">
         select count(*) from imgs_followimg where img_id = #{imgid} and uid = #{uid}
+        <if test="boardid != -1">
+            and board_id = #{boardid}
+        </if>
     </select>
 
     <select id="getAllBoards" resultType="com.bili.entity.ImgBoard">
-        select b.*, res.path from imgs_board b left join
-        (select f.*, p.path from imgs_followimg f left join imgs_path p on f.img_id = p.img_id where f.board_id) res
-        on b.id = res.board_id
-        where b.uid = #{uid}
+<!--        select b.*, res.path from imgs_board b left join-->
+<!--        (select f.*, p.path from imgs_followimg f left join imgs_path p on f.img_id = p.img_id where f.board_id) res-->
+<!--        on b.id = res.board_id-->
+<!--        where b.uid = #{uid}-->
+        select * from `imgs_board` where uid = #{uid}
+    </select>
+
+    <select id="getBoardCovers" resultType="java.lang.String">
+        select path from `imgs_followimg` f join `imgs_path` p
+        on f.img_id = p.img_id
+        where f.board_id = #{boardid}
+        LIMIT 3
     </select>
 
 

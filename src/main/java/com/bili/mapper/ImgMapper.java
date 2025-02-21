@@ -18,9 +18,15 @@ public interface ImgMapper {
 
     ImgInfos getOneById(Integer imgid);
 
-    Integer judgeCollected(Integer imgid, Integer uid);
+    Integer judgeCollected(Integer imgid, Integer uid, Integer boardid);
 
     List<ImgBoard> getAllBoards(Integer uid);
 
     void collectOneImg(Integer uid, Integer imgid, Integer boardid);
+
+    List<String> getBoardCovers(Integer boardid);
+
+    void cancleCollectOneImg(Integer uid, Integer imgid, Integer boardid);
+
+    void changeBoardData(Integer boardid, int num1, int num2, int num3);
 }

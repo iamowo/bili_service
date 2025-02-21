@@ -39,7 +39,12 @@
 
     <insert id="addUserSettnig">
         insert into `user_setting`
-         (uid) values(#{uid})
+         (uid) values (#{uid})
+    </insert>
+
+    <insert id="createLikeBoard">
+        insert into `imgs_board`
+        (uid, type, title) values (#{uid}， 0， "喜欢")
     </insert>
 
     <update id="addFollowNum1">

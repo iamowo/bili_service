@@ -47,22 +47,16 @@ public class ImgService {
         List<ImgInfos> res = imgMapper.getAllImg();
         for (int i = 0; i < res.size(); i++) {
             setTgas(res.get(i));
-            res.get(i).setLiked(judgeCollected(res.get(i).getId(), uid));
+            res.get(i).setLiked(judgeCollected(res.get(i).getId(), uid, -1));
         }
         return res;
     }
 
     public ImgInfos getOneById(Integer imgid, Integer uid) {
         ImgInfos res = imgMapper.getOneById(imgid);
-        res.setCollected(judgeCollected(imgid, uid));
+        res.setCollected(judgeCollected(imgid, uid, -1));
         setTgas(res);
         return res;
-    }
-
-    // 判断是都收藏了
-    private boolean judgeCollected(Integer imgid, Integer uid) {
-        Integer num = imgMapper.judgeCollected(imgid, uid);
-        return num > 0;
     }
 
     // 添加tags
@@ -78,13 +72,34 @@ public class ImgService {
 
     public List<ImgBoard> getAllBoards(Integer uid) {
         List<ImgBoard> res = imgMapper.getAllBoards(uid);
+        for (int i = 0; i < res.size(); i++) {
+            List<String> covers = imgMapper.getBoardCovers(res.get(i).getId());
+            res.get(i).setCoverlist(covers);
+        }
         return res;
     }
 
     public void collectOneImg(Integer uid, Integer imgid, Integer boardid) {
-        imgMapper.collectOneImg(uid, imgid, boardid);
+        // 判断是否已经收藏了
+        boolean collected = judgeCollected(imgid, uid, boardid);
+        if (collected) {
+            // 取消
+            imgMapper.cancleCollectOneImg(uid, imgid, boardid);
+            imgMapper.changeBoardData(boardid, -1, 0, 0);
+        } else {
+            // 添加
+            imgMapper.collectOneImg(uid, imgid, boardid);
+            imgMapper.changeBoardData(boardid, 1, 0, 0);
+        }
     }
 
     public void createNewBoard(Map<String, Object> data) {
+    }
+
+    // 判断是都收藏了
+    private boolean judgeCollected(Integer imgid, Integer uid, Integer boardid) {
+        // 仅仅判断是否收藏了
+        Integer num = imgMapper.judgeCollected(imgid, uid, boardid);
+        return num > 0;
     }
 }

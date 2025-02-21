@@ -88,10 +88,13 @@ public class UserService {
         favoristList.setPub(0);
         favoristList.setTitle("默认收藏夹");
         favoristList.setUid(uid);
+        // 创建默认视频收藏夹
         favlistMapper.addDefaultFavlist(favoristList);
         Integer fid = favoristList.getFid();   // 获得生成的fid
         user.setDefaultfid(fid);   // 默认收藏夹fid
 
+        // 创建默认图片收藏夹（喜欢）
+        userMapper.createLikeBoard(uid);
         if (registerUser.getType() == 0) {
             user.setName("bili_user#" + uid);
 //            user.setAvatar("http://127.0.0.1:8082/avatar/default.png");
