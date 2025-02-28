@@ -102,4 +102,14 @@ public class ImgService {
         Integer num = imgMapper.judgeCollected(imgid, uid, boardid);
         return num > 0;
     }
+
+    public Map<String, Object> getOneBoard(Integer boardid) {
+        Map<String, Object> res = new HashMap<>();
+        List<ImgInfos> imginfos = new ArrayList<>();
+        imginfos.addAll(imgMapper.getAllImgingoInBoard(boardid));
+        ImgBoard boardinfo = imgMapper.getOneBoardInfo(boardid);
+        res.put("boardinfo", boardinfo);
+        res.put("imginfos", imginfos);
+        return res;
+    }
 }

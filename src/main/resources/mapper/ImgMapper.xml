@@ -84,5 +84,15 @@
         LIMIT 3
     </select>
 
+    <select id="getOneBoardInfo" resultType="com.bili.entity.ImgBoard">
+        select * from `imgs_board` where board_id = #{boardid}
+    </select>
+
+    <select id="getAllImgingoInBoard" resultType="com.bili.entity.outEntity.ImgInfos">
+        select f.*, p.path, p.height from
+        (`imgs_followimg` f left join `imgs_path` p on f.img_id = p.img_id)
+        where board_id = #{boardid}
+    </select>
+
 
 </mapper>

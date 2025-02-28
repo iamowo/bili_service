@@ -6,6 +6,7 @@ import com.bili.entity.UpImgs;
 import com.bili.entity.outEntity.ImgInfos;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.Collection;
 import java.util.List;
 
 @Mapper
@@ -29,4 +30,8 @@ public interface ImgMapper {
     void cancleCollectOneImg(Integer uid, Integer imgid, Integer boardid);
 
     void changeBoardData(Integer boardid, int num1, int num2, int num3);
+
+    ImgBoard getOneBoardInfo(Integer boardid);
+
+    List<ImgInfos> getAllImgingoInBoard(Integer boardid);
 }

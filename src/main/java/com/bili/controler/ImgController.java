@@ -91,4 +91,14 @@ public class ImgController {
             return Response.failure(500, "error: " + e);
         }
     }
+
+    @GetMapping("getOneBoard/{boardid}")
+    public Response getOneBoard(@PathVariable Integer boardid) {
+        try {
+            Map<String, Object> res = imgService.getOneBoard(boardid);
+            return Response.success(res);
+        } catch (Exception e) {
+            return Response.failure(500, "error: " + e);
+        }
+    }
 }

@@ -9,6 +9,7 @@ public class ImgInfos {
     // 图片id
     // 图片信息
     private Integer id;
+    // 第一张图片
     private String path;
     private Integer height;
     private String title;
