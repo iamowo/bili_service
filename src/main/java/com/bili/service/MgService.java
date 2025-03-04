@@ -145,8 +145,8 @@ public class MgService {
 
     public Mg getOneMg(Integer mid, Integer uid) {
         Mg res = mgMapper.getOneMg(mid);
-        Integer hadecooected = mgMapper.judgeCollected(mid, uid, 0, 0);
-        if (hadecooected == 1) {
+        Integer hadecolected = mgMapper.judgeCollected(mid, uid, 0, 0);
+        if (hadecolected == 1) {
             res.setCollected(true);
         } else {
             res.setCollected(false);
@@ -229,24 +229,27 @@ public class MgService {
     }
 
     public void updateMgStatus(MgList mgList) {
+        // type 0 收藏 1 历史
         if (mgList.getType() == 1 && mgList.getNum() == 0) {
             // 删除全部观看历史
             mgMapper.changeAllList(mgList);
             return;
         }
-        if (mgList.getType() == 0 && mgList.getNum() == 0) {
-            // 删除收藏
-            for (int i = 0; i < mgList.getMidlist().length; i++) {
-                MgList temp = new MgList();
-                temp.setMid(mgList.getMidlist()[i]);
-                temp.setDeleted(1);
-                temp.setUid(mgList.getUid());
-                temp.setType(0);
-                mgMapper.updateMgStatus(temp);
-            }
+        if (mgList.getType() == 0) {
+            // 删除收藏一个
+            mgMapper.updateMgStatus(mgList);
+
+//            for (int i = 0; i < mgList.getMidlist().length; i++) {
+//                MgList temp = new MgList();
+//                temp.setMid(mgList.getMidlist()[i]);
+//                temp.setDeleted(1);
+//                temp.setUid(mgList.getUid());
+//                temp.setType(0);
+//                mgMapper.updateMgStatus(temp);
+//            }
+//            mgMapper.updateMgStatus(temp);
             return;
         }
-        mgMapper.updateMgStatus(mgList);
     }
 
     public List<MgImgs> getMgImgsRandom(Integer mid, Integer number, Integer num) {
@@ -268,5 +271,9 @@ public class MgService {
         List<Mg> res = mgMapper.getMgsss(type);
         dealTaglist(res);
         return res;
+    }
+
+    public MgList getLastWatch(Integer mid, Integer uid) {
+        return mgMapper.getLastWatch(mid, uid);
     }
 }

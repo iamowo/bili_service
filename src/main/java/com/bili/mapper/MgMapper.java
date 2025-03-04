@@ -55,4 +55,6 @@ public interface MgMapper {
     void updateMgInfo(Mg mg);
 
     List<Mg> getMgsss(Integer type);
+
+    MgList getLastWatch(Integer mid, Integer uid);
 }

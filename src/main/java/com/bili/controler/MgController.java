@@ -202,4 +202,14 @@ public class MgController {
             return Response.failure(500, "error:" + e);
         }
     }
+
+    @GetMapping("/getLastWatch/{mid}/{uid}")
+    public Response getLastWatch (@PathVariable Integer mid, @PathVariable Integer uid) {
+        try {
+            MgList res = mgService.getLastWatch(mid, uid);
+            return Response.success(res);
+        } catch (Exception e) {
+            return Response.failure(500, "error:" + e);
+        }
+    }
 }

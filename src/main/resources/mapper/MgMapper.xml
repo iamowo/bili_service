@@ -121,7 +121,7 @@
     </select>
     <select id="getClassify" resultType="com.bili.entity.Mg">
         select * from `mg` where 1=1
-        <if test="type1 != null">
+        <if test="type1 != null and type1 != '全部'">
             and mtag = #{type1}
         </if>
         <if test="type2 != null and type2 != -1">
@@ -179,6 +179,10 @@
         <if test="type != null and type = 0">
             deleted = 0
         </if>
+    </select>
+
+    <select id="getLastWatch" resultType="com.bili.entity.MgList">
+        select * from `mglist` where mid = #{mid} and uid = #{uid} and type = 1 and deleted = 0
     </select>
 
 

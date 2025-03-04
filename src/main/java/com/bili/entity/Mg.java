@@ -18,7 +18,7 @@ public class Mg {
     private Timestamp time;
     private String cover;
     private Integer done;
-    private Integer favorited;
+    private Integer favorited; // 收藏个数
     private Integer reads;
     private Integer deleted;
     private Integer comments;
