@@ -32,11 +32,6 @@ public class UserController {
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
 
-    @Autowired
-    private RedisService redisService;
-    @Value("${url2}")
-    private String url;
-
     // 没有token的用户信息
     @GetMapping("/getByUid/{uid}")
     public Response getByUid (@PathVariable Integer uid) {
@@ -237,12 +232,8 @@ public class UserController {
     @GetMapping("/generateQrCode")
     public Response generateQrCode() {
         try {
-            // 生成唯一UUID作为二维码内容
-            String token = UUID.randomUUID().toString();
-            String qrCodeContent = url + "?token=" + token;
-            // 将二维码存储到redis中，后续验证
-            redisService.setValue("pending", token, 3);
-            return Response.success(qrCodeContent);
+            String res = userService.generateQrCode();
+            return Response.success(res);
         } catch (Exception e) {
             return Response.failure(500, "error");
         }

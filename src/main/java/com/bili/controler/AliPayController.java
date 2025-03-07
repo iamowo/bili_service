@@ -9,11 +9,13 @@ import com.alipay.api.request.AlipayTradePagePayRequest;
 import com.bili.config.AlipayConfiguration;
 import com.bili.entity.Orders;
 import com.bili.service.OrderService;
+import com.bili.service.RedisService;
 import com.bili.util.Response;
 import com.bili.websocket.WebSocktService;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -33,6 +35,8 @@ public class AliPayController {
     private static final String FORMAT ="JSON";
     private static final String CHARSET ="utf-8";
     private static final String SIGN_TYPE ="RSA2";
+
+    // 创建订单
     @PostMapping("/addOrders")
     public Response addOrders(@RequestBody Orders orders) {
         try {

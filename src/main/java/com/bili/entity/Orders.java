@@ -7,9 +7,10 @@ import java.sql.Timestamp;
 @Data
 public class Orders {
     private Integer id;
+    private Integer index;   // 主键
     private Integer uid;
     private Integer status;  // 0 未完成  1 已完成
-    private String traceNo; // 订单编号
+    private String traceNo;  // 订单编号
     private Double totalAmount;
     /*
     *   产品:

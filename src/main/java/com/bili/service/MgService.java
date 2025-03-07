@@ -4,6 +4,7 @@ import com.bili.entity.*;
 import com.bili.entity.outEntity.UploadMgImg;
 import com.bili.entity.outEntity.UploadMgInfo;
 import com.bili.mapper.MgMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.io.*;
 import java.util.*;
 
+@Slf4j
 @Service
 public class MgService {
     @Value("${files.mgPath}")
@@ -238,17 +240,15 @@ public class MgService {
         if (mgList.getType() == 0) {
             // 删除收藏一个
             mgMapper.updateMgStatus(mgList);
-
-//            for (int i = 0; i < mgList.getMidlist().length; i++) {
-//                MgList temp = new MgList();
-//                temp.setMid(mgList.getMidlist()[i]);
-//                temp.setDeleted(1);
-//                temp.setUid(mgList.getUid());
-//                temp.setType(0);
-//                mgMapper.updateMgStatus(temp);
-//            }
+            for (int i = 0; i < mgList.getMidlist().length; i++) {
+                MgList temp = new MgList();
+                temp.setMid(mgList.getMidlist()[i]);
+                temp.setDeleted(1);
+                temp.setUid(mgList.getUid());
+                temp.setType(0);
+                mgMapper.updateMgStatus(temp);
+            }
 //            mgMapper.updateMgStatus(temp);
-            return;
         }
     }
 

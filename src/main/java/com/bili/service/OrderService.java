@@ -21,7 +21,7 @@ public class OrderService {
     private OrderMapper orderMapper;
 
     @Autowired
-    private RedisTemplate redisTemplate;
+    private RedisService redisService;
     public Orders getByOrderId(Integer id) {
         return orderMapper.getByOrderId(id);
     }
@@ -29,9 +29,9 @@ public class OrderService {
     public Integer addOrders(Orders orders) {
         orderMapper.addOrders(orders);
         Integer id = orders.getId();
-
         // 在Redis中存储一个键，设置30分钟过期
-        redisTemplate.opsForValue().set("order:" + id, id, 2, TimeUnit.MINUTES);
+//        redisTemplate.opsForValue().set("order:" + id, id, 2, TimeUnit.MINUTES);
+        redisService.setValue("orderId" + id, id, 10);
         return id;
     }
 
@@ -41,6 +41,7 @@ public class OrderService {
         orders.setId(id);
         orders.setStatus(3);
         orderMapper.dealDone(orders);
+        redisService.deleteKey("orderId" + id);
     }
     public void updateOrder(Integer id, String subject, String tradeNo) {
         // 当前时间戳
@@ -67,6 +68,7 @@ public class OrderService {
         orders.setEndtime(endtime);
         orders.setTraceNo(tradeNo);
         orderMapper.dealDone(orders);
+        redisService.deleteKey("orderId" + id);
     }
 
     public Integer queryOrderStatus(Integer id) {

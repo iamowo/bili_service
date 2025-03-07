@@ -37,6 +37,11 @@ public class UserService {
     @Autowired
     private CommentMapper commentMapper;
 
+    @Autowired
+    private RedisService redisService;
+    @Value("${url2}")
+    private String url;
+
     public User getByUid(Integer uid) {
         User res = userMapper.getByUid(uid);
         return res;
@@ -290,5 +295,14 @@ public class UserService {
     public List<User> AllUser() {
         List<User> res = userMapper.AllUser();
         return res;
+    }
+
+    public String generateQrCode() {
+        // 生成唯一UUID作为二维码内容
+        String token = UUID.randomUUID().toString();
+        String qrCodeContent = url + "?token=" + token;
+        // 将二维码存储到redis中，后续验证
+        redisService.setValue("pending", token, 3);
+        return qrCodeContent;
     }
 }
