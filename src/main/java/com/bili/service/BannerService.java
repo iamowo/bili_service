@@ -1,11 +1,15 @@
 package com.bili.service;
 
+import com.alibaba.fastjson.JSON;
 import com.bili.entity.Banner;
 import com.bili.mapper.BannerMapper;
+import io.netty.util.internal.StringUtil;
+import org.apache.tomcat.util.buf.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,14 +20,26 @@ public class BannerService {
     private BannerMapper bannerMapper;
     @Value("${files.sysPath}")
     private String sysPath;
-
+    @Autowired
+    private RedisService redisService;
     @Value("${files.sysNet}")
     private String sysNet;
     public List<Banner> getBanner() {
-        List<Banner> res = bannerMapper.getBanner();
+        // redis 中缓存的有
+        List<Banner> tplist = redisService.getList("bannerlist", Banner.class);
+        if (tplist == null || tplist.isEmpty()) {
+            List<Banner> reslist = bannerMapper.getBanner();
+            redisService.setList("bannerlist", reslist);
+            return reslist;
+        }
+        List<Banner> res = new ArrayList<>();
+        if (tplist instanceof ArrayList<?>) {
+            for (Object o : (List<?>) tplist) {
+                res.add(Banner.class.cast(o));
+            }
+        }
         return res;
     }
-
     public void addBanner(Banner banner) {
         bannerMapper.addBanner(banner);
     }
