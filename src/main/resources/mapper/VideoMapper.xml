@@ -89,7 +89,7 @@
     </update>
 
     <!--  数据信息  -->
-    <update id="infos">
+    <update id="updateVideoInfo">
         update `video`
         <set>
             <if test="plays != null">

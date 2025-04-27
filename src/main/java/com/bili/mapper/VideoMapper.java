@@ -20,7 +20,7 @@ public interface VideoMapper {
 
     Video getByVid(Integer vid);
 
-    void infos(Video video);
+    void updateVideoInfo(Video video);
 
 
     void addWatch(Integer uid, Integer vid, Integer lastwatched, Integer done);

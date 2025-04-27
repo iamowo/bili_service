@@ -28,7 +28,7 @@ public interface UserMapper {
 
     void updateinfo(UpdateUser updateUser);
 
-    void updateUser1(UserData userData);
+    void updateUserdata(UserData userData);
 
     List<Integer> getUidByKeyword(String keyword);
 

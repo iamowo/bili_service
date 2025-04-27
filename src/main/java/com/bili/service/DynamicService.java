@@ -152,7 +152,7 @@ public class DynamicService {
         UserData userData = new UserData();
         userData.setUid(dynamic.getUid());
         userData.setDynamics(1);
-        userMapper.updateUser1(userData);
+        userMapper.updateUserdata(userData);
         return did;
     }
 
@@ -205,7 +205,7 @@ public class DynamicService {
             UserData userData = new UserData();
             userData.setUid(dynamic.getUid());
             userData.setDynamics(-1);
-            userMapper.updateUser1(userData);
+            userMapper.updateUserdata(userData);
         }
     }
 

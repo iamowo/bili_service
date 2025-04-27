@@ -44,7 +44,7 @@
 
     <insert id="createLikeBoard">
         insert into `imgs_board`
-        (uid, type, title) values (#{uid}， 0， "喜欢")
+        (uid, type, title) values (#{uid}, 0, "喜欢")
     </insert>
 
     <update id="addFollowNum1">
@@ -88,7 +88,7 @@
         </where>
     </update>
 
-    <update id="updateUser1">
+    <update id="updateUserdata">
         update `user`
         <set>
             <if test="icons != null">
@@ -142,6 +142,7 @@
         set pass = 3
         where vid = #{vid}
     </update>
+
     <update id="userChnageInfo">
         update `video`
         <set>

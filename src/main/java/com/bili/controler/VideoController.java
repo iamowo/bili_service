@@ -191,10 +191,10 @@ public class VideoController {
     }
 
     // 更新视频信息
-    @PostMapping("/updateinfo")
-    public Response updateinfo(@RequestBody VideoInfos videoInfos) {
+    @PostMapping("/updateVideoInfo")
+    public Response updateVideoInfo(@RequestBody VideoInfos videoInfos) {
         try {
-            videoService.infos(videoInfos);
+            videoService.updateVideoInfo(videoInfos);
             return Response.success(videoInfos.getType());
         } catch (Exception e) {
             return Response.failure(500, "error: " + e);

@@ -400,7 +400,7 @@ public class VideoService {
     }
 
     // 修改数据
-    public void infos(VideoInfos videoInfos) {
+    public void updateVideoInfo(VideoInfos videoInfos) {
         Integer uid = videoInfos.getUid();   // 视频up的uid
         Integer vid = videoInfos.getVid();
         Integer fid = videoInfos.getFid();
@@ -410,9 +410,8 @@ public class VideoService {
         video.setVid(videoInfos.getVid());
         video.setUid(videoInfos.getUid());
         if (typestyle == 0) {
-            // watch
+            // 观看信息
             Watchinfo watchinfo = videoMapper.getLastWatch(vid, uid);
-
             Integer lastwatched = videoInfos.getLastwatched();
             Integer done = videoInfos.getDone();
             if (watchinfo != null) {
@@ -421,8 +420,7 @@ public class VideoService {
                 Date now1 = new Date();
                 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 String time = format.format(now1);
-
-                // 未删除，直接跟小滚
+                // 未删除，直接更新
                 if (watchinfo.getDeleted() == 0) {
                     videoMapper.updateWatchinfo(id, done, lastwatched, time, null);
                 } else {   // deleted = 1 ，后更新时间
@@ -491,7 +489,7 @@ public class VideoService {
             video.setListid(videoInfos.getListid());
         }
 
-        videoMapper.infos(video);
+        videoMapper.updateVideoInfo(video);
     }
 
     public List<Video> getVideoLikely(Integer vid) {

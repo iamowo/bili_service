@@ -78,10 +78,6 @@ public class UserService {
     }
 
     public Integer register(RegisterUser registerUser) throws IOException {
-        Integer r = userMapper.findAccount2(registerUser.getAccount());
-        if (r > 0) {
-            return 201;    // 存在此账号
-        }
         User user = new User();
         user.setAccount(registerUser.getAccount());
         user.setPassword(registerUser.getPassword());
@@ -100,11 +96,11 @@ public class UserService {
 
         // 创建默认图片收藏夹（喜欢）
         userMapper.createLikeBoard(uid);
+
         if (registerUser.getType() == 0) {
             user.setName("bili_user#" + uid);
-//            user.setAvatar("http://127.0.0.1:8082/avatar/default.png");
             user.setAvatar(neturl + "/avatar/default.png");
-        } else {
+        } else if (registerUser.getType() == 1){
             user.setName(registerUser.getName());
             user.setIntro(registerUser.getIntro());
             UUID uuid = UUID.randomUUID();
@@ -157,7 +153,7 @@ public class UserService {
     }
 
     public void updateUserdata(UserData userData) {
-        userMapper.updateUser1(userData);
+        userMapper.updateUserdata(userData);
     }
 
     public List<User> searchUser(String keyword, Integer uid, Integer sort) {
