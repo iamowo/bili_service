@@ -43,6 +43,8 @@ public class VideoService {
     private DynamicMapper dynamicMapper;
     @Autowired
     private SearchMapper searchMapper;
+    @Autowired
+    private TagMapper tagMapper;
 
     public List<Video> getAll() {
         List<Video> videos = videoMapper.getAll();
@@ -206,6 +208,13 @@ public class VideoService {
             videoListInfo.setListid(uploadVideoInfos.getListid());
             videoListInfo.setUid(uploadVideoInfos.getUid());
             videoMapper.addVideoToList(videoListInfo);
+        }
+
+        // 插入tag
+        tagMapper.insertTagMain(uploadVideoInfos.getMaintag(), 0, vid);
+        String[] tags = uploadVideoInfos.getOthertags().split(" ");
+        for (int i = 0; i < tags.length; i++) {
+            tagMapper.insertTag(tags[i], 0, vid);
         }
         return vid;
     }

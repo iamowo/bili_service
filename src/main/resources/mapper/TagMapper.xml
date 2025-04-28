@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bili.mapper.TagMapper">
+    <insert id="insertTag">
+        insert into `tags` (tag_name, type, r_id)
+        values(#{tagName}, #{type}, #{rId})
+    </insert>
+
+    <insert id="insertTagMain">
+        insert into `tags_main` (tag_name, type, r_id)
+        values(#{tagName}, #{type}, #{rId})
+    </insert>
+
+    <select id="existTag" resultType="java.lang.Integer">
+        select count(*) from `tags` where tag_name = #{tagName}
+    </select>
+
+    <select id="existTagMain" resultType="java.lang.Integer">
+        select count(*) from `tags_main` where tag_name = #{tagName}
+    </select>
+</mapper>

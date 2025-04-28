@@ -3,6 +3,7 @@ package com.bili.entity.outEntity;
 import lombok.Data;
 
 @Data
+// 上传视频时，视频的一些信息
 public class UploadVideoInfos {
     private String title;
     private Integer duration;
@@ -14,10 +15,8 @@ public class UploadVideoInfos {
     private String cover;    // 截取后时base64格式
     private Integer aid;
     private Integer listid;
-
     private String maintag;
     private String othertags;
-
     private Integer type;
     private Integer season;
     private Integer chapter;
