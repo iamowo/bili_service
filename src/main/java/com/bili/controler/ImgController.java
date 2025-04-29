@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 
 @RestController
-@RequestMapping("imgs")
+@RequestMapping("/imgs")
 public class ImgController {
     @Autowired
     private ImgService imgService;

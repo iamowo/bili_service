@@ -45,6 +45,8 @@ public class VideoService {
     private SearchMapper searchMapper;
     @Autowired
     private TagMapper tagMapper;
+    @Autowired
+    private TagService tagService;
 
     public List<Video> getAll() {
         List<Video> videos = videoMapper.getAll();
@@ -129,7 +131,7 @@ public class VideoService {
                 b[i] += 256;
             }
         }
-        // 保存图片=======================================
+        // 保存图片===================================================
         OutputStream out = new FileOutputStream(videopath);
         out.write(b);
         out.flush();
@@ -211,10 +213,9 @@ public class VideoService {
         }
 
         // 插入tag
-        tagMapper.insertTagMain(uploadVideoInfos.getMaintag(), 0, vid);
         String[] tags = uploadVideoInfos.getOthertags().split(" ");
         for (int i = 0; i < tags.length; i++) {
-            tagMapper.insertTag(tags[i], 0, vid);
+            tagService.insertTag(tags[i], 0, vid);
         }
         return vid;
     }

@@ -299,10 +299,15 @@
     </select>
 
     <select id="getHomHistory" resultType="com.bili.entity.Watchinfo">
+<!--        select * from `watch_info`-->
+<!--        where-->
+<!--        vid >= (select vid from `watch_info` order by vid limit #{start}, 1)-->
+<!--        and uid = #{uid}-->
+<!--        order by time desc-->
+<!--        limit #{num};-->
         select * from `watch_info`
-        where
-        vid >= (select vid from `watch_info` order by vid limit #{start}, 1)
-        and uid = #{uid}
+        where uid = #{uid}
+        order by time desc
         limit #{num};
     </select>
     <select id="getDm" resultType="com.bili.entity.Dm">

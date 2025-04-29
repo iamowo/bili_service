@@ -6,16 +6,17 @@
         values(#{tagName}, #{type}, #{rId})
     </insert>
 
-    <insert id="insertTagMain">
-        insert into `tags_main` (tag_name, type, r_id)
-        values(#{tagName}, #{type}, #{rId})
+    <insert id="insertOneTag">
+        insert into `tags_main_list` (tag_name, type)
+        values (#{tagName}, #{type})
     </insert>
 
     <select id="existTag" resultType="java.lang.Integer">
         select count(*) from `tags` where tag_name = #{tagName}
     </select>
 
-    <select id="existTagMain" resultType="java.lang.Integer">
-        select count(*) from `tags_main` where tag_name = #{tagName}
+    <select id="getOneTagType" resultType="com.bili.entity.TagMainList">
+        select * from `tags_main_list`
+        where type = #{type}
     </select>
 </mapper>
