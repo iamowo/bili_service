@@ -16,6 +16,7 @@ public class UploadVideoInfos {
     private Integer aid;
     private Integer listid;
     private String maintag;
+    private Integer maintagId;
     private String othertags;
     private Integer type;
     private Integer season;

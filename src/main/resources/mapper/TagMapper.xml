@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bili.mapper.TagMapper">
     <insert id="insertTag">
-        insert into `tags` (tag_name, type, r_id)
-        values(#{tagName}, #{type}, #{rId})
+        insert into `tags` (tag_name, type, r_id, fid)
+        values(#{tagName}, #{type}, #{rId}, #{fid})
     </insert>
 
     <insert id="insertOneTag">
@@ -12,11 +12,61 @@
     </insert>
 
     <select id="existTag" resultType="java.lang.Integer">
-        select count(*) from `tags` where tag_name = #{tagName}
+        select count(*) from `tags`
+        where
+        tag_name = #{tagName}
+        and type = #{type}
+        and fid = #{fid}
     </select>
 
-    <select id="getOneTagType" resultType="com.bili.entity.TagMainList">
+    <select id="getMainTag" resultType="com.bili.entity.TagMainList">
         select * from `tags_main_list`
         where type = #{type}
+        <if test="limit > 0">
+            limit #{limit}
+        </if>
     </select>
+
+    <select id="getTags" resultType="com.bili.entity.Tags">
+        select * from `tags`
+        where
+        <if test="flag == 0">
+            fid = #{fid}
+        </if>
+        <if test="flag == 1">
+            type = #{type}
+        </if>
+        <if test="flag == 2">
+            tag_name = #{name}
+        </if>
+        <if test="limit > 0">
+            limit #{limit}
+        </if>
+    </select>
+
+    <select id="getImages" resultType="java.awt.Image">
+        select * from `imgs`
+        WHERE id IN
+        <foreach collection="list" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+    <select id="getVideos" resultType="com.bili.entity.Video">
+        select * from `video`
+        WHERE vid IN
+        <foreach collection="list" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+    <select id="getMgs" resultType="com.bili.entity.Mg">
+        select * from `mg`
+        WHERE mid IN
+        <foreach collection="list" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+
 </mapper>

@@ -12,4 +12,5 @@ public class Tags {
     // 资源id
     private Integer rId;
     private Timestamp time;
+    private Integer fid;
 }

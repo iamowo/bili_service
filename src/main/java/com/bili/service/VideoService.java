@@ -79,6 +79,7 @@ public class VideoService {
         adduserinfo(videos);
         return videos;
     }
+
     // 加工视频信息
     private void adduserinfo(List<Video> video) {
         for (int i = 0; i < video.size(); i++) {
@@ -215,7 +216,7 @@ public class VideoService {
         // 插入tag
         String[] tags = uploadVideoInfos.getOthertags().split(" ");
         for (int i = 0; i < tags.length; i++) {
-            tagService.insertTag(tags[i], 0, vid);
+            tagService.insertTag(tags[i], 0, vid, uploadVideoInfos.getMaintagId());
         }
         return vid;
     }
@@ -521,6 +522,7 @@ public class VideoService {
         hisinfos(res);
         return res;
     }
+
     // 处理观看信息
     private void hisinfos (List<Watchinfo> res) {
         for (int i = 0; i < res.size(); i++) {

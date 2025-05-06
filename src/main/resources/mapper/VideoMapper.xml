@@ -3,8 +3,10 @@
 <mapper namespace="com.bili.mapper.VideoMapper">
     <!--  这个配置可一获取生成的vid  -->
     <insert id="addInfos" useGeneratedKeys="true" keyProperty="vid">
-        insert into `video` (title, intro, cover, uid, duration, vidlong, maintag, othertags, hashValue, listid, type, pass, aid)
-        values (#{title}, #{intro}, #{cover}, #{uid}, #{duration}, #{vidlong}, #{maintag}, #{othertags}, #{hashValue}, #{listid}, #{type}, #{pass}, #{aid})
+<!--        insert into `video` (title, intro, cover, uid, duration, vidlong, maintag, othertags, hashValue, listid, type, pass, aid)-->
+<!--        values (#{title}, #{intro}, #{cover}, #{uid}, #{duration}, #{vidlong}, #{maintag}, #{othertags}, #{hashValue}, #{listid}, #{type}, #{pass}, #{aid})-->
+        insert into `video` (title, intro, cover, uid, duration, vidlong, hashValue, listid, type, pass, aid)
+        values (#{title}, #{intro}, #{cover}, #{uid}, #{duration}, #{vidlong}, #{hashValue}, #{listid}, #{type}, #{pass}, #{aid})
     </insert>
 
     <insert id="addWatch">

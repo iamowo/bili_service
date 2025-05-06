@@ -106,16 +106,6 @@ public class VideoController {
             return Response.failure(500, "error: "+e);
         }
     }
-    // 上传视频信息
-    @PostMapping("/uploadVideoInfos")
-    public Response uploadVideoInfos (@RequestBody UploadVideoInfos uploadVideoInfos) {
-        try {
-            Integer vid = videoService.uploadVideoInfos(uploadVideoInfos);
-            return Response.success(vid);
-        } catch (Exception e) {
-            return Response.failure(500, "error: "+e);
-        }
-    }
 
     // 观看历史
     @GetMapping("/getHistory/{uid}")
@@ -158,6 +148,18 @@ public class VideoController {
             return Response.failure(500, "error: "+e);
         }
     }
+
+    // 上传视频信息
+    @PostMapping("/uploadVideoInfos")
+    public Response uploadVideoInfos (@RequestBody UploadVideoInfos uploadVideoInfos) {
+        try {
+            Integer vid = videoService.uploadVideoInfos(uploadVideoInfos);
+            return Response.success(vid);
+        } catch (Exception e) {
+            return Response.failure(500, "error: "+e);
+        }
+    }
+
     // 上传分片
     @PostMapping("/uploadChunks")
     public Response uploadChunks (OneChunk oneChunk) {
