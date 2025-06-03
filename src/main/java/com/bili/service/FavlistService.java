@@ -1,9 +1,8 @@
 package com.bili.service;
 
-import com.bili.entity.FavoristList;
-import com.bili.entity.Message.WhisperCover;
-import com.bili.entity.User;
-import com.bili.entity.Video;
+import com.bili.entity.PO.FavoristList;
+import com.bili.entity.PO.User;
+import com.bili.entity.PO.Video;
 import com.bili.entity.outEntity.Addfavorite;
 import com.bili.mapper.FavlistMapper;
 import com.bili.mapper.UserMapper;

@@ -1,12 +1,11 @@
 package com.bili.mapper;
 
-import com.bili.entity.Img;
-import com.bili.entity.ImgBoard;
-import com.bili.entity.UpImgs;
+import com.bili.entity.PO.Img;
+import com.bili.entity.PO.ImgBoard;
+import com.bili.entity.PO.UpImgs;
 import com.bili.entity.outEntity.ImgInfos;
 import org.apache.ibatis.annotations.Mapper;
 
-import java.util.Collection;
 import java.util.List;
 
 @Mapper

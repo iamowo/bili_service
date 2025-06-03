@@ -62,14 +62,14 @@
         where uid = #{uid} and did = #{did} and type = 1
     </delete>
 
-    <select id="getDyanmciList" resultType="com.bili.entity.Dynamic">
+    <select id="getDyanmciList" resultType="com.bili.entity.PO.Dynamic">
         select * from `dynamic`
         where
         uid = #{uid} and deleted = 0
         ORDER BY id DESC
     </select>
 
-    <select id="getImgs" resultType="com.bili.entity.Dyimgs">
+    <select id="getImgs" resultType="com.bili.entity.PO.Dyimgs">
         select * from `dyimgs`
         where did  = #{id}
     </select>
@@ -79,7 +79,7 @@
         where uid2 = #{uid}
     </select>
 
-    <select id="getOneDynamic" resultType="com.bili.entity.Dynamic">
+    <select id="getOneDynamic" resultType="com.bili.entity.PO.Dynamic">
         select * from `dynamic`
         where
         id = #{did}
@@ -91,7 +91,7 @@
         group by did
     </select>
 
-    <select id="getDynamic" resultType="com.bili.entity.Dynamic">
+    <select id="getDynamic" resultType="com.bili.entity.PO.Dynamic">
         select * from `dynamic`
         where
         id = #{did}
@@ -102,11 +102,11 @@
         where uid = #{uid} and did = #{did} and type = 1
     </select>
 
-    <select id="getAllTopical" resultType="com.bili.entity.Topical">
+    <select id="getAllTopical" resultType="com.bili.entity.PO.Topical">
         select * from `topical`
     </select>
 
-    <select id="getDynamicByTopical" resultType="com.bili.entity.Dynamic">
+    <select id="getDynamicByTopical" resultType="com.bili.entity.PO.Dynamic">
         select * from `dynamic`
         where topical = #{topical} and deleted = 0
         order by
@@ -119,22 +119,22 @@
         desc
     </select>
 
-    <select id="getOneTopical" resultType="com.bili.entity.Topical">
+    <select id="getOneTopical" resultType="com.bili.entity.PO.Topical">
         select * from `topical`
         where topical = #{topical}
     </select>
-    <select id="getDynamicByKeyword" resultType="com.bili.entity.Dynamic">
+    <select id="getDynamicByKeyword" resultType="com.bili.entity.PO.Dynamic">
         select * from `dynamic`
         where uid = #{uid}
         and content like concat('%', #{keyword}, '%')
         and deleted = 0
     </select>
 
-    <select id="getAllDynamic" resultType="com.bili.entity.Dynamic">
+    <select id="getAllDynamic" resultType="com.bili.entity.PO.Dynamic">
         select * from `dynamic`
         order by time
     </select>
-    <select id="getDynamics" resultType="com.bili.entity.Dynamic">
+    <select id="getDynamics" resultType="com.bili.entity.PO.Dynamic">
         select * from `dynamic`
         <if test="type != null and type == 0">
             where deleted = 0

@@ -1,6 +1,6 @@
 package com.bili.mapper;
 
-import com.bili.entity.*;
+import com.bili.entity.PO.*;
 import com.bili.entity.temp.TagAndNums;
 import org.apache.ibatis.annotations.Mapper;
 

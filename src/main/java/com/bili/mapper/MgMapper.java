@@ -1,9 +1,9 @@
 package com.bili.mapper;
 
-import com.bili.entity.Mg;
-import com.bili.entity.MgChapters;
-import com.bili.entity.MgImgs;
-import com.bili.entity.MgList;
+import com.bili.entity.PO.Mg;
+import com.bili.entity.PO.MgChapters;
+import com.bili.entity.PO.MgImgs;
+import com.bili.entity.PO.MgList;
 import com.bili.entity.outEntity.UploadMgImg;
 import com.bili.entity.outEntity.UploadMgInfo;
 import org.apache.ibatis.annotations.Mapper;

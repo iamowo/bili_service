@@ -1,6 +1,6 @@
 package com.bili.mapper;
 
-import com.bili.entity.Orders;
+import com.bili.entity.PO.Orders;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper

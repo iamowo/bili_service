@@ -1,7 +1,7 @@
 package com.bili.controler;
 
-import com.bili.entity.Comment;
-import com.bili.entity.LikeInfo;
+import com.bili.entity.PO.Comment;
+import com.bili.entity.PO.LikeInfo;
 import com.bili.service.CommentService;
 import com.bili.util.Response;
 import org.springframework.beans.factory.annotation.Autowired;

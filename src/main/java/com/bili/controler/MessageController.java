@@ -1,18 +1,16 @@
 package com.bili.controler;
 
-import com.bili.entity.At;
-import com.bili.entity.LikeInfo;
+import com.bili.entity.PO.At;
+import com.bili.entity.PO.LikeInfo;
 import com.bili.entity.Message.Whisper;
 import com.bili.entity.Message.WhisperCover;
-import com.bili.entity.SysInfo;
+import com.bili.entity.PO.SysInfo;
 import com.bili.service.MessageService;
 import com.bili.util.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/message")

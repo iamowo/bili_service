@@ -29,7 +29,7 @@
         </where>
     </update>
 
-    <select id="getByOrderId" resultType="com.bili.entity.Orders">
+    <select id="getByOrderId" resultType="com.bili.entity.PO.Orders">
         select * from `order`
         where
         id = #{id}

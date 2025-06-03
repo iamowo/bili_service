@@ -1,6 +1,6 @@
 package com.bili.service;
 
-import com.bili.entity.*;
+import com.bili.entity.PO.*;
 import com.bili.entity.outEntity.Audit;
 import com.bili.entity.outEntity.OneChunk;
 import com.bili.entity.outEntity.UploadVideoInfos;
@@ -10,9 +10,7 @@ import com.bili.mapper.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.expression.spel.ast.Literal;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.nio.ByteBuffer;

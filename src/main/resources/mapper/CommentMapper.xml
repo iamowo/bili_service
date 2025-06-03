@@ -39,28 +39,28 @@
         where cid = #{cid} and uid = #{uid} and type = 2
     </delete>
 
-    <select id="getAllComment" resultType="com.bili.entity.Comment">
+    <select id="getAllComment" resultType="com.bili.entity.PO.Comment">
         select * from `comment`
         where
         vid = #{vid} and topid = 0 and deleted = 0
         order by ${order} desc
     </select>
 
-    <select id="getAllComment2" resultType="com.bili.entity.Comment">
+    <select id="getAllComment2" resultType="com.bili.entity.PO.Comment">
         select * from `comment`
         where
         did = #{did} and topid = 0 and deleted = 0
         order by ${order} desc
     </select>
 
-    <select id="getAllComment3" resultType="com.bili.entity.Comment">
+    <select id="getAllComment3" resultType="com.bili.entity.PO.Comment">
         select * from `comment`
         where
         mid = #{mid} and topid = 0 and deleted = 0
         order by ${order} desc
     </select>
 
-    <select id="findSecond" resultType="com.bili.entity.Comment">
+    <select id="findSecond" resultType="com.bili.entity.PO.Comment">
         select * from `comment`
         where
         topid = #{id} and deleted = 0
@@ -81,7 +81,7 @@
         </if>
     </select>
 
-    <select id="getReplayComment" resultType="com.bili.entity.Comment">
+    <select id="getReplayComment" resultType="com.bili.entity.PO.Comment">
         select * from `comment`
         where
         (uid != #{uid} and hisuid = #{uid} and deleted = 0

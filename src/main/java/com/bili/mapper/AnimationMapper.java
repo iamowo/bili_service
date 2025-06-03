@@ -1,8 +1,8 @@
 package com.bili.mapper;
 
-import com.bili.entity.Animation;
-import com.bili.entity.AnimationList;
-import com.bili.entity.AnimationSublist;
+import com.bili.entity.PO.Animation;
+import com.bili.entity.PO.AnimationList;
+import com.bili.entity.PO.AnimationSublist;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

@@ -154,17 +154,17 @@
         </where>
     </update>
 
-    <select id="getAll" resultType="com.bili.entity.Video">
+    <select id="getAll" resultType="com.bili.entity.PO.Video">
         select * from `video` order by time
     </select>
 
-    <select id="getRecommend" resultType="com.bili.entity.Video">
+    <select id="getRecommend" resultType="com.bili.entity.PO.Video">
         select * from `video` as res
         where
         pass = 1 and res.vid>=(RAND()*(SELECT MAX(vid) FROM `video`))LIMIT 6
     </select>
 
-    <select id="getRandom" resultType="com.bili.entity.Video">
+    <select id="getRandom" resultType="com.bili.entity.PO.Video">
         SELECT * FROM video
         <where>
             <if test="vids != null and vids.size != 0">
@@ -178,7 +178,7 @@
         LIMIT #{num};
     </select>
 
-    <select id="getByVid" resultType="com.bili.entity.Video">
+    <select id="getByVid" resultType="com.bili.entity.PO.Video">
         select * from `video`
         where
         vid = #{vid}
@@ -239,7 +239,7 @@
         where uid = #{uid} and vid = #{vid}
     </select>
 
-    <select id="getLastWatch" resultType="com.bili.entity.Watchinfo">
+    <select id="getLastWatch" resultType="com.bili.entity.PO.Watchinfo">
         select * from `watch_info`
         where uid = #{uid} and vid = #{vid}
     </select>
@@ -249,58 +249,58 @@
         where uid = #{uid} and vid = #{vid}
     </select>
 
-    <select id="getHistory" resultType="com.bili.entity.Watchinfo">
+    <select id="getHistory" resultType="com.bili.entity.PO.Watchinfo">
         select * from `watch_info`
         where uid = #{uid} and deleted = 0
         order by time desc
     </select>
 
-    <select id="getVideoByUid" resultType="com.bili.entity.Video">
+    <select id="getVideoByUid" resultType="com.bili.entity.PO.Video">
         select * from `video`
         where uid = #{uid} and pass = 1
         ORDER BY vid desc
     </select>
 
-    <select id="getVideoByUidNums" resultType="com.bili.entity.Video">
+    <select id="getVideoByUidNums" resultType="com.bili.entity.PO.Video">
         select * from `video`
         where uid = #{uid} and pass = 1
         ORDER BY vid desc
         limit #{nums}
     </select>
 
-    <select id="getRank1" resultType="com.bili.entity.Video">
+    <select id="getRank1" resultType="com.bili.entity.PO.Video">
         SELECT * FROM `video`
         where pass = 1
         ORDER BY likes desc
         limit 50
     </select>
-    <select id="getRank2" resultType="com.bili.entity.Video">
+    <select id="getRank2" resultType="com.bili.entity.PO.Video">
         SELECT * FROM `video`
         where pass = 1
         ORDER BY comments desc
         limit 50
     </select>
-    <select id="getRank3" resultType="com.bili.entity.Video">
+    <select id="getRank3" resultType="com.bili.entity.PO.Video">
         SELECT * FROM `video`
         where pass = 1
         ORDER BY plays desc
         limit 50
     </select>
 
-    <select id="getByKeyword" resultType="com.bili.entity.Video">
+    <select id="getByKeyword" resultType="com.bili.entity.PO.Video">
         select * from `video`
         where pass = 1 and
         title like concat('%', #{keyword}, '%')
     </select>
 
-    <select id="getHomeDynamicVideo" resultType="com.bili.entity.Video">
+    <select id="getHomeDynamicVideo" resultType="com.bili.entity.PO.Video">
         select * from `watch_info`
         where
         id >= (select id from `watch_info` order by id limit #{start}, 1)
         limit #{num};
     </select>
 
-    <select id="getHomHistory" resultType="com.bili.entity.Watchinfo">
+    <select id="getHomHistory" resultType="com.bili.entity.PO.Watchinfo">
 <!--        select * from `watch_info`-->
 <!--        where-->
 <!--        vid >= (select vid from `watch_info` order by vid limit #{start}, 1)-->
@@ -312,7 +312,7 @@
         order by time desc
         limit #{num};
     </select>
-    <select id="getDm" resultType="com.bili.entity.Dm">
+    <select id="getDm" resultType="com.bili.entity.PO.Dm">
         select * from `dm`
         where
         vid = #{vid}
@@ -335,38 +335,38 @@
         name like concat('%', #{keyword}, '%')
     </select>
 
-    <select id="getByDuration1" resultType="com.bili.entity.Video">
+    <select id="getByDuration1" resultType="com.bili.entity.PO.Video">
         select * from `video`
         where
         title like concat('%', #{keyword}, '%')
         and duration between #{time1} and #{time2}
     </select>
 
-    <select id="getFamous" resultType="com.bili.entity.Video">
+    <select id="getFamous" resultType="com.bili.entity.PO.Video">
         select * from `video`
         where
         uid = #{uid} and famous = 1 and pass = 1
     </select>
-    <select id="getUnfamous" resultType="com.bili.entity.Video">
+    <select id="getUnfamous" resultType="com.bili.entity.PO.Video">
         select * from `video`
         where
         uid = #{uid} and famous = 0 and pass = 1
         ORDER BY #{type} DESC
     </select>
 
-    <select id="getAuditVideo" resultType="com.bili.entity.Video">
+    <select id="getAuditVideo" resultType="com.bili.entity.PO.Video">
         select * from `video`
         where
         pass = 0
     </select>
 
-    <select id="getAllv" resultType="com.bili.entity.Video">
+    <select id="getAllv" resultType="com.bili.entity.PO.Video">
         select * from `video`
         where uid = #{uid}
         and pass != 3
     </select>
 
-    <select id="getUserVideoList" resultType="com.bili.entity.VideoList">
+    <select id="getUserVideoList" resultType="com.bili.entity.PO.VideoList">
         select * from `videolist`
         where uid = #{uid}
     </select>
@@ -380,7 +380,7 @@
         where listid = #{listid}
     </select>
 
-    <select id="getByMaintag" resultType="com.bili.entity.Video">
+    <select id="getByMaintag" resultType="com.bili.entity.PO.Video">
         select * from `video`
         where maintag = #{maintag} and pass = 1
         order by plays desc
@@ -401,23 +401,23 @@
         ORDER BY COUNT(maintag) DESC;
     </select>
 
-    <select id="getVideoByHash" resultType="com.bili.entity.Video">
+    <select id="getVideoByHash" resultType="com.bili.entity.PO.Video">
         select * from `video`
         where hashValue = #{hashValue}
     </select>
 
-    <select id="getUnExitList" resultType="com.bili.entity.Video">
+    <select id="getUnExitList" resultType="com.bili.entity.PO.Video">
         select * from `video`
         where pass = 1 and listid = -1 and uid = #{uid}
     </select>
 
-    <select id="getVideoFormList" resultType="com.bili.entity.Video">
+    <select id="getVideoFormList" resultType="com.bili.entity.PO.Video">
         select * from `video`
         where listid = #{listid} and pass = 1 and listid != -1
         order by time DESC
     </select>
     
-    <select id="getUserListOne" resultType="com.bili.entity.VideoList">
+    <select id="getUserListOne" resultType="com.bili.entity.PO.VideoList">
         select * from `videolist`
         where listid = #{listid}
     </select>
@@ -458,7 +458,7 @@
         and DATE_SUB(CURDATE(),  INTERVAL 1 MONTH) &lt;= date(time);
     </select>
 
-    <select id="getVideoByKeyword" resultType="com.bili.entity.Video">
+    <select id="getVideoByKeyword" resultType="com.bili.entity.PO.Video">
         select * from `video`
         where uid = #{uid}
         and title like concat('%', #{keyword}, '%')
@@ -476,12 +476,12 @@
         select count(*) from video
     </select>
 
-    <select id="getAllClassify" resultType="com.bili.entity.VideoClassify">
+    <select id="getAllClassify" resultType="com.bili.entity.PO.VideoClassify">
         select * from `video_classify`
         order by time
     </select>
 
-    <select id="getVideos" resultType="com.bili.entity.Video">
+    <select id="getVideos" resultType="com.bili.entity.PO.Video">
         select * from `video`
         <if test="type != null and type == 0">
             where pass = 1

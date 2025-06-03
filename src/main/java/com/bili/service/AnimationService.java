@@ -1,9 +1,9 @@
 package com.bili.service;
 
-import com.bili.entity.Animation;
-import com.bili.entity.AnimationList;
-import com.bili.entity.AnimationSublist;
-import com.bili.entity.Video;
+import com.bili.entity.PO.Animation;
+import com.bili.entity.PO.AnimationList;
+import com.bili.entity.PO.AnimationSublist;
+import com.bili.entity.PO.Video;
 import com.bili.mapper.AnimationMapper;
 import com.bili.mapper.VideoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
 @Service
 public class AnimationService {

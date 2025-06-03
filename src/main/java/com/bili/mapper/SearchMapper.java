@@ -1,10 +1,9 @@
 package com.bili.mapper;
 
-import com.bili.entity.HotKeyword;
+import com.bili.entity.PO.HotKeyword;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
-import java.util.Map;
 
 @Mapper
 public interface SearchMapper {

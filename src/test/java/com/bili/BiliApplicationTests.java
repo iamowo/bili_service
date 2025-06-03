@@ -1,7 +1,6 @@
 package com.bili;
 
-import com.bili.entity.User;
-import com.bili.entity.Video;
+import com.bili.entity.PO.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 

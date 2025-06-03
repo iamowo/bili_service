@@ -1,0 +1,62 @@
+1. POJO (Plain Old Java Object)
+含义：简单的 Java 对象，不继承特定类，不实现特定接口
+
+特点：
+
+只有私有属性和对应的 getter/setter 方法
+
+不包含业务逻辑
+
+不依赖于任何框架
+
+用途：作为基础 Java 对象，其他类型实体类通常都是 POJO 的特化
+
+
+
+2. PO (Persistent Object)
+含义：持久化对象，与数据库表结构一一对应
+
+特点：
+
+通常与 JPA/Hibernate/MyBatis 等 ORM 框架配合使用
+
+每个属性对应数据库表的一个字段
+
+
+
+3. DTO (Data Transfer Object)
+含义：数据传输对象，用于不同层或系统间的数据传输
+
+特点：
+
+通常用于 Controller 和 Service 层之间
+
+可能组合多个 PO 的数据
+
+不包含业务逻辑
+
+
+
+4. VO (Value Object)
+含义：值对象，通常用于展示层
+
+特点：
+
+与前端交互的数据结构
+
+可能包含格式化后的数据
+
+通常对应 API 的响应模型
+
+
+
+5. BO (Business Object)
+含义：业务对象，包含业务逻辑
+
+特点：
+
+通常位于 Service 层
+
+可能组合多个 PO 的数据
+
+包含业务方法

@@ -1,7 +1,7 @@
 package com.bili.mapper;
 
-import com.bili.entity.FavoristList;
-import com.bili.entity.Video;
+import com.bili.entity.PO.FavoristList;
+import com.bili.entity.PO.Video;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

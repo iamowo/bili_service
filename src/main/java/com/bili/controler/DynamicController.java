@@ -1,10 +1,11 @@
 package com.bili.controler;
 
-import com.bili.entity.*;
+import com.bili.entity.PO.Dynamic;
+import com.bili.entity.PO.LikeInfo;
+import com.bili.entity.PO.Topical;
 import com.bili.entity.outEntity.UpDynamicimgs;
 import com.bili.service.DynamicService;
 import com.bili.util.Response;
-import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

@@ -51,13 +51,13 @@
         (uid1 = #{uid2} and uid2 = #{uid1})
     </select>
 
-    <select id="getSysinfo" resultType="com.bili.entity.SysInfo">
+    <select id="getSysinfo" resultType="com.bili.entity.PO.SysInfo">
         select * from `sysinfo`
         where
         uid = #{hisuid}
     </select>
 
-    <select id="getLikeinfo" resultType="com.bili.entity.LikeInfo">
+    <select id="getLikeinfo" resultType="com.bili.entity.PO.LikeInfo">
         select * from `like_info`
         where
         uid = #{uid}
@@ -71,7 +71,7 @@
         and deleted = 0
     </select>
 
-    <select id="getHisAllWhisperList" resultType="com.bili.entity.WhisperList">
+    <select id="getHisAllWhisperList" resultType="com.bili.entity.PO.WhisperList">
         select * from `whisper_list`
         where
         (uid1 = #{uid1} or uid2 = #{uid1})
@@ -95,7 +95,7 @@
         and deleted = 0
     </select>
 
-    <select id="getAtinfo" resultType="com.bili.entity.At">
+    <select id="getAtinfo" resultType="com.bili.entity.PO.At">
         select * from `at`
         where uid2 = #{uid}
     </select>

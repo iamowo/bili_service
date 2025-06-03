@@ -1,7 +1,7 @@
 package com.bili.controler;
 
-import com.bili.entity.FavoristList;
-import com.bili.entity.Video;
+import com.bili.entity.PO.FavoristList;
+import com.bili.entity.PO.Video;
 import com.bili.entity.outEntity.Addfavorite;
 import com.bili.service.FavlistService;
 import com.bili.util.Response;

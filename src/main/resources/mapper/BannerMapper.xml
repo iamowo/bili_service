@@ -54,13 +54,13 @@
         where ind = #{ind}
     </update>
 
-    <select id="getBanner" resultType="com.bili.entity.Banner">
+    <select id="getBanner" resultType="com.bili.entity.PO.Banner">
         select * from `banner`
         where ind >= 0
         order by ind
     </select>
 
-    <select id="getBannerUnselected" resultType="com.bili.entity.Banner">
+    <select id="getBannerUnselected" resultType="com.bili.entity.PO.Banner">
         select * from `banner`
         where ind = -1
     </select>

@@ -1,25 +1,21 @@
 package com.bili.controler;
 
-import com.bili.entity.User;
-import com.bili.entity.UserSetting;
+import com.bili.entity.PO.User;
+import com.bili.entity.PO.UserSetting;
 import com.bili.entity.outEntity.Login;
 import com.bili.entity.outEntity.RegisterUser;
 import com.bili.entity.outEntity.UpdateUser;
 import com.bili.entity.outEntity.UserData;
 import com.bili.mapper.UserMapper;
-import com.bili.service.RedisService;
 import com.bili.service.UserService;
 import com.bili.util.Response;
 import com.bili.util.TokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping("/user")

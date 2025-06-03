@@ -1,6 +1,6 @@
 package com.bili.mapper;
 
-import com.bili.entity.Banner;
+import com.bili.entity.PO.Banner;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

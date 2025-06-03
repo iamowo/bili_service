@@ -59,7 +59,7 @@
         where fid = #{fid}
     </delete>
 
-    <select id="getFavlist" resultType="com.bili.entity.FavoristList">
+    <select id="getFavlist" resultType="com.bili.entity.PO.FavoristList">
         select * from `favlist`
         where uid = #{uid}
     </select>
@@ -70,7 +70,7 @@
         order by time DESC
     </select>
 
-    <select id="getOneVideo" resultType="com.bili.entity.Video">
+    <select id="getOneVideo" resultType="com.bili.entity.PO.Video">
         select * from `video`
         where vid = #{vid} and pass = 1
     </select>

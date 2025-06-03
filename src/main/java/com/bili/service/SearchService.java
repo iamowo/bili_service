@@ -1,12 +1,11 @@
 package com.bili.service;
 
-import com.bili.entity.HotKeyword;
+import com.bili.entity.PO.HotKeyword;
 import com.bili.mapper.SearchMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class SearchService {

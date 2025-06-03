@@ -16,7 +16,7 @@
         where uid = #{uid}
     </delete>
 
-    <select id="getAllKeyword" resultType="com.bili.entity.HotKeyword">
+    <select id="getAllKeyword" resultType="com.bili.entity.PO.HotKeyword">
         select * from `hot_keyword`
         where uid = #{uid}
     </select>

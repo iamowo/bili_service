@@ -1,13 +1,12 @@
 package com.bili.controler;
 
-import com.bili.entity.HotKeyword;
+import com.bili.entity.PO.HotKeyword;
 import com.bili.service.SearchService;
 import com.bili.util.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/search")

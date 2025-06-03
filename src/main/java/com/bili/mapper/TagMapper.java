@@ -1,9 +1,9 @@
 package com.bili.mapper;
 
-import com.bili.entity.Mg;
-import com.bili.entity.TagMainList;
-import com.bili.entity.Tags;
-import com.bili.entity.Video;
+import com.bili.entity.PO.Mg;
+import com.bili.entity.PO.TagMainList;
+import com.bili.entity.PO.Tags;
+import com.bili.entity.PO.Video;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.awt.*;

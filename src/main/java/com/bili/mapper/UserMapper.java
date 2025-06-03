@@ -1,8 +1,8 @@
 package com.bili.mapper;
 
-import com.bili.entity.User;
-import com.bili.entity.UserSetting;
-import com.bili.entity.Video;
+import com.bili.entity.PO.User;
+import com.bili.entity.PO.UserSetting;
+import com.bili.entity.PO.Video;
 import com.bili.entity.outEntity.UpdateUser;
 import com.bili.entity.outEntity.UserData;
 import org.apache.ibatis.annotations.Mapper;

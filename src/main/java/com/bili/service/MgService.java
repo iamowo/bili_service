@@ -1,6 +1,9 @@
 package com.bili.service;
 
-import com.bili.entity.*;
+import com.bili.entity.PO.Mg;
+import com.bili.entity.PO.MgChapters;
+import com.bili.entity.PO.MgImgs;
+import com.bili.entity.PO.MgList;
 import com.bili.entity.outEntity.UploadMgImg;
 import com.bili.entity.outEntity.UploadMgInfo;
 import com.bili.mapper.MgMapper;

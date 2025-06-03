@@ -82,7 +82,7 @@
         </where>
     </update>
 
-    <select id="getByTitle" resultType="com.bili.entity.Mg">
+    <select id="getByTitle" resultType="com.bili.entity.PO.Mg">
         select * from `mg`
         where
         title like concat('%', #{keyword}, '%')
@@ -90,36 +90,36 @@
         deleted = 0
     </select>
 
-    <select id="getOneMg" resultType="com.bili.entity.Mg">
+    <select id="getOneMg" resultType="com.bili.entity.PO.Mg">
         select * from `mg`
         where mid = #{mid}
     </select>
 
-    <select id="getChapters" resultType="com.bili.entity.MgChapters">
+    <select id="getChapters" resultType="com.bili.entity.PO.MgChapters">
         select * from `mg_chapters`
         where mid = #{mid}
         limit #{page}, #{num}
     </select>
 
-    <select id="getMgImgs" resultType="com.bili.entity.MgImgs">
+    <select id="getMgImgs" resultType="com.bili.entity.PO.MgImgs">
         select * from `mg_imgs`
         where mid = #{mid} and number = #{number}
         order by ind
     </select>
 
 
-    <select id="getMgs" resultType="com.bili.entity.Mg">
+    <select id="getMgs" resultType="com.bili.entity.PO.Mg">
         select * from `mg`
         where
         deleted = 0
         order by #{type} desc
         limit #{num}
     </select>
-    <select id="getAllChapter" resultType="com.bili.entity.MgChapters">
+    <select id="getAllChapter" resultType="com.bili.entity.PO.MgChapters">
         select * from `mg_chapters`
         where mid = #{mid}
     </select>
-    <select id="getClassify" resultType="com.bili.entity.Mg">
+    <select id="getClassify" resultType="com.bili.entity.PO.Mg">
         select * from `mg` where 1=1
         <if test="type1 != null and type1 != '全部'">
             and mtag = #{type1}
@@ -135,14 +135,14 @@
         </if>
     </select>
 
-    <select id="getMgRanking" resultType="com.bili.entity.Mg">
+    <select id="getMgRanking" resultType="com.bili.entity.PO.Mg">
         select * from `mg`
         where
         deleted = 0
         order by #{type} limit 50
     </select>
 
-    <select id="searchMg" resultType="com.bili.entity.Mg">
+    <select id="searchMg" resultType="com.bili.entity.PO.Mg">
         select * from `mg`
         where
         deleted = 0
@@ -161,27 +161,27 @@
         select mid from `mglist`
         where uid = #{uid} and type = #{type} and deleted = 0
     </select>
-    <select id="getMgImgsRandom" resultType="com.bili.entity.MgImgs">
+    <select id="getMgImgsRandom" resultType="com.bili.entity.PO.MgImgs">
         select * from `mg_imgs`
         where mid = #{mid} and number = #{number}
         limit #{num}
     </select>
 
-    <select id="getUploadMg" resultType="com.bili.entity.Mg">
+    <select id="getUploadMg" resultType="com.bili.entity.PO.Mg">
         select * from `mg`
         where uid = #{uid}
         and deleted = 0
         order by time DESC
     </select>
 
-    <select id="getMgsss" resultType="com.bili.entity.Mg">
+    <select id="getMgsss" resultType="com.bili.entity.PO.Mg">
         select * from `mg`
         <if test="type != null and type = 0">
             deleted = 0
         </if>
     </select>
 
-    <select id="getLastWatch" resultType="com.bili.entity.MgList">
+    <select id="getLastWatch" resultType="com.bili.entity.PO.MgList">
         select * from `mglist` where mid = #{mid} and uid = #{uid} and type = 1 and deleted = 0
     </select>
 

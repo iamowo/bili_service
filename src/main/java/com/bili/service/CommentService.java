@@ -1,9 +1,9 @@
 package com.bili.service;
 
-import com.bili.entity.At;
-import com.bili.entity.Comment;
-import com.bili.entity.LikeInfo;
-import com.bili.entity.User;
+import com.bili.entity.PO.At;
+import com.bili.entity.PO.Comment;
+import com.bili.entity.PO.LikeInfo;
+import com.bili.entity.PO.User;
 import com.bili.mapper.CommentMapper;
 import com.bili.mapper.UserMapper;
 import com.bili.mapper.VideoMapper;

@@ -1,11 +1,10 @@
 package com.bili.mapper;
 
-import com.bili.entity.At;
-import com.bili.entity.Comment;
-import com.bili.entity.LikeInfo;
+import com.bili.entity.PO.At;
+import com.bili.entity.PO.Comment;
+import com.bili.entity.PO.LikeInfo;
 import org.apache.ibatis.annotations.Mapper;
 
-import java.util.Collection;
 import java.util.List;
 
 @Mapper

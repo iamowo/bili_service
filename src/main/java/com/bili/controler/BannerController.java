@@ -1,7 +1,6 @@
 package com.bili.controler;
 
-import com.bili.entity.Banner;
-import com.bili.entity.Comment;
+import com.bili.entity.PO.Banner;
 import com.bili.service.BannerService;
 import com.bili.util.Response;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,6 @@
 package com.bili.controler;
 
-import com.bili.entity.*;
+import com.bili.entity.PO.*;
 import com.bili.entity.outEntity.Audit;
 import com.bili.entity.outEntity.OneChunk;
 import com.bili.entity.outEntity.UploadVideoInfos;
@@ -8,13 +8,11 @@ import com.bili.entity.outEntity.VideoInfos;
 import com.bili.entity.temp.TagAndNums;
 import com.bili.service.VideoService;
 import com.bili.util.Response;
-import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 @RestController
 @RequestMapping("/video")

@@ -1,20 +1,16 @@
 package com.bili.controler;
 
-import com.bili.entity.FavoristList;
-import com.bili.entity.Img;
-import com.bili.entity.ImgBoard;
-import com.bili.entity.UpImgs;
+import com.bili.entity.PO.Img;
+import com.bili.entity.PO.ImgBoard;
+import com.bili.entity.PO.UpImgs;
 import com.bili.entity.outEntity.ImgInfos;
 import com.bili.service.ImgService;
 import com.bili.util.Response;
-import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 @RestController
 @RequestMapping("/imgs")

@@ -1,7 +1,7 @@
 package com.bili.controler;
 
-import com.bili.entity.Animation;
-import com.bili.entity.AnimationList;
+import com.bili.entity.PO.Animation;
+import com.bili.entity.PO.AnimationList;
 import com.bili.service.AnimationService;
 import com.bili.util.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
 @RestController
 @RequestMapping("/animation")

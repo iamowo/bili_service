@@ -69,7 +69,7 @@
         </if>
     </select>
 
-    <select id="getAllBoards" resultType="com.bili.entity.ImgBoard">
+    <select id="getAllBoards" resultType="com.bili.entity.PO.ImgBoard">
 <!--        select b.*, res.path from imgs_board b left join-->
 <!--        (select f.*, p.path from imgs_followimg f left join imgs_path p on f.img_id = p.img_id where f.board_id) res-->
 <!--        on b.id = res.board_id-->
@@ -84,7 +84,7 @@
         LIMIT 3
     </select>
 
-    <select id="getOneBoardInfo" resultType="com.bili.entity.ImgBoard">
+    <select id="getOneBoardInfo" resultType="com.bili.entity.PO.ImgBoard">
         select * from `imgs_board` where board_id = #{boardid}
     </select>
 

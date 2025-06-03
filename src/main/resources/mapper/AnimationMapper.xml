@@ -19,12 +19,12 @@
         where uid = #{uid} and aid = #{aid}
     </update>
 
-    <select id="getAnimationList" resultType="com.bili.entity.AnimationSublist">
+    <select id="getAnimationList" resultType="com.bili.entity.PO.AnimationSublist">
         select * from `animation_sublist`
         where uid = #{uid} and deleted = 0
     </select>
 
-    <select id="getAllByAid" resultType="com.bili.entity.AnimationList">
+    <select id="getAllByAid" resultType="com.bili.entity.PO.AnimationList">
         select * from `animation_list`
         where aid = #{aid}
         order by season and chapter desc
@@ -35,12 +35,12 @@
         where aid = #{aid} and uid = #{uid}
     </select>
 
-    <select id="getAnimationByAid" resultType="com.bili.entity.Animation">
+    <select id="getAnimationByAid" resultType="com.bili.entity.PO.Animation">
         select * from `animation`
         where aid = #{aid}
     </select>
 
-    <select id="getAnimationByKeyword" resultType="com.bili.entity.Animation">
+    <select id="getAnimationByKeyword" resultType="com.bili.entity.PO.Animation">
         select * from `animation`
         where title like concat('%', #{keyword}, '%')
     </select>
@@ -55,13 +55,13 @@
         where aid = #{aid} and deleted = 0
     </select>
 
-    <select id="getUploadAniList" resultType="com.bili.entity.Animation">
+    <select id="getUploadAniList" resultType="com.bili.entity.PO.Animation">
         select *
         from `animation`
         where uid = #{uid}
     </select>
 
-    <select id="getAnimations" resultType="com.bili.entity.Animation">
+    <select id="getAnimations" resultType="com.bili.entity.PO.Animation">
         select * from `animation`
     </select>
 </mapper>

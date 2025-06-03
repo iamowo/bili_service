@@ -193,17 +193,17 @@
         where uid = #{uid}
     </update>
 
-    <select id="findAccount" resultType="com.bili.entity.User">
+    <select id="findAccount" resultType="com.bili.entity.PO.User">
         select * from `user`
         where account = #{account}
     </select>
 
-    <select id="findUid" resultType="com.bili.entity.User">
+    <select id="findUid" resultType="com.bili.entity.PO.User">
         select * from `user`
         where uid = #{uid}
     </select>
 
-    <select id="getByUid" resultType="com.bili.entity.User">
+    <select id="getByUid" resultType="com.bili.entity.PO.User">
         select * from `user`
         where uid = #{uid}
     </select>
@@ -214,7 +214,7 @@
         name like concat('%', #{keyword}, '%')
     </select>
 
-    <select id="getUserByKeyword" resultType="com.bili.entity.User">
+    <select id="getUserByKeyword" resultType="com.bili.entity.PO.User">
         select * from `user`
         where
         name like concat('%', #{keyword}, '%')
@@ -281,7 +281,7 @@
         where account = #{account}
     </select>
 
-    <select id="getSetting" resultType="com.bili.entity.UserSetting">
+    <select id="getSetting" resultType="com.bili.entity.PO.UserSetting">
         select * from `user_setting`
         where uid = #{uid}
     </select>
@@ -294,7 +294,7 @@
         and DATE_SUB(CURDATE(),  INTERVAL 1 MONTH) &lt;= date(time);
     </select>
 
-    <select id="AllUser" resultType="com.bili.entity.User">
+    <select id="AllUser" resultType="com.bili.entity.PO.User">
         select * from `user`
     </select>
 

@@ -19,7 +19,7 @@
         and fid = #{fid}
     </select>
 
-    <select id="getMainTag" resultType="com.bili.entity.TagMainList">
+    <select id="getMainTag" resultType="com.bili.entity.PO.TagMainList">
         select * from `tags_main_list`
         where type = #{type}
         <if test="limit > 0">
@@ -27,7 +27,7 @@
         </if>
     </select>
 
-    <select id="getTags" resultType="com.bili.entity.Tags">
+    <select id="getTags" resultType="com.bili.entity.PO.Tags">
         select * from `tags`
         where
         <if test="flag == 0">
@@ -52,7 +52,7 @@
         </foreach>
     </select>
 
-    <select id="getVideos" resultType="com.bili.entity.Video">
+    <select id="getVideos" resultType="com.bili.entity.PO.Video">
         select * from `video`
         WHERE vid IN
         <foreach collection="list" item="id" open="(" separator="," close=")">
@@ -60,7 +60,7 @@
         </foreach>
     </select>
 
-    <select id="getMgs" resultType="com.bili.entity.Mg">
+    <select id="getMgs" resultType="com.bili.entity.PO.Mg">
         select * from `mg`
         WHERE mid IN
         <foreach collection="list" item="id" open="(" separator="," close=")">

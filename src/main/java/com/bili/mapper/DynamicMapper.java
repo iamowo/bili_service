@@ -1,10 +1,12 @@
 package com.bili.mapper;
 
-import com.bili.entity.*;
+import com.bili.entity.PO.Dyimgs;
+import com.bili.entity.PO.Dynamic;
+import com.bili.entity.PO.LikeInfo;
+import com.bili.entity.PO.Topical;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
-import java.util.Objects;
 
 @Mapper
 public interface DynamicMapper {

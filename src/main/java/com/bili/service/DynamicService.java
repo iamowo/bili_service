@@ -1,6 +1,6 @@
 package com.bili.service;
 
-import com.bili.entity.*;
+import com.bili.entity.PO.*;
 import com.bili.entity.outEntity.UpDynamicimgs;
 import com.bili.entity.outEntity.UserData;
 import com.bili.mapper.DynamicMapper;
@@ -14,7 +14,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 @Service

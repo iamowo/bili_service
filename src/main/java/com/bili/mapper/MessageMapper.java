@@ -1,7 +1,10 @@
 package com.bili.mapper;
 
-import com.bili.entity.*;
 import com.bili.entity.Message.Whisper;
+import com.bili.entity.PO.At;
+import com.bili.entity.PO.LikeInfo;
+import com.bili.entity.PO.SysInfo;
+import com.bili.entity.PO.WhisperList;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

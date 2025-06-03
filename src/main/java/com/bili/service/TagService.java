@@ -1,6 +1,6 @@
 package com.bili.service;
 
-import com.bili.entity.*;
+import com.bili.entity.PO.*;
 import com.bili.mapper.TagMapper;
 import com.bili.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import java.awt.*;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class TagService {
@@ -34,7 +33,7 @@ public class TagService {
         tagMapper.insertOneTag(tagName, type);
     }
 
-    public List<Tags> getTags(Integer fid,  Integer type, String name, Integer flag, Integer page, Integer limit) {
+    public List<Tags> getTags(Integer fid, Integer type, String name, Integer flag, Integer page, Integer limit) {
         return tagMapper.getTags(fid, type, name, flag, page, limit);
     }
 

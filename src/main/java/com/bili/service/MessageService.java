@@ -1,8 +1,8 @@
 package com.bili.service;
 
-import com.bili.entity.*;
 import com.bili.entity.Message.Whisper;
 import com.bili.entity.Message.WhisperCover;
+import com.bili.entity.PO.*;
 import com.bili.mapper.MessageMapper;
 import com.bili.mapper.UserMapper;
 import com.bili.mapper.VideoMapper;
